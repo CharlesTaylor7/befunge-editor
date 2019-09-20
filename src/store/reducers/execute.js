@@ -47,7 +47,7 @@ export default (
       return R.set(R.lensProp('heading'), 'Left', state);
     case '^':
       return R.set(R.lensProp('heading'), 'Up', state);
-    case 'V':
+    case 'v':
       return R.set(R.lensProp('heading'), 'Down', state);
     case '?':
       return R.set(
@@ -83,7 +83,7 @@ export default (
         state
       );
     case '$':
-      return R.set(
+      return R.over(
         R.lensProp('stack'),
         stack => stack.tail,
         state
@@ -127,9 +127,9 @@ export default (
         R.set(R.lensProp('stack'), rest)
       )(state);
     case '&':
-      return R.set(R.lensProp('pendingUserInput'), 'Number', state);
+      return R.set(R.lensProp('pendingInput'), 'Number', state);
     case '~':
-      return R.set(R.lensProp('pendingUserInput'), 'Character', state);
+      return R.set(R.lensProp('pendingInput'), 'Character', state);
     case '@':
       return R.set(R.lensProp('executionComplete'), true, state);
     case ' ':

@@ -21,7 +21,9 @@ const init = program => {
   return { grid, dimensions };
 }
 
-function* run (program) {
+// program: string[]
+// stdin: iterator<int | char>
+function* run (program, stdin) {
   const store = newStore(init(program));
 
   let state = store.getState();
@@ -29,7 +31,16 @@ function* run (program) {
   while (!state.executionComplete) {
     executeAndAdvance(store.dispatch);
     state = store.getState();
-    yield state;
+    if (state.pendingInput) {
+      const fromStream = stdin.next().value;
+      const input = typeof fromStream === 'string'
+        ? fromStream.charCodeAt(0)
+        : fromStream;
+      store.dispatch({ type: 'PUSH_INPUT', input });
+      yield store.getState();
+    } else {
+      yield state;
+    }
   }
 }
 
@@ -58,7 +69,7 @@ describe('interpreter', () => {
   })
   test('Infinite loop', () => {
     const program = [
-      '>V',
+      '>v',
       '^<',
     ];
     expect(() => completesIn(1000, run(program)))
@@ -66,7 +77,7 @@ describe('interpreter', () => {
   })
   test('Infinite loop w/ unbounded stack growth', () => {
     const program = [
-      '>1V',
+      '>1v',
       '4 2',
       '^3<',
     ];
@@ -86,7 +97,7 @@ describe('interpreter', () => {
   })
   test('A self modifying program', () => {
     const program = [
-      '930pV',
+      '930pv',
       '   @ ',
       '   , ',
       '   " ',
@@ -108,6 +119,36 @@ describe('interpreter', () => {
     expect(completesIn(2500, run(program)))
       .toMatchObject({
         console: program[0],
+      })
+  })
+  test.only('A factorial program', () => {
+    const program = [
+      '&>:1-:v v *_$.@',
+      ' ^    _$>\\:^',
+    ];
+    // expect(completesIn(1000, run(program, [0].values())))
+    // .toMatchObject({
+    //   console: '1 ',
+    // })
+    expect(completesIn(1000, run(program, [1].values())))
+    .toMatchObject({
+      console: '1 ',
+    })
+    expect(completesIn(1000, run(program, [2].values())))
+      .toMatchObject({
+        console: '2 ',
+      })
+    expect(completesIn(1000, run(program, [3].values())))
+      .toMatchObject({
+        console: '6 ',
+      })
+    expect(completesIn(1000, run(program, [4].values())))
+      .toMatchObject({
+        console: '24 ',
+      })
+      expect(completesIn(1000, run(program, [5].values())))
+      .toMatchObject({
+        console: '120 ',
       })
   })
 })
