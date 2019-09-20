@@ -1,7 +1,8 @@
 import * as R from 'ramda'
-import interpret from './interpret';
+import execute from './execute';
 import move from '../../utilities/move';
 import { gridLens } from '../lenses';
+import Stack from '../../utilities/stack';
 
 export default (state, action) => {
 
@@ -38,7 +39,17 @@ export default (state, action) => {
       )(state);
     }
     case "EXECUTE": {
-      return interpret(state);
+      return execute(state);
+    }
+    case "PUSH_INPUT": {
+      const { input } = action;
+      if (typeof input !== 'number') {
+        throw new Error('Input must be a number')
+      }
+      return R.pipe(
+        R.set(R.lensProp('pendingInput'), false),
+        R.over(R.lensProp('stack'), Stack.push(input))
+      )(state);
     }
     default:
       return state;

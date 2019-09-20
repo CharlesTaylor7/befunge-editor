@@ -2,9 +2,16 @@ import React, { useRef, useEffect } from 'react'
 import './Cell.css'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
-import move from '../utilities/move'
+import move from '../../utilities/move'
 
-const Cell = ({ position, value, inFocus, isCurrentInstruction, gridDimensions, dispatch }) => {
+const Cell = ({
+  position,
+  value,
+  inFocus,
+  isCurrentInstruction,
+  gridDimensions,
+  dispatch
+}) => {
   const inputElement = useRef(null);
   const { x, y } = position;
 
