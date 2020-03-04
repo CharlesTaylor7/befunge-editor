@@ -4,6 +4,7 @@
   "homepage": "https://CharlesTaylor7.github.io/react-befunge-editor",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.7.2",
     "ramda": "^0.26.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
