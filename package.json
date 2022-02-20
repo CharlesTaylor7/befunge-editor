@@ -7,18 +7,23 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "jest",
     "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch"
   },
   "dependencies": {
     "next": "12.1.0",
+    "ramda": "^0.28.0",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "wu": "^2.1.0"
   },
   "devDependencies": {
+    "@types/jest": "^27.4.0",
     "@types/node": "17.0.18",
     "@types/react": "17.0.39",
     "eslint": "8.9.0",
     "eslint-config-next": "12.1.0",
+    "jest": "^27.5.1",
     "tailwindcss": "^3.0.23",
     "typescript": "4.5.5"
   }

@@ -1,5 +1,6 @@
 import Stack from './stack'
 
+
 describe('Stack', () => {
   describe('#empty', () => {
     test('is self identical', () => {
