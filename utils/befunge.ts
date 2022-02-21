@@ -89,7 +89,6 @@ export function getCurrentInstruction(state: ExecutionState): string {
   return gridLookup(grid, x, y)
 }
 
-
 export function advancePointer(state: ExecutionState): ExecutionState {
   const jumpSize = state.activeBridge ? 2 : 1
   return {

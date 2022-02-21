@@ -1,9 +1,9 @@
 import * as R from 'ramda'
-import {Stack} from 'immutable'
+import { Stack } from 'immutable'
 import * as Random from '@/utils/random'
 import { quot, rem } from '@/utils/integerDivision'
-import {ExecutionState, getCurrentInstruction} from '@/utils/befunge'
-import {gridLookup, gridUpdate} from '@/utils/grid'
+import { ExecutionState, getCurrentInstruction } from '@/utils/befunge'
+import { gridLookup, gridUpdate } from '@/utils/grid'
 
 export default (state: ExecutionState, instruction: string = getCurrentInstruction(state)) => {
   if (typeof instruction !== 'string') {
@@ -15,13 +15,13 @@ export default (state: ExecutionState, instruction: string = getCurrentInstructi
 
   if (state.stringMode && instruction !== '"') {
     // @ts-ignore
-    return R.over(R.lensProp('stack'), stack => stack.push(instruction.charCodeAt(0)), state);
+    return R.over(R.lensProp('stack'), (stack) => stack.push(instruction.charCodeAt(0)), state)
   }
   const charCode = instruction.charCodeAt(0)
   const n = charCode - '0'.charCodeAt(0)
 
   if (n >= 0 && n < 10) {
-    return R.over(R.lensProp('stack'), stack => stack.push(n), state)
+    return R.over(R.lensProp('stack'), (stack) => stack.push(n), state)
   }
 
   switch (instruction) {
@@ -67,8 +67,11 @@ export default (state: ExecutionState, instruction: string = getCurrentInstructi
       return R.over(
         R.lensProp('stack'),
         (stack) => {
-          const {items: [a, b], rest} = pop(2, stack)
-          return rest.push(a, b);
+          const {
+            items: [a, b],
+            rest,
+          } = pop(2, stack)
+          return rest.push(a, b)
         },
         state
       )
@@ -92,19 +95,25 @@ export default (state: ExecutionState, instruction: string = getCurrentInstructi
       return R.over(
         R.lensProp('stack'),
         (stack) => {
-          const { items: [y, x], rest} = pop(2, stack);
+          const {
+            items: [y, x],
+            rest,
+          } = pop(2, stack)
           const value = gridLookup(state.grid, x, y)
           return rest.push(value.charCodeAt(0))
         },
         state
       )
     case 'p':
-      const {items: [y, x, value], rest} = pop(3, state.stack)
-      return ({
+      const {
+        items: [y, x, value],
+        rest,
+      } = pop(3, state.stack)
+      return {
         ...state,
         stack: rest,
         grid: gridUpdate(state.grid, x, y, String.fromCharCode(value)),
-      })
+      }
     case '&':
       return R.set(R.lensProp('pendingInput'), 'Number', state)
     case '~':
@@ -121,10 +130,13 @@ export default (state: ExecutionState, instruction: string = getCurrentInstructi
 type Op = (a: number, b: number) => number
 type Update = (state: ExecutionState) => ExecutionState
 
-const runBinaryOpOnStack = (op: Op): Update => 
+const runBinaryOpOnStack = (op: Op): Update =>
   R.over(R.lensProp('stack'), (stack) => {
-    const {items: [a, b], rest} = pop(2, stack)
-    return rest.push(op(a, b));
+    const {
+      items: [a, b],
+      rest,
+    } = pop(2, stack)
+    return rest.push(op(a, b))
   })
 
 type Pop = {
