@@ -1,7 +1,7 @@
 import { gridLens } from '../lenses'
 import * as R from 'ramda'
 
-export default state => {
+export default function(state: ExecutionState, dimensions: ) => {
   const { executionPointer } = state;
   const cellValue = R.view(gridLens(executionPointer), state);
   if (cellValue === undefined || cellValue === '') {
