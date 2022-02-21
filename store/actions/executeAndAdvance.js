@@ -1,4 +1,4 @@
 export default (dispatch) => {
   dispatch({ type: 'EXECUTE' })
-  dispatch({ type: 'ADVANCE' });
+  dispatch({ type: 'ADVANCE' })
 }

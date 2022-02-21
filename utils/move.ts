@@ -1,22 +1,31 @@
 import * as R from 'ramda'
-import { mod } from './integerDivision'
+import { mod } from '@/utils/integerDivision'
+import {Direction} from '@/utils/befunge'
 
-// type position = { x: int, y: int }
+// @ts-ignore
 const xLens = R.lensProp('x')
+// @ts-ignore
 const yLens = R.lensProp('y')
 
-// type direction = 'Up' | 'Right' | 'Down' | 'Left'
-// type dimensions = { width: int, height: int }
-export default ({ direction, dimensions, jumpSize = 1 }) => {
+export type MoveParams = {
+  direction: Direction
+  dimensions: { width: number; height: number }
+  jumpSize: number
+}
+export default ({ direction, dimensions, jumpSize }: MoveParams) => {
   const { width, height } = dimensions
   switch (direction) {
-    case 'Right':
+    case 'R':
+      // @ts-ignore
       return R.over(xLens, (x) => mod(x + jumpSize, width))
-    case 'Down':
+    case 'D':
+      // @ts-ignore
       return R.over(yLens, (y) => mod(y + jumpSize, height))
-    case 'Left':
+    case 'L':
+      // @ts-ignore
       return R.over(xLens, (x) => mod(x - jumpSize, width))
-    case 'Up':
+    case 'U':
+      // @ts-ignore
       return R.over(yLens, (y) => mod(y - jumpSize, height))
     default:
       throw new Error('Unrecognized direction!')

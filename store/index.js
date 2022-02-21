@@ -8,14 +8,12 @@ import rootReducer from './reducers'
 import rootSaga from './sagas'
 
 export default (initialState) => {
-  const sagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware()
   const store = createStore(
     rootReducer,
     R.mergeRight(defaultState, initialState),
-    composeWithDevTools(
-      applyMiddleware(sagaMiddleware)
-    )
-  );
-  sagaMiddleware.run(rootSaga);
-  return store;
+    composeWithDevTools(applyMiddleware(sagaMiddleware))
+  )
+  sagaMiddleware.run(rootSaga)
+  return store
 }
