@@ -1,4 +1,5 @@
-import { ExecutionState, initialExecutionState } from '@/utils/befunge'
+import { advancePointer, ExecutionState, initialExecutionState } from '@/utils/befunge'
+import execute from '@/utils/execute'
 import { gridUpdate } from '@/utils/grid'
 import { useCallback, useState } from 'react'
 
@@ -11,6 +12,7 @@ Befunge.defaultProps = {
 }
 
 type Mode = 'edit' | 'step' | 'animate'
+
 export default function Befunge(props: Props) {
   const { initialExecutionState } = props
   const [state, updateState] = useState(initialExecutionState)
@@ -21,26 +23,21 @@ export default function Befunge(props: Props) {
     [updateState]
   )
 
+  const runStep = useCallback(() => updateState((state) => advancePointer(execute(state))), [])
+
   return (
-    <div className="w-screen h-screen flex flex-row items-center justify-center gap-10">
-      <div className="flex flex-col items-center justify-center">
-        <header>
-          <button className="border rounded bg-green-300 p-2 m-4" onClick={() => setMode('step')}>
-            Run!
-          </button>
-          <button className="border rounded bg-green-300 p-2 m-4" onClick={() => console.log('next')}>
-            Next
-          </button>
-        </header>
-        <table className="table-fixed border-separate">
+    <div className="w-screen h-screen flex flex-row gap-10">
+      <table className="table-fixed border-separate self-center">
+        <tbody>
           {Array.from({ length: state.grid.height }, (_, j) => (
-            <tr>
+            <tr key={j}>
               {Array.from({ length: state.grid.width }, (_, i) => (
                 <td
+                  key={i}
                   className={`
                     border text-center text-ellipsis p-0 w-[40px] h-[40px]
                     ${
-                      state.executionPointer.x === i && state.executionPointer.y === j
+                      mode !== 'edit' && state.executionPointer.x === i && state.executionPointer.y === j
                         ? 'border-yellow-200 border-2'
                         : ''
                     }
@@ -58,13 +55,24 @@ export default function Befunge(props: Props) {
               ))}
             </tr>
           ))}
-        </table>
-      </div>
-      <div>
-        <input disabled={!state.pendingInput} />
-        <p>Heading: {state.heading}</p>
-        <p>Console: {state.console}</p>
-        <p>Stack: {state.stack}</p>
+        </tbody>
+      </table>
+
+      <div className="flex flex-col">
+        <header>
+          <button className="border rounded bg-green-300 p-2 m-4" onClick={() => setMode('step')}>
+            Run!
+          </button>
+          <button className="border rounded bg-green-300 p-2 m-4" onClick={runStep}>
+            Next
+          </button>
+        </header>
+        <div>
+          <input disabled={!state.pendingInput} />
+          <p>Heading: {state.heading}</p>
+          <p>Console: {state.console}</p>
+          <p>Stack: {state.stack}</p>
+        </div>
       </div>
     </div>
   )

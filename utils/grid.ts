@@ -6,7 +6,7 @@ export type Grid = {
   cells: List<number>
 }
 
-export const initialGrid: Grid = { width: 5, height: 5, cells: List() }
+export const initialGrid: Grid = { width: 20, height: 5, cells: List() }
 
 export function gridLookup(grid: Grid, i: number, j: number): string {
   const charCode = grid.cells.get(i + j * grid.height)

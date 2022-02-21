@@ -1,6 +1,7 @@
 import { Stack } from 'immutable'
 import * as R from 'ramda'
 import { Grid, gridLookup, initialGrid } from '@/utils/grid'
+import move from './move'
 
 export type Dimensions = {
   height: number
@@ -94,7 +95,7 @@ export function advancePointer(state: ExecutionState): ExecutionState {
   return {
     ...state,
     activeBridge: false,
-    //@ts-ignore
+    // @ts-ignore
     executionPointer: move({
       jumpSize,
       direction: state.heading,
