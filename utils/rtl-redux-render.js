@@ -9,17 +9,11 @@ import newStore from '../store'
 // From https://github.com/kentcdodds/react-testing-library-course/blob/master/src/__tests__/redux-03.js:
 export default (
   ui,
-  {
-    initialState,
-    store = newStore(initialState),
-    ...renderOptions
-  } = {},
+  { initialState, store = newStore(initialState), ...renderOptions } = {}
 ) => {
-  const Wrapper = ({children}) => (
-    <Provider store={store}>
-      {children}
-    </Provider>
-  );
+  const Wrapper = ({ children }) => (
+    <Provider store={store}>{children}</Provider>
+  )
   return {
     ...rtlRender(ui, {
       wrapper: Wrapper,
