@@ -7,10 +7,6 @@ import Stack from '../../utilities/stack';
 export default (state, action) => {
 
   switch(action.type) {
-    case "SET_GRID_DIMENSIONS": {
-      const { height, width } = action;
-      return R.set(R.lensProp('dimensions'), { height, width }, state);
-    }
     case "EDIT_CELL": {
       const { position, value} = action;
       return R.set(gridLens(position), value, state);

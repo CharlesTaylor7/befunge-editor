@@ -18,15 +18,19 @@ function toKey(i: number, j: number, height: number): number {
 export default function Befunge(props: Props) {
   const { height, width } = props
   const [grid, setGrid] = useState<List<string>>(List())
+  
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
-      <table className="table-fixed border-separate">
+      <table 
+        className="table-fixed border-separate"
+      >
         {Array.from({ length: height }, (_, j) => (
           <tr>
             {Array.from({ length: width }, (_, i) => (
               <td className="border text-center text-ellipsis p-0 w-[30px] h-[30px]">
                 <input
+                  autoFocus={i===0 && j===0}
                   className="block w-full h-full text-center"
                   type="text"
                   maxLength={1}
