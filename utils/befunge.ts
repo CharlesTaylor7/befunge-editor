@@ -1,7 +1,8 @@
-import { Stack } from 'immutable'
+import { List, Stack } from 'immutable'
 import * as R from 'ramda'
-import { Grid, gridLookup, initialGrid } from '@/utils/grid'
+import { Grid, gridLookup, gridUpdate, initialGrid } from '@/utils/grid'
 import move from './move'
+import execute from './execute'
 
 export type Dimensions = {
   height: number
@@ -14,7 +15,7 @@ export type ExecutionState = {
   heading: Direction
   grid: Grid
   stack: Stack<number>
-  console: ''
+  console: string
   activeBridge: boolean
   stringMode: boolean
   pendingInput: 'Number' | 'Character' | false
@@ -33,33 +34,32 @@ export const initialExecutionState: ExecutionState = {
   executionComplete: false,
 }
 
-// type program: string[]
-export function init(program: Array<string>) {
+export function init(program: Array<string>): Grid {
   const height = program.length
   // @ts-ignore
   const width = program.reduce(R.maxBy((line) => line.length)).length
-  const dimensions = { height, width }
 
-  const grid = {}
+  let grid: Grid = { height, width, cells: List() }
   for (let j = 0; j < height; j++) {
     const line = program[j]
     for (let i = 0; i < width; i++) {
-      // @ts-ignore
-      grid[`${i}-${j}`] = line[i]
+      grid = gridUpdate(grid, i, j, line[i] || ' ')
     }
   }
 
-  return { grid, dimensions }
+  return grid
 }
 
 export function* run(program: Array<string>, stdin: Generator<string | number>): Iterable<ExecutionState> {
   // @ts-ignore
-  const store = newStore(init(program))
-  let state = store.getState()
+  const grid = init(program)
+  let state = {
+    ...initialExecutionState,
+    grid,
+  }
 
   while (!state.executionComplete) {
-    // @ts-ignore
-    executeAndAdvance(store.dispatch)
+    state = advancePointer(execute(state))
     state = store.getState()
     if (state.pendingInput) {
       const fromStream = stdin.next().value

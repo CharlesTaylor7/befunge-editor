@@ -5,7 +5,7 @@ import { quot, rem } from '@/utils/integerDivision'
 import { ExecutionState, getCurrentInstruction } from '@/utils/befunge'
 import { gridLookup, gridUpdate } from '@/utils/grid'
 
-export default (state: ExecutionState, instruction: string = getCurrentInstruction(state)) => {
+export default function (state: ExecutionState, instruction: string = getCurrentInstruction(state)): ExecutionState {
   if (typeof instruction !== 'string') {
     throw new Error('Instruction is not a string.')
   }
@@ -48,17 +48,19 @@ export default (state: ExecutionState, instruction: string = getCurrentInstructi
     case 'v':
       return R.set(R.lensProp('heading'), 'D', state)
     case '?':
-      return R.set(R.lensProp('heading'), Random.among('Right', 'Left', 'Up', 'Down'), state)
+      return R.set(R.lensProp('heading'), Random.among('R', 'L', 'U', 'D'), state)
     case '_':
-      return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.pop()),
-        R.set(R.lensProp('heading'), state.stack.peek() ? 'Left' : 'Right')
-      )(state)
+      return {
+        ...state,
+        stack: state.stack.pop(),
+        heading: state.stack.peek() ? 'L' : 'R',
+      }
     case '|':
-      return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.pop()),
-        R.set(R.lensProp('heading'), state.stack.peek() ? 'Up' : 'Down')
-      )(state)
+      return {
+        ...state,
+        stack: state.stack.pop(),
+        heading: state.stack.peek() ? 'U' : 'D',
+      }
     case '"':
       return R.over(R.lensProp('stringMode'), (mode) => !mode, state)
     case ':':
@@ -73,7 +75,7 @@ export default (state: ExecutionState, instruction: string = getCurrentInstructi
           } = pop(2, stack)
           return rest.push(a, b)
         },
-        state
+        state,
       )
     case '$':
       return R.over(R.lensProp('stack'), (stack) => stack.pop(), state)
@@ -102,7 +104,7 @@ export default (state: ExecutionState, instruction: string = getCurrentInstructi
           const value = gridLookup(state.grid, x, y)
           return rest.push(value.charCodeAt(0))
         },
-        state
+        state,
       )
     case 'p':
       const {
@@ -123,7 +125,8 @@ export default (state: ExecutionState, instruction: string = getCurrentInstructi
     case ' ':
       return state
     default:
-      throw new Error(`Unrecognized instruction: '${instruction}'.`)
+      console.log(`Unrecognized instruction: '${instruction}'.`)
+      return state
   }
 }
 
