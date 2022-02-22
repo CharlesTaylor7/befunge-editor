@@ -34,20 +34,30 @@ export const initialExecutionState: ExecutionState = {
   executionComplete: false,
 }
 
-export function init(program: Array<string>): Grid {
-  const height = program.length
-  // @ts-ignore
-  const width = program.reduce(R.maxBy((line) => line.length)).length
-
+export function init(program: string): Grid {
+  const lines = program.split('\n')
+  const height = lines.length
+  const width = lines.reduce(R.maxBy((line: string) => line.length)).length
   let grid: Grid = { height, width, cells: List() }
   for (let j = 0; j < height; j++) {
-    const line = program[j]
+    const line = lines[j]
     for (let i = 0; i < width; i++) {
       grid = gridUpdate(grid, i, j, line[i] || ' ')
     }
   }
 
   return grid
+}
+
+export function programFromGrid(grid: Grid): string {
+  return Array.from({ length: grid.height }, (_, i) =>
+    grid.cells
+      .slice(i * grid.width, (i + 1) * grid.width)
+      .map((n) => String.fromCharCode(n))
+      .toArray()
+      .join('')
+      .trimEnd(),
+  ).join('\n')
 }
 
 export function pushInput(state: ExecutionState, input: number): ExecutionState {
@@ -59,8 +69,7 @@ export function pushInput(state: ExecutionState, input: number): ExecutionState 
 }
 
 export function* run(program: Array<string>, stdin: Generator<string | number>): Iterable<ExecutionState> {
-  // @ts-ignore
-  const grid = init(program)
+  const grid = init(program.join('\n'))
   let state = {
     ...initialExecutionState,
     grid,
@@ -71,7 +80,7 @@ export function* run(program: Array<string>, stdin: Generator<string | number>):
     if (state.pendingInput) {
       const value = stdin.next().value
       const input = typeof value === 'string' ? value.charCodeAt(0) : value
-      state = pushInput(state, input);
+      state = pushInput(state, input)
     }
     yield state
   }
@@ -96,6 +105,7 @@ export function getCurrentInstruction(state: ExecutionState): string {
 }
 
 export function advancePointer(state: ExecutionState): ExecutionState {
+  if (state.executionComplete) return state
   const jumpSize = state.activeBridge ? 2 : 1
   return {
     ...state,

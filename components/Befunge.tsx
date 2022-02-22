@@ -1,8 +1,8 @@
-import { advancePointer, ExecutionState, init, initialExecutionState } from '@/utils/befunge'
+import { advancePointer, ExecutionState, init, initialExecutionState, programFromGrid } from '@/utils/befunge'
 import execute from '@/utils/execute'
 import { gridLookup, gridUpdate } from '@/utils/grid'
-import { useCallback, useState } from 'react'
-import Button from './Button'
+import { useCallback, useEffect, useState } from 'react'
+import Button from '@/components/Button'
 
 type Props = {
   initialExecutionState: ExecutionState
@@ -12,84 +12,129 @@ Befunge.defaultProps = {
   initialExecutionState,
 }
 
-type Mode = 'edit' | 'step' | 'animate'
-
+type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 
 export default function Befunge(props: Props) {
   const { initialExecutionState } = props
   const [state, updateState] = useState(initialExecutionState)
-  const [mode, setMode] = useState<Mode>('edit')
-  const [textArea, setTextArea] = useState<boolean>(false)
+  const [mode, setMode] = useState<Mode>('text-edit')
 
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) => updateState((state) => ({ ...state, grid: gridUpdate(state.grid, i, j, e) })),
     [updateState],
   )
   const loadGrid = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      updateState((state) => ({ ...state, grid: init(e.target.value.split('\n')) })),
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => updateState((state) => ({ ...state, grid: init(e.target.value) })),
     [],
   )
 
-  const runStep = useCallback(() => updateState((state) => advancePointer(execute(state))), [])
+  const runStep = useCallback(() => updateState((state) => advancePointer(execute(state))), [updateState])
+  const restartExecution = useCallback(() => {
+    setMode('step')
+    updateState((state) => ({ ...initialExecutionState, grid: state.grid }))
+  }, [])
+
+  useEffect(() => {
+    if (state.executionComplete) {
+      setMode('cell-edit')
+    }
+  }, [state.executionComplete])
 
   return (
-    <div className="w-screen h-screen flex flex-row gap-10">
-      <div className="flex flex-col gap-10 m-4">
-        {textArea ? (
+    <div className="w-screen h-screen flex flex-col gap-10 items-center">
+      <header className="flex gap-5 mt-10">
+        <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
+          Edit
+        </Button>
+        <Button onClick={restartExecution}>Restart</Button>
+        <Button onClick={runStep} disabled={mode !== 'step'}>
+          Next
+        </Button>
+      </header>
+      <main className="flex">
+        {mode === 'text-edit' ? (
           <textarea
-            className="border rounded-[10px] border-blue-300 p-2"
+            className="h-full border rounded-[10px] border-blue-300 p-2 font-mono"
             autoFocus
             onChange={loadGrid}
-            defaultValue={programFromGrid}
-            onBlur={() => setTextArea(false)}
+            defaultValue={programFromGrid(state.grid)}
+            onBlur={() => setMode('cell-edit')}
           />
         ) : (
-          <Button onClick={() => setTextArea(true)}>Program</Button>
-        )}
-        <table className="self-center table-fixed border-separate border-2 border-blue-200">
-          <tbody>
-            {Array.from({ length: state.grid.height }, (_, j) => (
-              <tr key={j}>
-                {Array.from({ length: state.grid.width }, (_, i) => (
-                  <td
-                    key={i}
-                    className={`
-                    border text-center text-ellipsis p-0 w-[40px] h-[40px]
-                    ${
-                      mode !== 'edit' && state.executionPointer.x === i && state.executionPointer.y === j
-                        ? 'border-yellow-200 border-2'
-                        : ''
-                    }
-                  `}
-                  >
-                    <input
-                      disabled={mode === 'animate'}
-                      className="block w-full h-full text-center"
-                      type="text"
-                      maxLength={1}
-                      defaultValue={gridLookup(state.grid, i, j)}
-                      onChange={(e) => handleGridInput(e.target.value, i, j)}
-                    />
-                  </td>
+          <>
+            <div className="flex justify-center"></div>
+            <table className="self-center table-fixed border-separate border-2 border-blue-200">
+              <tbody>
+                {Array.from({ length: state.grid.height }, (_, j) => (
+                  <tr key={j}>
+                    {Array.from({ length: state.grid.width }, (_, i) => (
+                      <Cell
+                        key={i}
+                        value={gridLookup(state.grid, i, j)}
+                        onChange={(e) => handleGridInput(e.target.value || ' ', i, j)}
+                        mode={mode}
+                        executing={
+                          !mode.endsWith('edit') && state.executionPointer.x === i && state.executionPointer.y === j
+                        }
+                      />
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex flex-col m-4">
-        <header>
-          <Button onClick={() => setMode('step')}>Run!</Button>
-          <Button onClick={runStep}>Next!</Button>
-        </header>
-        <div>
-          <input disabled={!state.pendingInput} />
-          <p>Heading: {state.heading}</p>
-          <p>Console: {state.console}</p>
-          <p>Stack: {state.stack}</p>
+              </tbody>
+            </table>
+          </>
+        )}
+        <div className="flex flex-col m-4">
+          <div>
+            <input disabled={!state.pendingInput} />
+            <p>Heading: {state.heading}</p>
+            <p>Console: {state.console}</p>
+            Stack:
+            <div className="flex flex-col">
+              {state.stack.toArray().map((s) => (
+                <span>{s}</span>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
+  )
+}
+type CellProps = {
+  value: string
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+  executing: boolean
+  mode: Mode
+}
+
+export function Cell({ value, onChange, mode, executing }: CellProps) {
+  const [focus, setFocus] = useState<boolean>(false)
+  return (
+    <td
+      className={`
+        border text-center text-ellipsis p-0 w-[40px] h-[40px]
+        ${executing ? 'border-yellow-200 border-2' : ''}
+      `}
+    >
+      {mode === 'cell-edit' || focus ? (
+        <input
+          className="block w-full h-full text-center heading-1"
+          autoFocus={focus && mode !== 'cell-edit'}
+          type="text"
+          maxLength={1}
+          defaultValue={value.trim()}
+          onChange={onChange}
+          onBlur={() => setFocus(false)}
+        />
+      ) : (
+        <div
+          className="w-full h-full hover:cursor-text flex items-center justify-center"
+          onClick={() => setFocus(true)}
+        >
+          {value}
+        </div>
+      )}
+    </td>
   )
 }

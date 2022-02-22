@@ -6,13 +6,14 @@ import { ExecutionState, getCurrentInstruction } from '@/utils/befunge'
 import { gridLookup, gridUpdate } from '@/utils/grid'
 
 export default function (state: ExecutionState, instruction: string = getCurrentInstruction(state)): ExecutionState {
+  console.log(instruction)
   if (typeof instruction !== 'string') {
     throw new Error('Instruction is not a string.')
   }
   if (instruction.length !== 1) {
     throw new Error('Instruction should be a single character.')
   }
-
+  if (state.executionComplete) return state
   if (state.stringMode && instruction !== '"') {
     // @ts-ignore
     return R.over(R.lensProp('stack'), (stack) => stack.push(instruction.charCodeAt(0)), state)
@@ -23,7 +24,6 @@ export default function (state: ExecutionState, instruction: string = getCurrent
   if (n >= 0 && n < 10) {
     return R.over(R.lensProp('stack'), (stack) => stack.push(n), state)
   }
-
   switch (instruction) {
     case '+':
       return runBinaryOpOnStack((a, b) => a + b)(state)
@@ -108,20 +108,25 @@ export default function (state: ExecutionState, instruction: string = getCurrent
       )
     case 'p':
       const {
-        items: [y, x, value],
+        items: [y, x, v],
         rest,
       } = pop(3, state.stack)
+      const value = String.fromCharCode(v)
+      console.log({ x, y, value })
       return {
         ...state,
         stack: rest,
-        grid: gridUpdate(state.grid, x, y, String.fromCharCode(value)),
+        grid: gridUpdate(state.grid, x, y, value),
       }
     case '&':
       return R.set(R.lensProp('pendingInput'), 'Number', state)
     case '~':
       return R.set(R.lensProp('pendingInput'), 'Character', state)
     case '@':
-      return R.set(R.lensProp('executionComplete'), true, state)
+      return {
+        ...state,
+        executionComplete: true,
+      }
     case ' ':
       return state
     default:
