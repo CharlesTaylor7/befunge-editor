@@ -14,11 +14,6 @@ Befunge.defaultProps = {
 
 type Mode = 'edit' | 'step' | 'animate'
 
-function useToggle(initialState: boolean): [boolean, () => void] {
-  const [state, setState] = useState<boolean>(initialState)
-  const toggle = useCallback(() => setState((s) => !s), [setState])
-  return [state, toggle]
-}
 
 export default function Befunge(props: Props) {
   const { initialExecutionState } = props
@@ -46,6 +41,7 @@ export default function Befunge(props: Props) {
             className="border rounded-[10px] border-blue-300 p-2"
             autoFocus
             onChange={loadGrid}
+            defaultValue={programFromGrid}
             onBlur={() => setTextArea(false)}
           />
         ) : (
@@ -69,7 +65,6 @@ export default function Befunge(props: Props) {
                   >
                     <input
                       disabled={mode === 'animate'}
-                      autoFocus={i === 0 && j === 0}
                       className="block w-full h-full text-center"
                       type="text"
                       maxLength={1}

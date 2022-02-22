@@ -50,6 +50,14 @@ export function init(program: Array<string>): Grid {
   return grid
 }
 
+export function pushInput(state: ExecutionState, input: number): ExecutionState {
+  return {
+    ...state,
+    stack: state.stack.push(input),
+    pendingInput: false,
+  }
+}
+
 export function* run(program: Array<string>, stdin: Generator<string | number>): Iterable<ExecutionState> {
   // @ts-ignore
   const grid = init(program)
@@ -60,15 +68,12 @@ export function* run(program: Array<string>, stdin: Generator<string | number>):
 
   while (!state.executionComplete) {
     state = advancePointer(execute(state))
-    state = store.getState()
     if (state.pendingInput) {
-      const fromStream = stdin.next().value
-      const input = typeof fromStream === 'string' ? fromStream.charCodeAt(0) : fromStream
-      store.dispatch({ type: 'PUSH_INPUT', input })
-      yield store.getState()
-    } else {
-      yield state
+      const value = stdin.next().value
+      const input = typeof value === 'string' ? value.charCodeAt(0) : value
+      state = pushInput(state, input);
     }
+    yield state
   }
 }
 
