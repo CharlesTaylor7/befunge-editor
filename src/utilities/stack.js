@@ -21,9 +21,11 @@ const isStack = stack =>
     [Empty.name, Stack.name]
   );
 
+
 class Stack {
   constructor(head, tail) {
     if (!isStack(tail)) {
+      console.log(tail, tail.name, [Empty.name, Stack.name])
       throw new Error('Tail must be a stack.')
     }
     this.head = head;
