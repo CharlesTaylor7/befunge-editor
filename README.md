@@ -1,12 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Befunge
+A simple react app for editing and interpreting [Befunge](https://en.wikipedia.org/wiki/Befunge).
 
-## Getting Started
+Documentation for the language [here](http://www.nsl.com/papers/befunge93/befunge93.htm)
 
-First, run the development server:
+## Development
+This is a [Next.js](https://nextjs.org/) project.
 
+Install Deps
 ```bash
-npm run dev
-# or
+yarn 
+```
+
+Start tailwind in watch mode:
+```bash
+yarn watch-css
+```
+
+In a separate terminal window, run the development server:
+```bash
 yarn dev
 ```
 

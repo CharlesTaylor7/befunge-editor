@@ -13,5 +13,17 @@
 - [ ] Document existing feature set, and come up with a short list of bugfixes and simple usability improvements.
 
 
-# Features
+# Future Features
 - [ ] Prepopulate app with interesting befunge programs.
+
+## Old TODO (from 2019)
+- UI visual for Stack & stack frames.
+  - way to inspect stack elements as numbers & corresponding ascii characters
+- UI visual for Console output
+- Console for input
+- Make editor more editor like
+- Make editor resizable
+  - able to add/collapse rows & columns
+- Separate modes between edit & run modes
+- Implement undo button
+- Make buttons pop better
