@@ -12,13 +12,14 @@ Button.defaultProps = {
 export default function Button(props: Props) {
   const { onClick, children, disabled } = props
   return (
-    <button 
+    <button
       className={`
         border rounded p-2
         ${disabled ? 'bg-slate-200' : 'bg-green-300'}
-      `} 
-      onClick={onClick} 
-      disabled={disabled}>
+      `}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
     </button>
   )
