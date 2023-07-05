@@ -1,9 +1,9 @@
 import * as R from 'ramda'
 import { Stack } from 'immutable'
-import * as Random from '@/utils/random'
-import { quot, rem } from '@/utils/integerDivision'
-import { ExecutionState, getCurrentInstruction } from '@/utils/befunge'
-import { gridLookup, gridUpdate } from '@/utils/grid'
+import * as Random from './random'
+import { quot, rem } from './integerDivision'
+import { ExecutionState, getCurrentInstruction } from './befunge'
+import { gridLookup, gridUpdate } from './grid'
 
 export default function (state: ExecutionState, instruction: string = getCurrentInstruction(state)): ExecutionState {
   console.log(instruction)

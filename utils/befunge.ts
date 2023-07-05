@@ -1,14 +1,17 @@
 import { List, Stack } from 'immutable'
 import * as R from 'ramda'
-import { Grid, gridLookup, gridUpdate, initialGrid } from '@/utils/grid'
+import { Grid, gridLookup, gridUpdate, initialGrid } from './grid'
 import move from './move'
 import execute from './execute'
+
+export { List, Stack };
 
 export type Dimensions = {
   height: number
   width: number
 }
 export type Direction = 'U' | 'R' | 'D' | 'L'
+export type Stdin = Iterator<string | number>;
 
 export type ExecutionState = {
   executionPointer: { x: number; y: number }
@@ -68,7 +71,10 @@ export function pushInput(state: ExecutionState, input: number): ExecutionState 
   }
 }
 
-export function* run(program: Array<string>, stdin: Generator<string | number>): Iterable<ExecutionState> {
+function* emptyGen<T>(): Generator<T> { }
+
+export function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
+  stdin = stdin || emptyGen();
   const grid = init(program.join('\n'))
   let state = {
     ...initialExecutionState,
@@ -86,14 +92,14 @@ export function* run(program: Array<string>, stdin: Generator<string | number>):
   }
 }
 
-export function completesIn<T>(n: number, generator: Generator<T>): T | undefined {
+export function completesIn<T>(n: number, iterator: Iterator<T>): T | undefined {
   let value
   for (let i = 0; i < n + 1; i++) {
-    const next = generator.next()
+    const next = iterator.next()
     if (next.done) return value
     value = next.value
   }
-  throw new Error(`Iterable did not complete in ${n} or less steps.`)
+  throw new Error(`Iterator did not complete in ${n} or less steps.`)
 }
 
 export function getCurrentInstruction(state: ExecutionState): string {

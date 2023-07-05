@@ -1,6 +1,6 @@
 import * as R from 'ramda'
-import { mod } from '@/utils/integerDivision'
-import { Direction } from '@/utils/befunge'
+import { mod } from './integerDivision'
+import { Direction } from './befunge'
 
 // @ts-ignore
 const xLens = R.lensProp('x')
