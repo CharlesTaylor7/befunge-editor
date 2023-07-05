@@ -16,5 +16,5 @@ export default {
   executionComplete: false,
   stringMode: false,
   // false | 'Number' | 'Character'
-  pendingUserInput: false
+  pendingInput: false
 };
