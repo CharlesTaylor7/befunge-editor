@@ -3,7 +3,7 @@ import Stack from '../../utilities/Stack'
 
 describe('execute', () => {
   it('throws on unknown instructions', () => {
-    expect(() => execute({}, 'b')).toThrow("Unrecognized instruction: 'b'")
+    expect(() => execute({} as any, 'b')).toThrow("Unrecognized instruction: 'b'")
   }),
     it('throws if instruction is not a string', () => {
       expect(() => execute({}, 2)).toThrow('Instruction is not a string')
