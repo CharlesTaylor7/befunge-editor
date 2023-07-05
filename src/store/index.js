@@ -1,21 +1,23 @@
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import createSagaMiddleware from 'redux-saga'
+import { createStore, applyMiddleware } from 'redux';
 import * as R from 'ramda'
 
-import defaultState from './defaultState'
-import rootReducer from './reducers'
-import rootSaga from './sagas'
+import rootReducer from './reducers';
+import defaultState from './defaultState';
 
-export default (initialState) => {
-  const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(
-    rootReducer,
-    R.mergeRight(defaultState, initialState),
-    composeWithDevTools(
-      applyMiddleware(sagaMiddleware)
-    )
-  );
-  sagaMiddleware.run(rootSaga);
-  return store;
+const logger = store => next => action => {
+  const oldState = store.getState();
+  console.log('dispatching', action)
+  let result = next(action)
+  let state = store.getState();
+  console.log('next state', state)
+
+  return result
 }
+
+export default (initialState) => createStore(
+  rootReducer,
+  R.mergeRight(
+    R.mergeRight(defaultState, initialState),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()),
+  // applyMiddleware(logger)
+);

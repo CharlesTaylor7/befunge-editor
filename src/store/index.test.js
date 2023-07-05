@@ -21,9 +21,7 @@ const init = program => {
   return { grid, dimensions };
 }
 
-// program: string[]
-// stdin: iterator<int | char>
-function* run (program, stdin) {
+function* run (program) {
   const store = newStore(init(program));
 
   let state = store.getState();
@@ -31,16 +29,7 @@ function* run (program, stdin) {
   while (!state.executionComplete) {
     executeAndAdvance(store.dispatch);
     state = store.getState();
-    if (state.pendingInput) {
-      const fromStream = stdin.next().value;
-      const input = typeof fromStream === 'string'
-        ? fromStream.charCodeAt(0)
-        : fromStream;
-      store.dispatch({ type: 'PUSH_INPUT', input });
-      yield store.getState();
-    } else {
-      yield state;
-    }
+    yield state;
   }
 }
 
@@ -69,7 +58,7 @@ describe('interpreter', () => {
   })
   test('Infinite loop', () => {
     const program = [
-      '>v',
+      '>V',
       '^<',
     ];
     expect(() => completesIn(1000, run(program)))
@@ -77,7 +66,7 @@ describe('interpreter', () => {
   })
   test('Infinite loop w/ unbounded stack growth', () => {
     const program = [
-      '>1v',
+      '>1V',
       '4 2',
       '^3<',
     ];
@@ -97,7 +86,7 @@ describe('interpreter', () => {
   })
   test('A self modifying program', () => {
     const program = [
-      '930pv',
+      '930pV',
       '   @ ',
       '   , ',
       '   " ',
@@ -119,36 +108,6 @@ describe('interpreter', () => {
     expect(completesIn(2500, run(program)))
       .toMatchObject({
         console: program[0],
-      })
-  })
-  test.only('A factorial program', () => {
-    const program = [
-      '&>:1-:v v *_$.@',
-      ' ^    _$>\\:^',
-    ];
-    // expect(completesIn(1000, run(program, [0].values())))
-    // .toMatchObject({
-    //   console: '1 ',
-    // })
-    expect(completesIn(1000, run(program, [1].values())))
-    .toMatchObject({
-      console: '1 ',
-    })
-    expect(completesIn(1000, run(program, [2].values())))
-      .toMatchObject({
-        console: '2 ',
-      })
-    expect(completesIn(1000, run(program, [3].values())))
-      .toMatchObject({
-        console: '6 ',
-      })
-    expect(completesIn(1000, run(program, [4].values())))
-      .toMatchObject({
-        console: '24 ',
-      })
-      expect(completesIn(1000, run(program, [5].values())))
-      .toMatchObject({
-        console: '120 ',
       })
   })
 })

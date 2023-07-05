@@ -1,0 +1,7 @@
+.grid {
+  display: grid;
+  width: 80vmin;
+  height: 80vmin;
+  grid-template-columns: repeat(auto-fill, minmax(11%, 1fr));
+  justify-items: stretch;
+}

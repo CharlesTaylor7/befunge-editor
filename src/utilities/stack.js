@@ -15,10 +15,11 @@ function* iterateStack() {
   yield* this.tail;
 }
 
-const isStack = stack => {
-  const { constructor: name } = stack;
-  return name === Empty.name || name === Stack.name;
-}
+const isStack = stack =>
+  R.any(
+    constructor => constructor === stack.constructor.name,
+    [Empty.name, Stack.name]
+  );
 
 
 class Stack {
