@@ -16,16 +16,12 @@ function* iterateStack() {
 }
 
 const isStack = stack =>
-  R.any(
-    constructor => constructor === stack.constructor.name,
-    [Empty.name, Stack.name]
-  );
+  [Empty, Stack].some((constructor) => constructor.name === stack.constructor.name)
 
 
 class Stack {
   constructor(head, tail) {
     if (!isStack(tail)) {
-      console.log(tail, tail.name, [Empty.name, Stack.name])
       throw new Error('Tail must be a stack.')
     }
     this.head = head;
