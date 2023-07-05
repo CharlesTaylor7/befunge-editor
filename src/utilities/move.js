@@ -12,7 +12,7 @@ export default ({ direction, dimensions, jumpSize = 1 }) => {
   switch(direction) {
     case "Right":
       return R.over(xLens, x => mod(x + jumpSize, width));
-      case "Down":
+    case "Down":
       return R.over(yLens, y => mod(y + jumpSize, height));
     case "Left":
       return R.over(xLens, x => mod(x - jumpSize, width));
