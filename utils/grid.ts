@@ -22,11 +22,11 @@ export function gridUpdate(grid: Grid, i: number, j: number, value: string): Gri
   }
 }
 
-export function gridIndex(grid: Grid, i: number, j: number): number {
+function gridIndex(grid: Grid, i: number, j: number): number {
   return i + j * grid.width
 }
 
-export function fromIndex(grid: Grid, index: number): { i: number; j: number } {
+function fromIndex(grid: Grid, index: number): { i: number; j: number } {
   const { quot, rem } = quotRem(index, grid.width)
   return { i: rem, j: quot }
 }

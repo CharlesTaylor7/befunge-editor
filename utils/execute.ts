@@ -6,7 +6,6 @@ import { ExecutionState, getCurrentInstruction } from '@/utils/befunge'
 import { gridLookup, gridUpdate } from '@/utils/grid'
 
 export default function (state: ExecutionState, instruction: string = getCurrentInstruction(state)): ExecutionState {
-  console.log(instruction)
   if (typeof instruction !== 'string') {
     throw new Error('Instruction is not a string.')
   }

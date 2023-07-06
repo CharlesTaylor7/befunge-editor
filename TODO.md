@@ -7,6 +7,12 @@
     - The test suite was broken during the shift to redux saga, and again more severely by the shift to Next.js
     - The web app functionality was broken during the shift to redux saga
 
+    - Public API of web app:
+      - import { advancePointer, ExecutionState, init, initialExecutionState, programFromGrid } from '@/utils/befunge'
+      - import execute from '@/utils/execute'
+      - import { gridLookup, gridUpdate } from '@/utils/grid'
+
+
 - [ ] CI for testsuite
 - [ ] Automatic deployments:
     - Github Pages can handle CRA or a frontend only Next.js
