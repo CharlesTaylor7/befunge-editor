@@ -4,11 +4,12 @@ import * as Random from '../../utilities/random'
 import { gridLens } from '../lenses'
 import { quot, rem } from '../../utilities/integerDivision'
 import getCurrentInstruction from '../selectors/getCurrentInstruction'
+import move from '../../utilities/move'
 
-export default (
+export function execute(
   state,
   instruction = getCurrentInstruction(state)
-) => {
+) {
   if (typeof instruction !== 'string') {
     throw new Error("Instruction is not a string.");
   }
@@ -145,3 +146,19 @@ const runBinaryOpOnStack = (op) =>
     const head = op(a, b);
     return Stack.push(head, rest);
   });
+
+
+export function advance(state) {
+  const jumpSize = state.activeBridge ? 2 : 1;
+  return R.pipe(
+    R.set(R.lensProp('activeBridge'), false),
+    R.over(
+      R.lensProp('executionPointer'),
+      move({
+        jumpSize,
+        direction: state.heading,
+        dimensions: state.dimensions
+      })
+    )
+  )(state);
+}

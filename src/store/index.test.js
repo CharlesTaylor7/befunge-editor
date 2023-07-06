@@ -1,5 +1,4 @@
 import newStore from '../store'
-import executeAndAdvance from './actions/executeAndAdvance'
 import * as R from 'ramda'
 import wu from 'wu'
 import Stack from '../utilities/stack'
@@ -29,7 +28,8 @@ function* run (program, stdin) {
   let state = store.getState();
 
   while (!state.executionComplete) {
-    executeAndAdvance(store.dispatch);
+    store.dispatch({type: "EXECUTE"});
+    store.dispatch({type: "ADVANCE"});
     state = store.getState();
     if (state.pendingInput) {
       const fromStream = stdin.next().value;

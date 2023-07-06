@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import execute from './execute';
+import { execute, advance } from './execute';
 import move from '../../utilities/move';
 import { gridLens } from '../lenses';
 import Stack from '../../utilities/stack';
@@ -25,18 +25,7 @@ export default (state, action) => {
       return state;
     }
     case "ADVANCE": {
-      const jumpSize = state.activeBridge ? 2 : 1;
-      return R.pipe(
-        R.set(R.lensProp('activeBridge'), false),
-        R.over(
-          R.lensProp('executionPointer'),
-          move({
-            jumpSize,
-            direction: state.heading,
-            dimensions: state.dimensions
-          })
-        )
-      )(state);
+      return advance(state);
     }
     case "EXECUTE": {
       return execute(state);

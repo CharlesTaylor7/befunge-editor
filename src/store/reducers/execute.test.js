@@ -1,4 +1,4 @@
-import execute from './execute'
+import { execute } from './execute'
 import Stack from '../../utilities/Stack'
 
 describe('execute', () => {
