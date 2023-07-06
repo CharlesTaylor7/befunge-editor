@@ -1,5 +1,6 @@
 import wu from 'wu'
-import { run, completesIn, Stack } from './befunge'
+import { Stack } from 'immutable'
+import { run, completesIn } from '@/utils/befunge'
 
 function stackFromString(input: string): Stack<number> {
   let stack: Stack<number> = Stack()
@@ -12,8 +13,7 @@ function stackFromString(input: string): Stack<number> {
 describe('interpreter', () => {
   test('Hello, World!', () => {
     const program = ['"!dlroW ,olleH",,,,,,,,,,,,,@']
-    const iter = run(program);
-    expect(completesIn(29, iter)).toMatchObject({
+    expect(completesIn(29, run(program))).toMatchObject({
       console: 'Hello, World!',
       executionComplete: true,
       stringMode: false,

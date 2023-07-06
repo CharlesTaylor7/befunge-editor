@@ -1,5 +1,5 @@
 import { List } from 'immutable'
-import { quotRem } from './integerDivision'
+import { quotRem } from '@/utils/integerDivision'
 
 export type Grid = {
   height: number
