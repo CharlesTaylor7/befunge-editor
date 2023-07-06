@@ -1,3 +1,12 @@
+const { pathsToModuleNameMapper } = require('ts-jest');
+
+// In the following statement, replace `./tsconfig` with the path to your `tsconfig` file
+// which contains the path mapping (ie the `compilerOptions.paths` option):
+const { compilerOptions } = require('./tsconfig');
+
+module.exports = {
+  // [...]
+};
 module.exports = {
   // The root of your source code, typically /src
   // `<rootDir>` is a token Jest substitutes
@@ -24,4 +33,6 @@ module.exports = {
 
   // Module file extensions for importing
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths,  { prefix: '<rootDir>/' }),
 }

@@ -68,7 +68,9 @@ export function pushInput(state: ExecutionState, input: number): ExecutionState 
   }
 }
 
-export function* run(program: Array<string>, stdin: Generator<string | number>): Iterable<ExecutionState> {
+export type Stdin = Iterator<string | number>;
+
+export function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
   const grid = init(program.join('\n'))
   let state = {
     ...initialExecutionState,
@@ -78,6 +80,11 @@ export function* run(program: Array<string>, stdin: Generator<string | number>):
   while (!state.executionComplete) {
     state = advancePointer(execute(state))
     if (state.pendingInput) {
+      // Defer stdin errors.
+      // Many programs can be executed without it
+      if (!stdin) {
+        throw Error("Program expects stdin, but none was provided!")
+      }
       const value = stdin.next().value
       const input = typeof value === 'string' ? value.charCodeAt(0) : value
       state = pushInput(state, input)
