@@ -11,7 +11,20 @@
       - import { advancePointer, ExecutionState, init, initialExecutionState, programFromGrid } from '@/utils/befunge'
       - import execute from '@/utils/execute'
       - import { gridLookup, gridUpdate } from '@/utils/grid'
-
+    - Ruminations:
+      - I want the application to eventually be written in typescript.
+      - The current version of the app is halfway written in typescript
+      - The jest config is unable to handle JS files.
+      - The current test suite fails
+      - The current test suite is much smaller than the old CRA one
+      - The tsconfig allows unannotated code in ts files
+      
+    - Plan:
+      - Rewrite file extensions of js files to TS
+      - Restore old Stack implementation with tests
+      - Replace immutable.js stack with custom stack
+      - Count tests in old versus new
+ 
 
 - [ ] CI for testsuite
 - [ ] Automatic deployments:
