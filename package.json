@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
+    "tsc": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch"
   },

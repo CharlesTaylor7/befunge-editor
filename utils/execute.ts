@@ -129,8 +129,9 @@ export default function (state: ExecutionState, instruction: string = getCurrent
     case ' ':
       return state
     default:
-      console.log(`Unrecognized instruction: '${instruction}'.`)
-      return state
+      // TODO
+      throw Error(`Unrecognized instruction: '${instruction}'.`)
+      // return state
   }
 }
 
