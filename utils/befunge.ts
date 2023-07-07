@@ -1,8 +1,10 @@
-import { List, Stack } from 'immutable'
+import { List } from 'immutable'
 import * as R from 'ramda'
 import { Grid, gridLookup, gridUpdate, initialGrid } from '@/utils/grid'
 import move from './move'
 import execute from './execute'
+import type Stack from "@/utils/stack";
+import Stac from "@/utils/stack";
 
 export type Dimensions = {
   height: number
@@ -14,7 +16,7 @@ export type ExecutionState = {
   executionPointer: { x: number; y: number }
   heading: Direction
   grid: Grid
-  stack: Stack<number>
+  stack: typeof Stack
   console: string
   activeBridge: boolean
   stringMode: boolean
@@ -26,7 +28,7 @@ export const initialExecutionState: ExecutionState = {
   executionPointer: { x: 0, y: 0 },
   heading: 'R',
   grid: initialGrid,
-  stack: Stack(),
+  stack: Stac.empty,
   console: '',
   activeBridge: false,
   stringMode: false,

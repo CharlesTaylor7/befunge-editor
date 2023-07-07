@@ -1,15 +1,12 @@
 import * as R from 'ramda'
 import wu from 'wu'
 
+export type Stack = Empty | NonEmpty;
+
 class Empty implements Iterable<number> {
   head: 0
   tail: Empty
   [Symbol.iterator]: () => Iterator<number> = (function* empty() { });
-  /*
-  (): Iterator<number> {
-    this[Symbol.iterator] = function* () {}
-  }
-  */
 
   constructor() {
     this.head = 0;
@@ -18,16 +15,13 @@ class Empty implements Iterable<number> {
   }
 }
 
-function* iterateStack() {
-  yield this.head;
-  yield* this.tail;
-}
 
-const isStack = stack =>
-  [Empty, Stack].some((constructor) => constructor.name === stack.constructor.name)
+const isStack = (stack: Stack) =>
+  [Empty, NonEmpty].some((constructor) => constructor.name === stack.constructor.name)
 
 
-class Stack implements Iterable<number> {
+
+class NonEmpty implements Iterable<number> {
   head: number
   tail: Stack
   [Symbol.iterator]: () => Iterator<number>;
@@ -39,7 +33,13 @@ class Stack implements Iterable<number> {
     }
     this.head = head;
     this.tail = tail;
-    this[Symbol.iterator] = iterateStack.bind(this);
+    this[Symbol.iterator] = (
+      function* iterateStack() {
+        yield this.head;
+        yield* this.tail;
+      }
+    ).bind(this);
+
     return Object.freeze(this);
   }
 }
@@ -48,7 +48,7 @@ const empty: Empty = new Empty();
 
 const isEmpty = stack => stack.constructor.name === Empty.name;
 
-const push = R.curry((head, tail) => new Stack(head, tail));
+const push = R.curry((head, tail) => new NonEmpty(head, tail));
 
 const pop = R.curry((num, stack) => {
   const result = [];
