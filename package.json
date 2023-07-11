@@ -2,6 +2,7 @@
   "name": "befunge-editor",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://CharlesTaylor7.github.io/befunge-editor",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -34,6 +35,10 @@
     "prettier": "^2.5.1",
     "tailwindcss": "^3.0.23",
     "ts-jest": "^27.1.3",
-    "typescript": "4.5.5"
+    "typescript": "4.5.5",
+    "@babel/core": "^7.22.8",
+    "@babel/preset-env": "^7.22.7",
+    "babel-jest": "^29.6.1",
+    "gh-pages": "^2.1.1"
   }
 }
