@@ -5,8 +5,8 @@ import React from 'react'
 import { Map } from 'immutable'
 import { fireEvent, cleanup } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect'
-import Cell from './Cell'
-import render from '../utilities/rtl-redux-render'
+import Cell from '@/cra/components/Cell'
+import render from '@/cra/utilities/rtl-redux-render'
 
 describe('cell', () => {
   afterEach(cleanup)

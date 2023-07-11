@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import * as R from 'ramda'
 
 import rootReducer from './reducers'
-import defaultState from './defaultState'
+import defaultState from '@/cra/store/defaultState'
 
 const logger = (store) => (next) => (action) => {
   const oldState = store.getState()

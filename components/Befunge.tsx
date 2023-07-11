@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import Button from '@/components/Button'
 
-import { advancePointer, ExecutionState, init, programFromGrid } from '@/utils/befunge'
+import { advancePointer, ExecutionState, execute, init, programFromGrid } from '@/utils/befunge'
 import { initialExecutionState as defaultState } from '@/utils/befunge'
-import { execute } from '@/cra/store/reducers/execute'
 import { gridLookup, gridUpdate } from '@/utils/grid'
 
 type Props = {
