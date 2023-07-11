@@ -5,9 +5,7 @@ const { pathsToModuleNameMapper } = require('ts-jest');
 const { compilerOptions } = require('./tsconfig');
 
 module.exports = {
-  // [...]
-};
-module.exports = {
+  testEnvironment: "jsdom",
   // The root of your source code, typically /src
   // `<rootDir>` is a token Jest substitutes
   roots: ['<rootDir>'],
@@ -34,5 +32,8 @@ module.exports = {
   // Module file extensions for importing
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths,  { prefix: '<rootDir>/' }),
+  moduleNameMapper: {
+    "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
+    ...pathsToModuleNameMapper(compilerOptions.paths,  { prefix: '<rootDir>/' }),
+  },
 }

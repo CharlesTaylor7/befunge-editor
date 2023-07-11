@@ -18,6 +18,6 @@ export default (initialState) => createStore(
   rootReducer,
   R.mergeRight(
     R.mergeRight(defaultState, initialState),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()),
+    typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()),
   // applyMiddleware(logger)
 );
