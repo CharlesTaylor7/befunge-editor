@@ -1,8 +1,8 @@
 import { List } from 'immutable'
 import * as R from 'ramda'
-import { Grid, gridLookup, gridUpdate, initialGrid } from '@/utils/grid'
-import move from './move'
-import execute from './execute'
+import { Grid, gridLookup, gridUpdate, gridInit, emptyGrid } from '@/cra/grid'
+import move from '@/utils/move'
+import execute from '@/utils/execute'
 import type Stack from '@/utils/stack'
 import Stac from '@/utils/stack'
 
@@ -27,13 +27,14 @@ export type ExecutionState = {
 export const initialExecutionState: ExecutionState = {
   executionPointer: { x: 0, y: 0 },
   heading: 'R',
-  grid: initialGrid,
   stack: Stac.empty,
   console: '',
   activeBridge: false,
   stringMode: false,
   pendingInput: false,
   executionComplete: false,
+  grid: emptyGrid,
+  dimensions: { height: 7, width: 7 },
 }
 
 export function init(program: string): Grid {

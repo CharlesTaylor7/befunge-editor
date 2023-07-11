@@ -3,7 +3,7 @@ import { Stack } from 'immutable'
 import * as Random from '@/utils/random'
 import { quot, rem } from '@/utils/integerDivision'
 import { ExecutionState, getCurrentInstruction } from '@/utils/befunge'
-import { gridLookup, gridUpdate } from '@/utils/grid'
+import { Grid, gridLookup, gridUpdate, gridInit, emptyGrid } from '@/cra/grid'
 
 export default function (state: ExecutionState, instruction: string = getCurrentInstruction(state)): ExecutionState {
   if (typeof instruction !== 'string') {

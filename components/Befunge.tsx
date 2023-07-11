@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 import Button from '@/components/Button'
 
-import { advancePointer, ExecutionState, execute, init, programFromGrid } from '@/utils/befunge'
+import { advancePointer, ExecutionState, execute, programFromGrid } from '@/utils/befunge'
 import { initialExecutionState as defaultState } from '@/utils/befunge'
-import { gridLookup, gridUpdate } from '@/utils/grid'
+import { gridLookup, gridUpdate, gridInit } from '@/cra/grid'
 
 type Props = {
   initialState: Partial<ExecutionState>
@@ -20,11 +20,12 @@ export default function Befunge(props: Props) {
   const [mode, setMode] = useState<Mode>('text-edit')
 
   const handleGridInput = useCallback(
-    (e: string, i: number, j: number) => updateState((state) => ({ ...state, grid: gridUpdate(state.grid, i, j, e) })),
+    (e: string, i: number, j: number) => updateState((state) => ({ ...state, grid: gridUpdate(state.grid, { x: i, y: j}, e) })),
     [updateState],
   )
   const loadGrid = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => updateState((state) => ({ ...state, grid: init(e.target.value) })),
+    (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+      updateState((state) => ({ ...state, grid: gridInit(e.target.value.split('\n')) })),
     [],
   )
 
@@ -70,7 +71,7 @@ export default function Befunge(props: Props) {
                     {Array.from({ length: state.grid.width }, (_, i) => (
                       <Cell
                         key={i}
-                        value={gridLookup(state.grid, i, j)}
+                        value={gridLookup(state.grid, { x: i, y: j})}
                         onChange={(e) => handleGridInput(e.target.value || ' ', i, j)}
                         mode={mode}
                         executing={

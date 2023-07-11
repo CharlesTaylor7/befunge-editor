@@ -32,9 +32,12 @@ function toIndex({ x, y }: Position) {
 
 export type Dimensions = { height: number; width: number }
 
-type FromProgramResult = { grid: Grid; dimensions: Dimensions }
+type GridAndDimensions = { grid: Grid; dimensions: Dimensions }
 
-export function gridInit(program: string[]): FromProgramResult {
+export function gridInit(program: string[]): GridAndDimensions {
+  if (typeof program === 'string') {
+    program = program.split('\n')
+  }
   const height = program.length
   const width = program.reduce(R.maxBy((line) => line.length)).length
   const dimensions = { height, width }
@@ -50,4 +53,4 @@ export function gridInit(program: string[]): FromProgramResult {
   return { grid, dimensions }
 }
 
-export const emptyGrid = Map();
+export const emptyGrid = Map()
