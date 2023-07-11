@@ -20,7 +20,8 @@ export default function Befunge(props: Props) {
   const [mode, setMode] = useState<Mode>('text-edit')
 
   const handleGridInput = useCallback(
-    (e: string, i: number, j: number) => updateState((state) => ({ ...state, grid: gridUpdate(state.grid, { x: i, y: j}, e) })),
+    (e: string, i: number, j: number) =>
+      updateState((state) => ({ ...state, grid: gridUpdate(state.grid, { x: i, y: j }, e) })),
     [updateState],
   )
   const loadGrid = useCallback(
@@ -71,7 +72,7 @@ export default function Befunge(props: Props) {
                     {Array.from({ length: state.grid.width }, (_, i) => (
                       <Cell
                         key={i}
-                        value={gridLookup(state.grid, { x: i, y: j})}
+                        value={gridLookup(state.grid, { x: i, y: j })}
                         onChange={(e) => handleGridInput(e.target.value || ' ', i, j)}
                         mode={mode}
                         executing={

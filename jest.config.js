@@ -10,9 +10,8 @@ module.exports = {
   ],
   roots: ['<rootDir>'],
   transform: {
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
+    '^.+\\.(t|j)sx?$': ['@swc/jest'],
   },
-
   setupFilesAfterEnv: [
     //"@testing-library/react/cleanup-after-each",
     '@testing-library/jest-dom/extend-expect',
