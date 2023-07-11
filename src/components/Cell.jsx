@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React, { useRef, useEffect } from 'react'
 import './Cell.css'
 import { connect } from 'react-redux'

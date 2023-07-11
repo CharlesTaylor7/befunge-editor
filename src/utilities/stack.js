@@ -3,20 +3,23 @@ import wu from 'wu'
 
 class Empty {
   constructor() {
-    this.head = 0;
-    this.tail = this;
-    this[Symbol.iterator] = function* () {}
+    Object.defineProperty(this, "head", { value: 0, writable: false })
+    Object.defineProperty(this, "tail", { value: this, writable: false })
     return Object.freeze(this);
+  }
+
+  *[Symbol.iterator]() {
+  }
+
+  toJSON() {
+    return "Stack.Empty"
   }
 }
 
-function* iterateStack() {
-  yield this.head;
-  yield* this.tail;
-}
 
-const isStack = stack =>
-  [Empty, Stack].some((constructor) => constructor.name === stack.constructor.name)
+function isStack(stack) {
+  return [Empty, Stack].some((constructor) => constructor.name === stack.constructor.name)
+}
 
 
 class Stack {
@@ -26,8 +29,12 @@ class Stack {
     }
     this.head = head;
     this.tail = tail;
-    this[Symbol.iterator] = iterateStack.bind(this);
     return Object.freeze(this);
+  }
+
+  *[Symbol.iterator]() {
+    yield this.head;
+    yield* this.tail;
   }
 }
 
