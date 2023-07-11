@@ -2,28 +2,37 @@ import * as R from 'ramda'
 import { Map } from 'immutable'
 import { gridInit } from '@/cra/grid'
 import wu from 'wu'
-import newStore from '@/cra/store'
 import Stack from '@/cra/utilities/stack'
+import defaultState from '@/cra/store/defaultState'
+import { execute, advance } from '@/cra/store/reducers/execute'
 
-// program: string[]
-// stdin: iterator<int | char>
-function* run(program, stdin) {
-  const store = newStore(gridInit(program))
 
-  let state = store.getState()
+function pushInput(state, input: number) {
+  return {
+    ...state,
+    stack: Stack.push(input, state.stack),
+    pendingInput: false,
+  }
+}
+
+type Stdin = Iterator<string | number>
+
+function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
+  let state = R.mergeRight(defaultState, gridInit(program))
 
   while (!state.executionComplete) {
-    store.dispatch({ type: 'EXECUTE' })
-    store.dispatch({ type: 'ADVANCE' })
-    state = store.getState()
+    state = advance(execute(state))
     if (state.pendingInput) {
-      const fromStream = stdin.next().value
-      const input = typeof fromStream === 'string' ? fromStream.charCodeAt(0) : fromStream
-      store.dispatch({ type: 'PUSH_INPUT', input })
-      yield store.getState()
-    } else {
-      yield state
+      // Defer stdin errors.
+      // Many programs can be executed without it
+      if (!stdin) {
+        throw Error('Program expects stdin, but none was provided!')
+      }
+      const value = stdin.next().value
+      const input = typeof value === 'string' ? value.charCodeAt(0) : value
+      state = pushInput(state, input)
     }
+    yield state
   }
 }
 
