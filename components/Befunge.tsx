@@ -25,7 +25,7 @@ export default function Befunge(props: Props) {
   )
   const loadGrid = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      updateState((state) => ({ ...state, grid: gridInit(e.target.value.split('\n')) })),
+      updateState((state) => ({ ...state, ...gridInit(e.target.value.split('\n')) })),
     [],
   )
 

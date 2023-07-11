@@ -14,6 +14,7 @@ export function gridLookup(grid: Grid, position: Position): string {
 }
 
 export function gridUpdate(grid: Grid, position: Position, value: number | string): Grid {
+  console.log(position, value)
   if (value === undefined || value === null) {
     return grid.delete(toIndex(position))
   }
