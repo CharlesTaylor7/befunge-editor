@@ -1,13 +1,10 @@
-/**
- * @jest-environment jsdom
- */
 
 import React, { useRef, useEffect } from 'react'
 import { Grid, gridLookup, gridUpdate } from '@/cra/grid'
 import './Cell.css'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
-import move from '../utilities/move'
+import move from '@/cra/utilities/move'
 
 const Cell = ({ position, value, inFocus, isCurrentInstruction, gridDimensions, dispatch }) => {
   const inputElement = useRef(null)

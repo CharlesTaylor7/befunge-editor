@@ -49,3 +49,5 @@ export function gridInit(program: string[]): FromProgramResult {
 
   return { grid, dimensions }
 }
+
+export const emptyGrid = Map();

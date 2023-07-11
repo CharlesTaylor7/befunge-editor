@@ -2,8 +2,8 @@ import * as R from 'ramda'
 import { Map } from 'immutable'
 import { gridInit } from '@/cra/grid'
 import wu from 'wu'
-import newStore from '../store'
-import Stack from '../utilities/stack'
+import newStore from '@/cra/store'
+import Stack from '@/cra/utilities/stack'
 
 // program: string[]
 // stdin: iterator<int | char>

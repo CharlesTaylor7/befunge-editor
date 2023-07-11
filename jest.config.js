@@ -2,7 +2,6 @@ const { pathsToModuleNameMapper } = require('ts-jest')
 const { compilerOptions } = require('./tsconfig')
 
 module.exports = {
-  testEnvironment: 'jsdom',
   collectCoverageFrom: [
     'cra/**/*.{js,jsx,ts,tsx}',
     'components/**/*.{js,jsx,ts,tsx}',
