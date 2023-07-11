@@ -31,7 +31,7 @@ export default function Befunge(props: Props) {
   const runStep = useCallback(() => updateState((state) => advancePointer(execute(state))), [updateState])
   const restartExecution = useCallback(() => {
     setMode('step')
-    updateState((state) => ({ ...initialExecutionState, grid: state.grid }))
+    updateState((state) => ({ ...defaultState, grid: state.grid }))
   }, [])
 
   useEffect(() => {
