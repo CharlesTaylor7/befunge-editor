@@ -3,8 +3,8 @@ import * as R from 'ramda'
 import { Grid, gridLookup, gridUpdate, initialGrid } from '@/utils/grid'
 import move from './move'
 import execute from './execute'
-import type Stack from "@/utils/stack";
-import Stac from "@/utils/stack";
+import type Stack from '@/utils/stack'
+import Stac from '@/utils/stack'
 
 export type Dimensions = {
   height: number
@@ -70,7 +70,7 @@ export function pushInput(state: ExecutionState, input: number): ExecutionState 
   }
 }
 
-export type Stdin = Iterator<string | number>;
+export type Stdin = Iterator<string | number>
 
 export function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
   const grid = init(program.join('\n'))
@@ -85,7 +85,7 @@ export function* run(program: Array<string>, stdin?: Stdin): Generator<Execution
       // Defer stdin errors.
       // Many programs can be executed without it
       if (!stdin) {
-        throw Error("Program expects stdin, but none was provided!")
+        throw Error('Program expects stdin, but none was provided!')
       }
       const value = stdin.next().value
       const input = typeof value === 'string' ? value.charCodeAt(0) : value

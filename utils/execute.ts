@@ -131,7 +131,7 @@ export default function (state: ExecutionState, instruction: string = getCurrent
     default:
       // TODO
       throw Error(`Unrecognized instruction: '${instruction}'.`)
-      // return state
+    // return state
   }
 }
 

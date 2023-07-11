@@ -1,4 +1,4 @@
-import Stack from '../utilities/stack';
+import Stack from '../utilities/stack'
 
 export default {
   editorFocus: { x: 0, y: 0 },
@@ -8,7 +8,7 @@ export default {
   // grid: { [cellId: string]: instruction }
   // where cell ids are of the form "{i}-{j}"
   grid: {},
-  dimensions: { height: 0, width: 0},
+  dimensions: { height: 0, width: 0 },
   // stack<int>
   stack: Stack.empty,
   console: '',
@@ -16,5 +16,5 @@ export default {
   executionComplete: false,
   stringMode: false,
   // false | 'Number' | 'Character'
-  pendingInput: false
-};
+  pendingInput: false,
+}

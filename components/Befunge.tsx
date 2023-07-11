@@ -5,7 +5,6 @@ import { advancePointer, ExecutionState, init, initialExecutionState, programFro
 import execute from '@/utils/execute'
 import { gridLookup, gridUpdate } from '@/utils/grid'
 
-
 type Props = {
   initialExecutionState: ExecutionState
 }

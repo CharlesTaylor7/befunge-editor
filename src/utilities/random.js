@@ -1,1 +1,1 @@
-export const among = (...args) => args[Math.floor(Math.random() * args.length)];
+export const among = (...args) => args[Math.floor(Math.random() * args.length)]
