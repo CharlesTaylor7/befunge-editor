@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import Button from '@/components/Button'
 
 import { advancePointer, ExecutionState, init, initialExecutionState, programFromGrid } from '@/utils/befunge'
-import execute from '@/utils/execute'
+import { execute } from '@/cra/store/reducers/execute'
 import { gridLookup, gridUpdate } from '@/utils/grid'
 
 type Props = {
