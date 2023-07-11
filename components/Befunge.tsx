@@ -1,23 +1,23 @@
 import { useCallback, useEffect, useState } from 'react'
 import Button from '@/components/Button'
 
-import { advancePointer, ExecutionState, init, initialExecutionState, programFromGrid } from '@/utils/befunge'
+import { advancePointer, ExecutionState, init, programFromGrid } from '@/utils/befunge'
+import { initialExecutionState as defaultState } from '@/utils/befunge'
 import { execute } from '@/cra/store/reducers/execute'
 import { gridLookup, gridUpdate } from '@/utils/grid'
 
 type Props = {
-  initialExecutionState: ExecutionState
+  initialState: Partial<ExecutionState>
 }
 
 Befunge.defaultProps = {
-  initialExecutionState,
+  initialState: defaultState,
 }
 
 type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 
 export default function Befunge(props: Props) {
-  const { initialExecutionState } = props
-  const [state, updateState] = useState(initialExecutionState)
+  const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('text-edit')
 
   const handleGridInput = useCallback(
