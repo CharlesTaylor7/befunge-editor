@@ -1,4 +1,5 @@
 import Stack from '../utilities/stack'
+import { defaultGrid } from '@/cra/grid'
 
 export default {
   editorFocus: { x: 0, y: 0 },
@@ -7,7 +8,7 @@ export default {
   heading: 'Right',
   // grid: { [cellId: string]: instruction }
   // where cell ids are of the form "{i}-{j}"
-  grid: {},
+  grid: defaultGrid,
   dimensions: { height: 0, width: 0 },
   // stack<int>
   stack: Stack.empty,

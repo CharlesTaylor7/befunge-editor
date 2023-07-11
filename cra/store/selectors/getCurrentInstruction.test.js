@@ -1,10 +1,11 @@
+import { Map } from 'immutable'
 import getCurrentInstruction from './getCurrentInstruction'
 
 describe('getCurrentInstruction', () => {
   it('retrieves instruction at execution pointer', () => {
     expect(
       getCurrentInstruction({
-        grid: { '1-0': 'a' },
+        grid: Map({ '1-0': 'a' }),
         executionPointer: { x: 1, y: 0 },
       }),
     ).toBe('a')
@@ -12,7 +13,7 @@ describe('getCurrentInstruction', () => {
   it('treats missing input as space', () => {
     expect(
       getCurrentInstruction({
-        grid: {},
+        grid: Map({}),
         executionPointer: { x: 2, y: 3 },
       }),
     ).toBe(' ')
@@ -20,7 +21,7 @@ describe('getCurrentInstruction', () => {
   it('treats empty input as space', () => {
     expect(
       getCurrentInstruction({
-        grid: { '2-3': '' },
+        grid: Map({ '2-3': '' }),
         executionPointer: { x: 2, y: 3 },
       }),
     ).toBe(' ')

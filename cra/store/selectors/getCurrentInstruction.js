@@ -1,11 +1,5 @@
-import { gridLens } from '../lenses'
-import * as R from 'ramda'
+import { gridLookup } from '@/cra/grid'
 
 export default (state) => {
-  const { executionPointer } = state
-  const cellValue = R.view(gridLens(executionPointer), state)
-  if (cellValue === undefined || cellValue === '') {
-    return ' '
-  }
-  return cellValue
+  return gridLookup(state.grid, state.executionPointer)
 }

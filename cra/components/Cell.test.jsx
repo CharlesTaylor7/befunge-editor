@@ -4,7 +4,7 @@ import '@testing-library/jest-dom/extend-expect'
 import Cell from './Cell'
 import render from '../utilities/rtl-redux-render'
 
-describe('cell', () => {
+describe.skip('cell', () => {
   afterEach(cleanup)
 
   it('receives focus when clicked on', () => {

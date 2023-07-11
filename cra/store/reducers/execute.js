@@ -1,10 +1,10 @@
 import * as R from 'ramda'
 import Stack from '../../utilities/stack'
 import * as Random from '../../utilities/random'
-import { gridLens } from '../lenses'
 import { quot, rem } from '../../utilities/integerDivision'
 import getCurrentInstruction from '../selectors/getCurrentInstruction'
 import move from '../../utilities/move'
+import { gridLookup, gridUpdate } from '@/cra/grid'
 
 export function execute(state, instruction = getCurrentInstruction(state)) {
   if (typeof instruction !== 'string') {
@@ -91,14 +91,17 @@ export function execute(state, instruction = getCurrentInstruction(state)) {
         R.lensProp('stack'),
         (stack) => {
           const [y, x, rest] = Stack.pop(2, stack)
-          const value = R.view(gridLens({ x, y }), state)
+          const value = gridLookup(state.grid, { x, y })
           return Stack.push(value.charCodeAt(0), rest)
         },
         state,
       )
     case 'p':
       const [y, x, value, rest] = Stack.pop(3, state.stack)
-      return R.pipe(R.set(gridLens({ x, y }), String.fromCharCode(value)), R.set(R.lensProp('stack'), rest))(state)
+      return R.pipe(
+        R.over(R.lensProp('grid'), (grid) => gridUpdate(grid, { x, y }, value)),
+        R.set(R.lensProp('stack'), rest),
+      )(state)
     case '&':
       return R.set(R.lensProp('pendingInput'), 'Number', state)
     case '~':

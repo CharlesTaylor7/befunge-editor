@@ -1,29 +1,14 @@
-import newStore from '../store'
 import * as R from 'ramda'
+import { Map } from 'immutable'
+import { gridInit } from '@/cra/grid'
 import wu from 'wu'
+import newStore from '../store'
 import Stack from '../utilities/stack'
-
-// type program: string[]
-const init = (program) => {
-  const height = program.length
-  const width = program.reduce(R.maxBy((line) => line.length)).length
-  const dimensions = { height, width }
-
-  const grid = {}
-  for (let j = 0; j < height; j++) {
-    const line = program[j]
-    for (let i = 0; i < width; i++) {
-      grid[`${i}-${j}`] = line[i]
-    }
-  }
-
-  return { grid, dimensions }
-}
 
 // program: string[]
 // stdin: iterator<int | char>
 function* run(program, stdin) {
-  const store = newStore(init(program))
+  const store = newStore(gridInit(program))
 
   let state = store.getState()
 
@@ -83,13 +68,13 @@ describe('interpreter', () => {
   })
   test('A self modifying program', () => {
     const program = ['930pv', '   @ ', '   , ', '   " ', '   ^<']
-    expect(completesIn(100, run(program))).toMatchObject({
+    const completionState = completesIn(100, run(program))
+    expect(completionState).toMatchObject({
       console: '^',
       stack: Stack.fromString('\t@,'),
-      grid: {
-        '3-0': '\t',
-      },
     })
+
+    expect(completionState.grid.get('3-0')).toEqual('\t'.charCodeAt(0))
   })
   test('A quine', () => {
     const program = ['01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@']
@@ -99,10 +84,10 @@ describe('interpreter', () => {
   })
   test('A factorial program', () => {
     const program = ['&>:1-:v v *_$.@', ' ^    _$>\\:^']
-    // expect(completesIn(1000, run(program, [0].values())))
-    // .toMatchObject({
-    //   console: '1 ',
-    // })
+    // 0 factorial does not work
+    /*
+    expect(completesIn(1000, run(program, [0].values()))).toMatchObject({ console: '1 ', })
+    */
     expect(completesIn(1000, run(program, [1].values()))).toMatchObject({
       console: '1 ',
     })

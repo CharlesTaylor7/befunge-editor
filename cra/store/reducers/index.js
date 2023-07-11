@@ -1,7 +1,6 @@
 import * as R from 'ramda'
 import { execute, advance } from './execute'
 import move from '../../utilities/move'
-import { gridLens } from '../lenses'
 import Stack from '../../utilities/stack'
 
 export default (state, action) => {

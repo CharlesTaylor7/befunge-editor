@@ -3,6 +3,7 @@
  */
 
 import React, { useRef, useEffect } from 'react'
+import { Grid, gridLookup, gridUpdate } from '@/cra/grid'
 import './Cell.css'
 import { connect } from 'react-redux'
 import * as R from 'ramda'
@@ -71,7 +72,7 @@ const Cell = ({ position, value, inFocus, isCurrentInstruction, gridDimensions, 
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  value: state.grid[ownProps.id],
+  value: gridLookup(state.grid, ownProps.position.x, ownProps.position.y),
   inFocus: R.equals(ownProps.position, state.editorFocus),
   isExecuting: R.equals(ownProps.position, state.executionPointer),
   gridDimensions: state.dimensions,
