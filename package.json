@@ -24,9 +24,6 @@
     "wu": "^2.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.8",
-    "@babel/preset-env": "^7.22.7",
-    "@babel/preset-react": "^7.22.5",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@types/jest": "^27.4.0",
@@ -34,7 +31,6 @@
     "@types/ramda": "^0.27.64",
     "@types/react": "17.0.39",
     "@types/wu": "^2.1.42",
-    "babel-jest": "^29.6.1",
     "eslint": "8.9.0",
     "eslint-config-next": "12.1.0",
     "gh-pages": "^2.1.1",

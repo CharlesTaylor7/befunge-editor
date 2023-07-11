@@ -93,7 +93,7 @@ export default function Befunge(props: Props) {
             <p>Console: {state.console}</p>
             Stack:
             <div className="flex flex-col">
-              {state.stack.toArray().map((s) => (
+              {Array.from(state.stack).map((s) => (
                 <span>{s}</span>
               ))}
             </div>
