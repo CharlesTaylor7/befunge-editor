@@ -3,10 +3,7 @@ const { compilerOptions } = require('./tsconfig')
 
 module.exports = {
   collectCoverageFrom: [
-    'cra/**/*.{js,jsx,ts,tsx}',
-    'components/**/*.{js,jsx,ts,tsx}',
-    'pages/**/*.{js,jsx,ts,tsx}',
-    'utils/**/*.{js,jsx,ts,tsx}',
+    'src/**/*.{js,jsx,ts,tsx}',
   ],
   roots: ['<rootDir>'],
   transform: {
