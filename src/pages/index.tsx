@@ -13,7 +13,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Befunge
-
         initialState={{
           ...gridInit(['&>:1-:v v *_$.@', ' ^    _$>\\:^']),
         }}

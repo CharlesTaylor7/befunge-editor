@@ -6,6 +6,7 @@ import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom/extend-expect'
 import Befunge from '@/components/Befunge'
+import { gridInit } from '@/grid'
 
 describe('Befunge', () => {
   test('Text Editor', async () => {
@@ -33,5 +34,19 @@ describe('Befunge', () => {
         expect(document.activeElement.value).toEqual(input)
       }
     }
+  })
+
+  test('Preloaded program', async () => {
+    const program = ['&>:1-:v v *_$.@', ' ^    _$>\\:^']
+    const { getByTestId, queryAllByTestId } = render(
+      <Befunge
+        initialState={{
+          ...gridInit(program),
+        }}
+      />
+    )
+
+    const textArea = getByTestId('befunge-text-editor')
+    expect(textArea.value).toEqual(program.join('\n'))
   })
 })
