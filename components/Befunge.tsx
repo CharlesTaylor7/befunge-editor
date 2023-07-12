@@ -56,7 +56,7 @@ export default function Befunge(props: Props) {
       <main className="flex">
         {mode === 'text-edit' ? (
           <textarea
-            data-testid="befunge-program-editor"
+            data-testid="befunge-text-editor"
             className="h-full border rounded-[10px] border-blue-300 p-2 font-mono"
             autoFocus
             onChange={loadGrid}
@@ -65,26 +65,32 @@ export default function Befunge(props: Props) {
           />
         ) : (
           <>
-            <div className="flex justify-center"></div>
-            <table className="self-center table-fixed border-separate border-2 border-blue-200">
-              <tbody>
-                {Array.from({ length: state.grid.height }, (_, j) => (
-                  <tr key={j}>
-                    {Array.from({ length: state.grid.width }, (_, i) => (
-                      <Cell
-                        key={i}
-                        value={gridLookup(state.grid, { x: i, y: j })}
-                        onChange={(e) => handleGridInput(e.target.value || ' ', i, j)}
-                        mode={mode}
-                        executing={
-                          !mode.endsWith('edit') && state.executionPointer.x === i && state.executionPointer.y === j
-                        }
-                      />
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="flex justify-center">
+              <table
+                data-testid="befunge-grid-editor"
+                className="self-center table-fixed border-separate border-2 border-blue-200"
+              >
+                <tbody>
+                  {Array.from({ length: state.grid.height }, (_, j) => (
+                    <tr key={j}>
+                      {Array.from({ length: state.grid.width }, (_, i) => (
+                        <Cell
+                          key={i}
+                          i={i}
+                          j={j}
+                          value={gridLookup(state.grid, { x: i, y: j })}
+                          onChange={(e) => handleGridInput(e.target.value || ' ', i, j)}
+                          mode={mode}
+                          executing={
+                            !mode.endsWith('edit') && state.executionPointer.x === i && state.executionPointer.y === j
+                          }
+                        />
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </>
         )}
         <div className="flex flex-col m-4">
@@ -105,6 +111,8 @@ export default function Befunge(props: Props) {
   )
 }
 type CellProps = {
+  i: number
+  j: number
   value: string
   onChange: React.ChangeEventHandler<HTMLInputElement>
   executing: boolean
@@ -122,6 +130,7 @@ export function Cell({ value, onChange, mode, executing }: CellProps) {
     >
       {mode === 'cell-edit' || focus ? (
         <input
+          data-testid={`cell-input`}
           className="block w-full h-full text-center heading-1"
           autoFocus={focus && mode !== 'cell-edit'}
           type="text"

@@ -6,7 +6,6 @@ import Stack from '@/cra/utilities/stack'
 import defaultState from '@/cra/store/defaultState'
 import { execute, advance } from '@/cra/store/reducers/execute'
 
-
 function pushInput(state, input: number) {
   return {
     ...state,
