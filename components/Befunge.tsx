@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import Button from '@/components/Button'
 
-import { ExecutionState, programFromGrid } from '@/utils/befunge'
 import defaultState  from '@/cra/store/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/cra/grid'
 import { execute, advance } from '@/cra/store/reducers/execute'
