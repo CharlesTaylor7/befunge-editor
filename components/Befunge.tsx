@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import Button from '@/components/Button'
-import React from 'react'
 
 import { advancePointer, ExecutionState, execute, programFromGrid } from '@/utils/befunge'
 import { initialExecutionState as defaultState } from '@/utils/befunge'
@@ -57,6 +56,7 @@ export default function Befunge(props: Props) {
       <main className="flex">
         {mode === 'text-edit' ? (
           <textarea
+            data-testid="befunge-program-editor"
             className="h-full border rounded-[10px] border-blue-300 p-2 font-mono"
             autoFocus
             onChange={loadGrid}
