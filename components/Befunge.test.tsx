@@ -10,7 +10,7 @@ import Befunge from '@/components/Befunge'
 
 describe('Befunge', () => {
   test('Text Editor', async () => {
-    const { getByTestId } = render(<Befunge />)
+    const { getByTestId, queryAllByTestId } = render(<Befunge />)
     const textArea = getByTestId('befunge-text-editor')
 
     const user = await userEvent.setup()
@@ -24,13 +24,14 @@ describe('Befunge', () => {
 
     // Tabbing away copies the text into the grid, and swaps the components
     await user.keyboard('{Tab}')
+    expect(getByTestId('befunge-grid-editor')).not.toBeNull()
+    expect(queryAllByTestId('befunge-text-editor')).toEqual([])
 
-    let cellInput = getByTestId('cell-input')
     for (let line of userInput.split('\n')) {
       for (let input of line) {
-        expect(cellInput.value).toEqual(input)
+        // You can tab through the grid cells
         await user.keyboard('{Tab}')
-        cellInput = document.activeElement
+        expect(document.activeElement.value).toEqual(input)
       }
     }
   })

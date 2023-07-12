@@ -71,9 +71,9 @@ export default function Befunge(props: Props) {
                 className="self-center table-fixed border-separate border-2 border-blue-200"
               >
                 <tbody>
-                  {Array.from({ length: state.grid.height }, (_, j) => (
+                  {Array.from({ length: state.dimensions.height }, (_, j) => (
                     <tr key={j}>
-                      {Array.from({ length: state.grid.width }, (_, i) => (
+                      {Array.from({ length: state.dimensions.width }, (_, i) => (
                         <Cell
                           key={i}
                           i={i}
@@ -119,7 +119,8 @@ type CellProps = {
   mode: Mode
 }
 
-export function Cell({ value, onChange, mode, executing }: CellProps) {
+export function Cell(props: CellProps) {
+  const { value, onChange, mode, executing, i, j} = props;
   const [focus, setFocus] = useState<boolean>(false)
   return (
     <td
@@ -130,7 +131,8 @@ export function Cell({ value, onChange, mode, executing }: CellProps) {
     >
       {mode === 'cell-edit' || focus ? (
         <input
-          data-testid={`cell-input`}
+          data-testid={`cell-input-${i}-${j}`}
+          tabIndex="1"
           className="block w-full h-full text-center heading-1"
           autoFocus={focus && mode !== 'cell-edit'}
           type="text"
