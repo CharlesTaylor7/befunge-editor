@@ -62,7 +62,7 @@ export const emptyGrid = Map()
 export function gridProgram(grid: Grid, dimensions: Dimensions): string {
   const array = []
   for (let j = 0; j < dimensions.height; j++) {
-    for (let i = 0; i < dimensions.height; i++) {
+    for (let i = 0; i < dimensions.width; i++) {
       array.push(gridLookup(grid, { x: i, y: j }))
     }
     array.push('\n')

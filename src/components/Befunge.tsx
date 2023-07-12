@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import Button from '@/components/Button'
 
 import defaultState  from '@/cra/store/defaultState'
@@ -18,6 +18,7 @@ type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 export default function Befunge(props: Props) {
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('text-edit')
+  const textAreaRef = useRef();
 
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) =>
@@ -60,6 +61,7 @@ export default function Befunge(props: Props) {
             className="h-full border rounded-[10px] border-blue-300 p-2 font-mono"
             autoFocus
             onChange={loadGrid}
+            ref={textAreaRef}
             defaultValue={gridProgram(state.grid, state.dimensions)}
             onBlur={() => setMode('cell-edit')}
           />
