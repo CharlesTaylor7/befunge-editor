@@ -39,7 +39,11 @@ export function gridInit(program: string[]): GridAndDimensions {
     program = program.split('\n')
   }
   const height = program.length
-  const width = program.reduce(R.maxBy((line) => line.length)).length
+  const width = R.reduce(
+    R.maxBy((line) => line.length),
+    '',
+    program,
+  ).length
   const dimensions = { height, width }
 
   let grid = Map()
@@ -54,3 +58,14 @@ export function gridInit(program: string[]): GridAndDimensions {
 }
 
 export const emptyGrid = Map()
+
+export function gridProgram(grid: Grid, dimensions: Dimensions): string {
+  const array = []
+  for (let j = 0; j < dimensions.height; j++) {
+    for (let i = 0; i < dimensions.height; i++) {
+      array.push(gridLookup(grid, { x: i, y: j }))
+    }
+    array.push('\n')
+  }
+  return array.join('')
+}

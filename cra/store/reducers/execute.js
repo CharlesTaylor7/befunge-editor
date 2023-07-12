@@ -6,7 +6,9 @@ import getCurrentInstruction from '../selectors/getCurrentInstruction'
 import move from '../../utilities/move'
 import { gridLookup, gridUpdate } from '@/cra/grid'
 
-export function execute(state, instruction = getCurrentInstruction(state)) {
+export function execute(state, args = {}) {
+  const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
+  const strict = args.strict !== undefined ? args.strict : true
   if (typeof instruction !== 'string') {
     throw new Error('Instruction is not a string.')
   }
@@ -111,7 +113,12 @@ export function execute(state, instruction = getCurrentInstruction(state)) {
     case ' ':
       return state
     default:
-      throw new Error(`Unrecognized instruction: '${instruction}'.`)
+      const message = `Unrecognized instruction: '${instruction}'.`
+      if (strict) {
+        throw new Error(message)
+      } else {
+        console.error(message)
+      }
   }
 }
 

@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import Button from '@/components/Button'
 
-import { advancePointer, ExecutionState, execute, programFromGrid } from '@/utils/befunge'
-import { initialExecutionState as defaultState } from '@/utils/befunge'
-import { gridLookup, gridUpdate, gridInit } from '@/cra/grid'
+import { ExecutionState, programFromGrid } from '@/utils/befunge'
+import defaultState  from '@/cra/store/defaultState'
+import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/cra/grid'
+import { execute, advance } from '@/cra/store/reducers/execute'
 
 type Props = {
   initialState: Partial<ExecutionState>
@@ -30,10 +31,10 @@ export default function Befunge(props: Props) {
     [],
   )
 
-  const runStep = useCallback(() => updateState((state) => advancePointer(execute(state))), [updateState])
+  const runStep = useCallback(() => updateState((state) => advance(execute(state, { strict: false }))), [updateState])
   const restartExecution = useCallback(() => {
     setMode('step')
-    updateState((state) => ({ ...defaultState, grid: state.grid }))
+    updateState((state) => ({ ...defaultState, grid: state.grid, dimensions: state.dimensions }))
   }, [])
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function Befunge(props: Props) {
             className="h-full border rounded-[10px] border-blue-300 p-2 font-mono"
             autoFocus
             onChange={loadGrid}
-            defaultValue={programFromGrid(state.grid)}
+            defaultValue={gridProgram(state.grid, state.dimensions)}
             onBlur={() => setMode('cell-edit')}
           />
         ) : (
@@ -120,7 +121,7 @@ type CellProps = {
 }
 
 export function Cell(props: CellProps) {
-  const { value, onChange, mode, executing, i, j} = props;
+  const { value, onChange, mode, executing, i, j } = props
   const [focus, setFocus] = useState<boolean>(false)
   return (
     <td
