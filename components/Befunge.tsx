@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import Button from '@/components/Button'
+import React from 'react'
 
 import { advancePointer, ExecutionState, execute, programFromGrid } from '@/utils/befunge'
 import { initialExecutionState as defaultState } from '@/utils/befunge'
