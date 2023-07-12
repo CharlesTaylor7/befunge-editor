@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Befunge from '@/components/Befunge'
 import { gridInit } from '@/cra/grid'
 
+  // factorial
 const Home: NextPage = () => {
   return (
     <div>
@@ -12,8 +13,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Befunge
+
         initialState={{
-          ...gridInit([]),
+          ...gridInit(['&>:1-:v v *_$.@', ' ^    _$>\\:^']),
         }}
       />
     </div>

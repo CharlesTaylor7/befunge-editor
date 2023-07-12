@@ -18,6 +18,7 @@
     "paths": {
       "@/cra/*": ["src/*"],
       "@/components/*": ["src/components/*"],
+      "@/styles/*": ["styles/*"],
       "@/*": ["src/*"]
     }
   },
