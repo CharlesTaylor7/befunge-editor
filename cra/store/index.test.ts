@@ -36,14 +36,14 @@ function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> 
   }
 }
 
-const completesIn = (n, generator) => {
+const completesIn = (n, iterator) => {
   let value
   for (let i = 0; i < n + 1; i++) {
-    const next = generator.next()
+    const next = iterator.next()
     if (next.done) return value
     value = next.value
   }
-  throw new Error(`Iterable did not complete in ${n} or less steps.`)
+  throw new Error(`Iterator did not complete in ${n} or less steps.`)
 }
 
 describe('interpreter', () => {
@@ -58,7 +58,7 @@ describe('interpreter', () => {
   })
   test('Infinite loop', () => {
     const program = ['>v', '^<']
-    expect(() => completesIn(1000, run(program))).toThrow('Iterable did not complete in 1000 or less steps.')
+    expect(() => completesIn(1000, run(program))).toThrow('Iterator did not complete in 1000 or less steps.')
   })
   test('Infinite loop w/ unbounded stack growth', () => {
     const program = ['>1v', '4 2', '^3<']
