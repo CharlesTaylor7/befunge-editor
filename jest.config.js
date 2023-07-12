@@ -14,9 +14,9 @@ module.exports = {
     '@testing-library/jest-dom/extend-expect',
   ],
 
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.[t|j]sx?$',
+  testRegex: 'test\\.[t|j]sx?$',
 
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
 
   moduleNameMapper: {
     '\\.(css|less|sass|scss)$': '<rootDir>/__mocks__/styleMock.js',
