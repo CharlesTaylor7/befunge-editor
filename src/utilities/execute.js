@@ -1,10 +1,10 @@
 import * as R from 'ramda'
-import Stack from '../../utilities/stack'
-import * as Random from '../../utilities/random'
-import { quot, rem } from '../../utilities/integerDivision'
-import getCurrentInstruction from '../selectors/getCurrentInstruction'
-import move from '../../utilities/move'
-import { gridLookup, gridUpdate } from '@/cra/grid'
+import Stack from '@/utilities/stack'
+import * as Random from '@/utilities/random'
+import { quot, rem } from '@/utilities/integerDivision'
+import getCurrentInstruction from '@/utilities/getCurrentInstruction'
+import move from '@/utilities/move'
+import { gridLookup, gridUpdate } from '@/grid'
 
 export function execute(state, args = {}) {
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)

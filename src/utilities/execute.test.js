@@ -1,6 +1,6 @@
 import { execute } from './execute'
 import defaultState from '@/cra/store/defaultState'
-import Stack from '../../utilities/Stack'
+import Stack from '@/utilities/stack'
 
 describe('execute', () => {
   it('throws on unknown instructions', () => {
