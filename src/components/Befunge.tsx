@@ -80,20 +80,12 @@ export default function Befunge(props: Props) {
     }
   }, [state.executionComplete])
 
-  const intervalId = useRef()
-
   useEffect(() => {
     if (mode !== 'animate' || state.pendingInput) {
       return
     }
-    intervalId.current = setInterval(step, 250)
-
-    return () => {
-      if (intervalId.current) {
-        clearInterval(intervalId.current)
-        intervalId.current = null
-      }
-    }
+    const intervalId = setInterval(step, 250)
+    return () => clearInterval(intervalId)
   }, [mode, state.pendingInput])
 
   return (
