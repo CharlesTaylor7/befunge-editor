@@ -8,17 +8,13 @@ import { execute, advance, pushInput } from '@/cra/store/reducers/execute'
 
 type Stdin = Iterator<string | number>
 
-  function tap(x) {
-    console.log(x)
-    return x
-  }
 function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
   let state = R.mergeRight(defaultState, gridInit(program))
   while (!state.executionComplete) {
     state = execute(state)
     if (state.pendingInput) {
       if (!stdin) {
-        throw new Error("Stdin required to run this program")
+        throw new Error('Stdin required to run this program')
       }
       state = pushInput(state, stdin.next().value)
     }

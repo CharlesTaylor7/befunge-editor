@@ -3,7 +3,7 @@ import Button from '@/components/Button'
 
 import defaultState from '@/cra/store/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/cra/grid'
-import { execute, advance, Stdin } from '@/utilities/execute'
+import { execute, advance, pushInput } from '@/utilities/execute'
 
 type Props = {
   initialState: Partial<ExecutionState>
@@ -15,13 +15,16 @@ Befunge.defaultProps = {
 
 type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 
+function tap(x, tag) {
+  console.log(tag, x)
+  return x
+}
+
 export default function Befunge(props: Props) {
   // State
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('text-edit')
-
-  // Callbacks
-  const runStep = useCallback(() => updateState((state) => advance(execute(state, { strict: false }))), [updateState])
+  const stdinInputRef = useRef()
 
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) =>
@@ -49,11 +52,31 @@ export default function Befunge(props: Props) {
   const intervalId = useRef()
 
   useEffect(() => {
-    if (mode === 'animate') {
-      intervalId.current = setInterval(() => {
-        runStep()
-      }, 500)
+    if (mode !== 'animate') {
+      return
     }
+    intervalId.current = setInterval(
+      () =>
+        updateState((state) => {
+          if (state.pendingInput) {
+            console.log('pending state', state)
+            let value = stdinInputRef.current?.value
+            console.log('from ref', typeof value, value)
+            if (value !== null && value.length > 0) {
+              if (state.pendingInput === 'Number') {
+                value = Number(value)
+              }
+              return advance(pushInput(state, value))
+            } else {
+              return state
+            }
+          }
+          const executed = execute(state, { strict: false })
+          return tap(executed.pendingInput ? executed : advance(executed), 'after execute')
+        }),
+      500,
+    )
+
     return () => {
       if (intervalId.current) {
         clearInterval(intervalId.current)
@@ -69,9 +92,6 @@ export default function Befunge(props: Props) {
         <Button onClick={restartExecution}>Restart</Button>
         <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
           Edit
-        </Button>
-        <Button onClick={runStep} disabled={mode !== 'step'}>
-          Next
         </Button>
       </header>
       <main className="flex">
@@ -115,7 +135,11 @@ export default function Befunge(props: Props) {
           </>
         )}
         <div className="flex flex-col mx-4">
-          <input disabled={!state.pendingInput} />
+          <input
+            type={state.pendingInput === 'Number' ? 'number' : 'text'}
+            ref={stdinInputRef}
+            //disabled={!state.pendingInput}
+          />
           <p>Heading: {state.heading}</p>
           <p>Console: {state.console}</p>
           Stack:
@@ -169,19 +193,5 @@ export function Cell(props: CellProps) {
         </div>
       )}
     </td>
-  )
-}
-
-function StdinInput(props: StdinInputProps) {
-  const { inputType, resolve, reject } = props
-  return (
-    <input
-      disabled={!inputType}
-      type={inputType === 'Number' ? 'number' : 'text'}
-      onChange={(event) => resolve(event.target.value)}
-      min={0}
-      max={9}
-      maxLength={1}
-    />
   )
 }
