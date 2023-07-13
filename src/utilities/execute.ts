@@ -6,10 +6,21 @@ import getCurrentInstruction from '@/utilities/getCurrentInstruction'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 
+type InputType = 'Character' | 'Number'
+type Input = string | number
 
+export interface Stdin {
+  next(inputType: InputType): Input
+}
 
-//type Stdin = Iterator<string | number>
-
+export function stdinFromIterator(iterator: Iterator<Input>): Stdin {
+  return {
+    iterator,
+    next() {
+      return this.iterator.next().value
+    },
+  }
+}
 
 export function execute(state, args = {}) {
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
@@ -113,15 +124,15 @@ export function execute(state, args = {}) {
       )(state)
     case '&':
       if (!args.stdin) {
-        throw Error("Cannot execute this program without stdin!")
+        throw Error('Cannot execute this program without stdin!')
       }
-      const number = args.stdin.next('Number').value
+      const number = args.stdin.next('Number')
       return R.over(R.lensProp('stack'), Stack.push(number))(state)
     case '~':
       if (!args.stdin) {
-        throw Error("Cannot execute this program without stdin!")
+        throw Error('Cannot execute this program without stdin!')
       }
-      const char = args.stdin.next('Character').value
+      const char = args.stdin.next('Character')
       return R.over(R.lensProp('stack'), Stack.push(char.charCodeAt(0)))(state)
     case '@':
       return R.set(R.lensProp('executionComplete'), true, state)

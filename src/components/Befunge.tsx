@@ -15,13 +15,28 @@ Befunge.defaultProps = {
 
 type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 
+function* stdin() {
+  while (true) {
+    let val = yield null
+    if (val === 'Number') {
+      yield 4
+    }
+    if (val === 'Character') {
+      yield 'c'
+    }
+  }
+}
+
 export default function Befunge(props: Props) {
   // State
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('text-edit')
 
   // Callbacks
-  const runStep = useCallback(() => updateState((state) => advance(execute(state, { strict: false }))), [updateState])
+  const runStep = useCallback(
+    () => updateState((state) => advance(execute(state, { strict: false, stdin: stdin() }))),
+    [updateState],
+  )
 
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) =>
@@ -46,7 +61,6 @@ export default function Befunge(props: Props) {
     }
   }, [state.executionComplete])
 
-  
   const intervalId = useRef()
 
   useEffect(() => {
@@ -63,13 +77,10 @@ export default function Befunge(props: Props) {
     }
   }, [mode])
 
-
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
-        <Button onClick={() => setMode('animate')}>
-          Animate
-        </Button>
+        <Button onClick={() => setMode('animate')}>Animate</Button>
         <Button onClick={restartExecution}>Restart</Button>
         <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
           Edit

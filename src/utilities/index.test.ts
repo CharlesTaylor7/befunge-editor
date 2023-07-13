@@ -4,7 +4,7 @@ import { gridInit } from '@/cra/grid'
 import wu from 'wu'
 import Stack from '@/cra/utilities/stack'
 import defaultState from '@/cra/store/defaultState'
-import { execute, advance } from '@/cra/store/reducers/execute'
+import { execute, advance, Input, stdinFromIterator } from '@/cra/store/reducers/execute'
 
 function pushInput(state, input: number) {
   return {
@@ -14,16 +14,14 @@ function pushInput(state, input: number) {
   }
 }
 
-type Stdin = Iterator<string | number>
-
-function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
+function* run(program: Array<string>, stdin?: Iterator<Input>): Generator<ExecutionState> {
   let state = R.mergeRight(defaultState, gridInit(program))
+  stdin = stdin && stdinFromIterator(stdin)
   while (!state.executionComplete) {
     state = advance(execute(state, { stdin }))
     yield state
   }
 }
-
 
 const completesIn = (n, iterator) => {
   let value
