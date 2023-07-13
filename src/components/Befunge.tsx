@@ -81,7 +81,8 @@ export default function Befunge(props: Props) {
 
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
-      <header className="flex gap-5 mt-10">
+      Mode: {mode}
+      <header className="flex gap-5">
         <Button onClick={() => setMode('animate')}>Animate</Button>
         <Button onClick={restartExecution}>Restart</Button>
         <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
