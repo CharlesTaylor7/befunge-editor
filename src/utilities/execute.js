@@ -6,10 +6,12 @@ import getCurrentInstruction from '@/utilities/getCurrentInstruction'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 
+
+
+//type Stdin = Iterator<string | number>
+
+
 export function execute(state, args = {}) {
-  if (state.pendingInput) {
-    throw Error("cannot execute while input pending")
-  }
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
   const strict = args.strict !== undefined ? args.strict : true
 
@@ -19,11 +21,11 @@ export function execute(state, args = {}) {
   if (instruction.length !== 1) {
     throw new Error('Instruction should be a single character.')
   }
-  
 
   if (state.stringMode && instruction !== '"') {
     return R.over(R.lensProp('stack'), Stack.push(instruction.charCodeAt(0)), state)
   }
+
   const charCode = instruction.charCodeAt(0)
   const number = charCode - '0'.charCodeAt(0)
 
@@ -110,9 +112,17 @@ export function execute(state, args = {}) {
         R.set(R.lensProp('stack'), rest),
       )(state)
     case '&':
-      return R.set(R.lensProp('pendingInput'), 'Number', state)
+      if (!args.stdin) {
+        throw Error("Cannot execute this program without stdin!")
+      }
+      const number = args.stdin.next('Number').value
+      return R.over(R.lensProp('stack'), Stack.push(number))(state)
     case '~':
-      return R.set(R.lensProp('pendingInput'), 'Character', state)
+      if (!args.stdin) {
+        throw Error("Cannot execute this program without stdin!")
+      }
+      const char = args.stdin.next('Character').value
+      return R.over(R.lensProp('stack'), Stack.push(char.charCodeAt(0)))(state)
     case '@':
       return R.set(R.lensProp('executionComplete'), true, state)
     case ' ':
