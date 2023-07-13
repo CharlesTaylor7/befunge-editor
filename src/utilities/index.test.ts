@@ -28,6 +28,14 @@ function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> 
         throw Error('Program expects stdin, but none was provided!')
       }
       const value = stdin.next().value
+
+      if (state.pendingInput === 'Number' && typeof value !== 'number') {
+        throw Error("wrong input type")
+      }
+      else if (state.pendingInput === 'Character' && typeof value !== 'string') {
+        throw Error("wrong input type")
+      }
+
       const input = typeof value === 'string' ? value.charCodeAt(0) : value
       state = pushInput(state, input)
     }

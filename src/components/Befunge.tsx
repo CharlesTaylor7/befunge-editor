@@ -90,7 +90,7 @@ export default function Befunge(props: Props) {
           />
         ) : (
           <>
-            <div className="flex justify-center">
+            <div>
               <table
                 data-testid="befunge-grid-editor"
                 className="self-center table-fixed border-separate border-2 border-blue-200"

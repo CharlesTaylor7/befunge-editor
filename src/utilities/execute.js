@@ -7,14 +7,19 @@ import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 
 export function execute(state, args = {}) {
+  if (state.pendingInput) {
+    throw Error("cannot execute while input pending")
+  }
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
   const strict = args.strict !== undefined ? args.strict : true
+
   if (typeof instruction !== 'string') {
     throw new Error('Instruction is not a string.')
   }
   if (instruction.length !== 1) {
     throw new Error('Instruction should be a single character.')
   }
+  
 
   if (state.stringMode && instruction !== '"') {
     return R.over(R.lensProp('stack'), Stack.push(instruction.charCodeAt(0)), state)
