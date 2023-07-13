@@ -24,10 +24,10 @@ describe('execute', () => {
     })
   })
   it('does nothing with space', () => {
-    expect(execute(defaultState, { instruction: ' '})).toBe(defaultState)
+    expect(execute(defaultState, { instruction: ' ' })).toBe(defaultState)
   })
   it('pushes digits onto the stack', () => {
-    const newState = execute({ ...defaultState, stack: Stack.empty }, { instruction: '1'})
+    const newState = execute({ ...defaultState, stack: Stack.empty }, { instruction: '1' })
     expect(Array.from(newState.stack)).toEqual([1])
   })
 })

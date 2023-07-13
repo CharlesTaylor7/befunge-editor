@@ -2,9 +2,7 @@ const { pathsToModuleNameMapper } = require('ts-jest')
 const { compilerOptions } = require('./tsconfig')
 
 module.exports = {
-  collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}',
-  ],
+  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   roots: ['<rootDir>'],
   transform: {
     '^.+\\.(t|j)sx?$': ['@swc/jest'],

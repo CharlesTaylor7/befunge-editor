@@ -38,16 +38,16 @@ describe('Befunge', () => {
 
   test('Preloaded program', async () => {
     const program = ['&>:1-:v v *_$.@', ' ^    _$>\\:^']
-    const width = program[0].length;
+    const width = program[0].length
     const { getByTestId, queryAllByTestId } = render(
       <Befunge
         initialState={{
           ...gridInit(program),
         }}
-      />
+      />,
     )
 
     const textArea = getByTestId('befunge-text-editor')
-    expect(textArea.value).toEqual(program.map(line => line.padEnd(width, ' ')).join('\n') + '\n')
+    expect(textArea.value).toEqual(program.map((line) => line.padEnd(width, ' ')).join('\n') + '\n')
   })
 })

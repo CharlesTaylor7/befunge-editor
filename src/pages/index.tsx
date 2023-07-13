@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Befunge from '@/components/Befunge'
 import { gridInit } from '@/cra/grid'
 
-  // factorial
+// factorial
 const Home: NextPage = () => {
   return (
     <div>

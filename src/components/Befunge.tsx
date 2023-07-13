@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from 'react'
 import Button from '@/components/Button'
 
-import defaultState  from '@/cra/store/defaultState'
+import defaultState from '@/cra/store/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/cra/grid'
 import { execute, advance } from '@/cra/store/reducers/execute'
 
@@ -16,9 +16,12 @@ Befunge.defaultProps = {
 type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 
 export default function Befunge(props: Props) {
+  // State
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('text-edit')
-  const textAreaRef = useRef();
+
+  // Callbacks
+  const runStep = useCallback(() => updateState((state) => advance(execute(state, { strict: false }))), [updateState])
 
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) =>
@@ -31,25 +34,46 @@ export default function Befunge(props: Props) {
     [],
   )
 
-  const runStep = useCallback(() => updateState((state) => advance(execute(state, { strict: false }))), [updateState])
   const restartExecution = useCallback(() => {
     setMode('step')
     updateState((state) => ({ ...defaultState, grid: state.grid, dimensions: state.dimensions }))
   }, [])
 
+  // Effects
   useEffect(() => {
     if (state.executionComplete) {
       setMode('cell-edit')
     }
   }, [state.executionComplete])
 
+  
+  const intervalId = useRef()
+
+  useEffect(() => {
+    if (mode === 'animate') {
+      intervalId.current = setInterval(() => {
+        runStep()
+      }, 500)
+    }
+    return () => {
+      if (intervalId.current) {
+        clearInterval(intervalId.current)
+        intervalId.current = null
+      }
+    }
+  }, [mode])
+
+
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
+        <Button onClick={() => setMode('animate')}>
+          Animate
+        </Button>
+        <Button onClick={restartExecution}>Restart</Button>
         <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
           Edit
         </Button>
-        <Button onClick={restartExecution}>Restart</Button>
         <Button onClick={runStep} disabled={mode !== 'step'}>
           Next
         </Button>
@@ -61,7 +85,6 @@ export default function Befunge(props: Props) {
             className="h-full border rounded-[10px] border-blue-300 p-2 font-mono"
             autoFocus
             onChange={loadGrid}
-            ref={textAreaRef}
             defaultValue={gridProgram(state.grid, state.dimensions)}
             onBlur={() => setMode('cell-edit')}
           />
@@ -95,17 +118,15 @@ export default function Befunge(props: Props) {
             </div>
           </>
         )}
-        <div className="flex flex-col m-4">
-          <div>
-            <input disabled={!state.pendingInput} />
-            <p>Heading: {state.heading}</p>
-            <p>Console: {state.console}</p>
-            Stack:
-            <div className="flex flex-col">
-              {Array.from(state.stack).map((s) => (
-                <span>{s}</span>
-              ))}
-            </div>
+        <div className="flex flex-col mx-4">
+          <input disabled={!state.pendingInput} />
+          <p>Heading: {state.heading}</p>
+          <p>Console: {state.console}</p>
+          Stack:
+          <div className="flex flex-col">
+            {Array.from(state.stack).map((s, i) => (
+              <span key={i}>{s}</span>
+            ))}
           </div>
         </div>
       </main>
