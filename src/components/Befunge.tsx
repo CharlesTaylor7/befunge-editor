@@ -31,23 +31,29 @@ export default function Befunge(props: Props) {
     () =>
       updateState((state) => {
         if (state.pendingInput) {
-          let value = stdinInputRef.current?.value
-          if (value === null || value.length === 0) {
-            stdinInputRef.current?.focus()
-            return state
-          } else {
-            stdinInputRef.current.value = ''
-            stdinInputRef.current.blur()
-
-            if (state.pendingInput === 'Number') {
-              value = Number(value)
-            }
-            return advance(pushInput(state, value))
-          }
+          return state
         }
         const executed = execute(state, { strict: false })
+        if (executed.pendingInput) {
+          stdinInputRef.current.focus()
+        }
         return executed.pendingInput ? executed : advance(executed)
       }),
+    [updateState],
+  )
+
+  const handleStdinInput = useCallback(
+    () => {
+      let value = stdinInputRef.current.value
+      if (value.length === 0) {
+        return
+      }
+
+      stdinInputRef.current.value = ''
+      stdinInputRef.current.blur()
+
+      updateState((state) => advance(pushInput(state, state.pendingInput === 'Number' ? Number(value) : value)))
+    },
     [updateState],
   )
 
@@ -77,10 +83,10 @@ export default function Befunge(props: Props) {
   const intervalId = useRef()
 
   useEffect(() => {
-    if (mode !== 'animate') {
+    if (mode !== 'animate' || state.pendingInput) {
       return
     }
-    intervalId.current = setInterval(step, 500)
+    intervalId.current = setInterval(step, 250)
 
     return () => {
       if (intervalId.current) {
@@ -88,7 +94,7 @@ export default function Befunge(props: Props) {
         intervalId.current = null
       }
     }
-  }, [mode])
+  }, [mode, state.pendingInput])
 
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
@@ -145,6 +151,7 @@ export default function Befunge(props: Props) {
             <input
               type={state.pendingInput === 'Number' ? 'number' : 'text'}
               ref={stdinInputRef}
+              onBlur={handleStdinInput}
               //disabled={!state.pendingInput}
             />
           </p>
