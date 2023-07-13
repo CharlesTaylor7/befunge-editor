@@ -62,13 +62,10 @@ export default function Befunge(props: Props) {
     }
   }, [mode])
 
-
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
-        <Button onClick={() => setMode('animate')}>
-          Animate
-        </Button>
+        <Button onClick={() => setMode('animate')}>Animate</Button>
         <Button onClick={restartExecution}>Restart</Button>
         <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
           Edit
@@ -175,13 +172,12 @@ export function Cell(props: CellProps) {
   )
 }
 
-
 function StdinInput(props: StdinInputProps) {
   const { inputType, resolve, reject } = props
   return (
-    <input 
+    <input
       disabled={!inputType}
-      type={inputType === 'Number' ? 'number' : 'text'} 
+      type={inputType === 'Number' ? 'number' : 'text'}
       onChange={(event) => resolve(event.target.value)}
       min={0}
       max={9}
@@ -189,4 +185,3 @@ function StdinInput(props: StdinInputProps) {
     />
   )
 }
-

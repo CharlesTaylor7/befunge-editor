@@ -6,14 +6,13 @@ import getCurrentInstruction from '@/utilities/getCurrentInstruction'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 
-
-
-//type Stdin = Iterator<string | number>
-
-
 export function execute(state, args = {}) {
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
   const strict = args.strict !== undefined ? args.strict : true
+
+  if (state.pendingInput) {
+    throw new Error('cannot execute while input pending')
+  }
 
   if (typeof instruction !== 'string') {
     throw new Error('Instruction is not a string.')
@@ -112,17 +111,9 @@ export function execute(state, args = {}) {
         R.set(R.lensProp('stack'), rest),
       )(state)
     case '&':
-      if (!args.stdin) {
-        throw Error("Cannot execute this program without stdin!")
-      }
-      const number = args.stdin.next('Number').value
-      return R.over(R.lensProp('stack'), Stack.push(number))(state)
+      return R.set(R.lensProp('pendingInput'), 'Number')(state)
     case '~':
-      if (!args.stdin) {
-        throw Error("Cannot execute this program without stdin!")
-      }
-      const char = args.stdin.next('Character').value
-      return R.over(R.lensProp('stack'), Stack.push(char.charCodeAt(0)))(state)
+      return R.set(R.lensProp('pendingInput'), 'Character')(state)
     case '@':
       return R.set(R.lensProp('executionComplete'), true, state)
     case ' ':
@@ -157,4 +148,23 @@ export function advance(state) {
       }),
     ),
   )(state)
+}
+export function pushInput(state, input: number | string) {
+  if (!state.pendingInput) {
+    throw new Error()
+  }
+  if (state.pendingInput === 'Number' && typeof input !== 'number') {
+    throw new Error(`Expected number input: ${input}`)
+  }
+  if (state.pendingInput === 'Character' && (typeof input !== 'string' || input.length !== 1)) {
+    throw new Error(`Expected char input: ${input}`)
+  }
+  if (typeof input === 'string') {
+    input = input.charCodeAt(0)
+  }
+  return {
+    ...state,
+    stack: Stack.push(input, state.stack),
+    pendingInput: false,
+  }
 }

@@ -4,26 +4,28 @@ import { gridInit } from '@/cra/grid'
 import wu from 'wu'
 import Stack from '@/cra/utilities/stack'
 import defaultState from '@/cra/store/defaultState'
-import { execute, advance } from '@/cra/store/reducers/execute'
-
-function pushInput(state, input: number) {
-  return {
-    ...state,
-    stack: Stack.push(input, state.stack),
-    pendingInput: false,
-  }
-}
+import { execute, advance, pushInput } from '@/cra/store/reducers/execute'
 
 type Stdin = Iterator<string | number>
 
+  function tap(x) {
+    console.log(x)
+    return x
+  }
 function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
   let state = R.mergeRight(defaultState, gridInit(program))
   while (!state.executionComplete) {
-    state = advance(execute(state, { stdin }))
+    state = execute(state)
+    if (state.pendingInput) {
+      if (!stdin) {
+        throw new Error("Stdin required to run this program")
+      }
+      state = pushInput(state, stdin.next().value)
+    }
+    state = advance(state)
     yield state
   }
 }
-
 
 const completesIn = (n, iterator) => {
   let value
