@@ -26,6 +26,31 @@ export default function Befunge(props: Props) {
   const [mode, setMode] = useState<Mode>('text-edit')
   const stdinInputRef = useRef()
 
+  // Callbacks
+  const step = useCallback(
+    () =>
+      updateState((state) => {
+        if (state.pendingInput) {
+          let value = stdinInputRef.current?.value
+          if (value === null || value.length === 0) {
+            stdinInputRef.current?.focus()
+            return state
+          } else {
+            stdinInputRef.current.value = ''
+            stdinInputRef.current.blur()
+
+            if (state.pendingInput === 'Number') {
+              value = Number(value)
+            }
+            return advance(pushInput(state, value))
+          }
+        }
+        const executed = execute(state, { strict: false })
+        return executed.pendingInput ? executed : advance(executed)
+      }),
+    [updateState],
+  )
+
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) =>
       updateState((state) => ({ ...state, grid: gridUpdate(state.grid, { x: i, y: j }, e) })),
@@ -34,13 +59,13 @@ export default function Befunge(props: Props) {
   const loadGrid = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) =>
       updateState((state) => ({ ...state, ...gridInit(e.target.value.split('\n')) })),
-    [],
+    [updateState],
   )
 
   const restartExecution = useCallback(() => {
     setMode('step')
     updateState((state) => ({ ...defaultState, grid: state.grid, dimensions: state.dimensions }))
-  }, [])
+  }, [setMode, updateState])
 
   // Effects
   useEffect(() => {
@@ -55,27 +80,7 @@ export default function Befunge(props: Props) {
     if (mode !== 'animate') {
       return
     }
-    intervalId.current = setInterval(
-      () =>
-        updateState((state) => {
-          if (state.pendingInput) {
-            console.log('pending state', state)
-            let value = stdinInputRef.current?.value
-            console.log('from ref', typeof value, value)
-            if (value !== null && value.length > 0) {
-              if (state.pendingInput === 'Number') {
-                value = Number(value)
-              }
-              return advance(pushInput(state, value))
-            } else {
-              return state
-            }
-          }
-          const executed = execute(state, { strict: false })
-          return tap(executed.pendingInput ? executed : advance(executed), 'after execute')
-        }),
-      500,
-    )
+    intervalId.current = setInterval(step, 500)
 
     return () => {
       if (intervalId.current) {
@@ -135,13 +140,16 @@ export default function Befunge(props: Props) {
           </>
         )}
         <div className="flex flex-col mx-4">
-          <input
-            type={state.pendingInput === 'Number' ? 'number' : 'text'}
-            ref={stdinInputRef}
-            //disabled={!state.pendingInput}
-          />
+          <p>
+            <label>Stdin: </label>
+            <input
+              type={state.pendingInput === 'Number' ? 'number' : 'text'}
+              ref={stdinInputRef}
+              //disabled={!state.pendingInput}
+            />
+          </p>
+          <p>Stdout: {state.console}</p>
           <p>Heading: {state.heading}</p>
-          <p>Console: {state.console}</p>
           Stack:
           <div className="flex flex-col">
             {Array.from(state.stack).map((s, i) => (
