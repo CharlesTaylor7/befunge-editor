@@ -3,7 +3,7 @@ import Button from '@/components/Button'
 
 import defaultState from '@/cra/store/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/cra/grid'
-import { execute, advance } from '@/cra/store/reducers/execute'
+import { execute, advance, Stdin } from '@/utilities/execute'
 
 type Props = {
   initialState: Partial<ExecutionState>
@@ -15,26 +15,28 @@ Befunge.defaultProps = {
 
 type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 
-function* stdin() {
-  while (true) {
-    let val = yield null
-    if (val === 'Number') {
-      yield 4
-    }
-    if (val === 'Character') {
-      yield 'c'
-    }
-  }
-}
 
 export default function Befunge(props: Props) {
   // State
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('text-edit')
+  const [inputState, setInputState] = useState();
+
+  const stdinRef = useRef({
+    next(inputType) {
+      return new Promise((resolve, reject) => {
+        setInputState({ inputType, resolve, reject })
+      })
+    }
+  });
+  
 
   // Callbacks
   const runStep = useCallback(
-    () => updateState((state) => advance(execute(state, { strict: false, stdin: stdin() }))),
+    async () => {
+      let executed = await execute(state, {strict: false, stdin: stdinRef.current});
+      updateState(advance(executed))
+    },
     [updateState],
   )
 
@@ -130,7 +132,7 @@ export default function Befunge(props: Props) {
           </>
         )}
         <div className="flex flex-col mx-4">
-          <input disabled={!state.pendingInput} />
+          <StdinInput {...inputState} />
           <p>Heading: {state.heading}</p>
           <p>Console: {state.console}</p>
           Stack:
@@ -144,6 +146,8 @@ export default function Befunge(props: Props) {
     </div>
   )
 }
+
+
 type CellProps = {
   i: number
   j: number
@@ -186,3 +190,19 @@ export function Cell(props: CellProps) {
     </td>
   )
 }
+
+
+function StdinInput(props: StdinInputProps) {
+  const { inputType, resolve, reject } = props
+  return (
+    <input 
+      disabled={!inputType}
+      type={inputType === 'Number' ? 'number' : 'text'} 
+      onChange={(event) => resolve(event.target.value)}
+      min={0}
+      max={9}
+      maxLength={1}
+    />
+  )
+}
+

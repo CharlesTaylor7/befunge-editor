@@ -22,7 +22,7 @@ export function stdinFromIterator(iterator: Iterator<Input>): Stdin {
   }
 }
 
-export function execute(state, args = {}) {
+export async function execute(state, args = {}) {
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
   const strict = args.strict !== undefined ? args.strict : true
 
@@ -126,13 +126,18 @@ export function execute(state, args = {}) {
       if (!args.stdin) {
         throw Error('Cannot execute this program without stdin!')
       }
-      const number = args.stdin.next('Number')
+      console.log("blocking on stdin")
+      const number = await args.stdin.next('Number')
+      console.log("long awaited number", number)
       return R.over(R.lensProp('stack'), Stack.push(number))(state)
     case '~':
       if (!args.stdin) {
         throw Error('Cannot execute this program without stdin!')
       }
-      const char = args.stdin.next('Character')
+
+      console.log("blocking on stdin")
+      const char = await args.stdin.next('Character')
+      console.log("long awaited character", char)
       return R.over(R.lensProp('stack'), Stack.push(char.charCodeAt(0)))(state)
     case '@':
       return R.set(R.lensProp('executionComplete'), true, state)
