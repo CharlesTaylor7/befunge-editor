@@ -6,23 +6,12 @@ import getCurrentInstruction from '@/utilities/getCurrentInstruction'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 
-type InputType = 'Character' | 'Number'
-type Input = string | number
 
-export interface Stdin {
-  next(inputType: InputType): Input
-}
 
-export function stdinFromIterator(iterator: Iterator<Input>): Stdin {
-  return {
-    iterator,
-    next() {
-      return this.iterator.next().value
-    },
-  }
-}
+//type Stdin = Iterator<string | number>
 
-export async function execute(state, args = {}) {
+
+export function execute(state, args = {}) {
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
   const strict = args.strict !== undefined ? args.strict : true
 
@@ -124,20 +113,15 @@ export async function execute(state, args = {}) {
       )(state)
     case '&':
       if (!args.stdin) {
-        throw Error('Cannot execute this program without stdin!')
+        throw Error("Cannot execute this program without stdin!")
       }
-      console.log("blocking on stdin")
-      const number = await args.stdin.next('Number')
-      console.log("long awaited number", number)
+      const number = args.stdin.next('Number').value
       return R.over(R.lensProp('stack'), Stack.push(number))(state)
     case '~':
       if (!args.stdin) {
-        throw Error('Cannot execute this program without stdin!')
+        throw Error("Cannot execute this program without stdin!")
       }
-
-      console.log("blocking on stdin")
-      const char = await args.stdin.next('Character')
-      console.log("long awaited character", char)
+      const char = args.stdin.next('Character').value
       return R.over(R.lensProp('stack'), Stack.push(char.charCodeAt(0)))(state)
     case '@':
       return R.set(R.lensProp('executionComplete'), true, state)

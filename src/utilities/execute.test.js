@@ -4,13 +4,13 @@ import Stack from '@/utilities/stack'
 
 describe('execute', () => {
   it('throws on unknown instructions', () => {
-    await expect(execute(defaultState, { instruction: 'b' })).rejects.toThrow("Unrecognized instruction: 'b'")
+    expect(() => execute(defaultState, { instruction: 'b' })).toThrow("Unrecognized instruction: 'b'")
   }),
     it('throws if instruction is not a string', () => {
-      await expect(execute(defaultState, { instruction: 2 })).rejects.toThrow('Instruction is not a string')
+      expect(() => execute(defaultState, { instruction: 2 })).toThrow('Instruction is not a string')
     })
   it('throws if instruction is more than a single character', () => {
-    await expect(execute(defaultState, { instruction: 'too long' })).rejects.toThrow('Instruction should be a single character')
+    expect(() => execute(defaultState, { instruction: 'too long' })).toThrow('Instruction should be a single character')
   })
   it('throws if instruction is less than a single character', () => {
     expect(() => execute(defaultState, { instruction: '' })).toThrow('Instruction should be a single character')

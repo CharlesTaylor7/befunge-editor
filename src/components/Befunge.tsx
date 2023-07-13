@@ -15,30 +15,13 @@ Befunge.defaultProps = {
 
 type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 
-
 export default function Befunge(props: Props) {
   // State
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('text-edit')
-  const [inputState, setInputState] = useState();
-
-  const stdinRef = useRef({
-    next(inputType) {
-      return new Promise((resolve, reject) => {
-        setInputState({ inputType, resolve, reject })
-      })
-    }
-  });
-  
 
   // Callbacks
-  const runStep = useCallback(
-    async () => {
-      let executed = await execute(state, {strict: false, stdin: stdinRef.current});
-      updateState(advance(executed))
-    },
-    [updateState],
-  )
+  const runStep = useCallback(() => updateState((state) => advance(execute(state, { strict: false }))), [updateState])
 
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) =>
@@ -79,11 +62,13 @@ export default function Befunge(props: Props) {
     }
   }, [mode])
 
+
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
-      Mode: {mode}
-      <header className="flex gap-5">
-        <Button onClick={() => setMode('animate')}>Animate</Button>
+      <header className="flex gap-5 mt-10">
+        <Button onClick={() => setMode('animate')}>
+          Animate
+        </Button>
         <Button onClick={restartExecution}>Restart</Button>
         <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
           Edit
@@ -133,7 +118,7 @@ export default function Befunge(props: Props) {
           </>
         )}
         <div className="flex flex-col mx-4">
-          <StdinInput {...inputState} />
+          <input disabled={!state.pendingInput} />
           <p>Heading: {state.heading}</p>
           <p>Console: {state.console}</p>
           Stack:
@@ -147,8 +132,6 @@ export default function Befunge(props: Props) {
     </div>
   )
 }
-
-
 type CellProps = {
   i: number
   j: number
