@@ -136,11 +136,18 @@ export default function Befunge(props: Props) {
           <p>
             <label>Stdin: </label>
             <input
+              className={`
+                pl-3 border rounded
+                ${state.pendingInput 
+                    ? 'border-red-300' 
+                    : 'border-slate-300'
+                }
+              `}
               type={state.pendingInput === 'Number' ? 'number' : 'text'}
               ref={stdinInputRef}
               onBlur={handleStdinInput}
               onKeyDown={(e) => e.key === "Enter" && handleStdinInput()}
-              disabled={!state.pendingInput}
+              //disabled={!state.pendingInput}
             />
           </p>
           <p>Stdout: {state.console}</p>
