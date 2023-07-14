@@ -14,7 +14,10 @@ Befunge.defaultProps = {
 }
 
 type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
-
+function tap(e) {
+  console.log(e)
+  return e
+}
 
 export default function Befunge(props: Props) {
   // State
@@ -136,7 +139,8 @@ export default function Befunge(props: Props) {
               type={state.pendingInput === 'Number' ? 'number' : 'text'}
               ref={stdinInputRef}
               onBlur={handleStdinInput}
-              //disabled={!state.pendingInput}
+              onKeyDown={(e) => e.key === "Enter" && handleStdinInput()}
+              disabled={!state.pendingInput}
             />
           </p>
           <p>Stdout: {state.console}</p>
