@@ -15,10 +15,6 @@ Befunge.defaultProps = {
 
 type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
 
-function tap(x, tag) {
-  console.log(tag, x)
-  return x
-}
 
 export default function Befunge(props: Props) {
   // State
@@ -30,14 +26,12 @@ export default function Befunge(props: Props) {
   const step = useCallback(
     () =>
       updateState((state) => {
-        if (state.pendingInput) {
-          return state
-        }
         const executed = execute(state, { strict: false })
         if (executed.pendingInput) {
           stdinInputRef.current.focus()
+          return executed
         }
-        return executed.pendingInput ? executed : advance(executed)
+        return advance(executed)
       }),
     [updateState],
   )
@@ -68,10 +62,9 @@ export default function Befunge(props: Props) {
     [updateState],
   )
 
-  const restartExecution = useCallback(() => {
-    setMode('step')
+  const restart = useCallback(() => {
     updateState((state) => ({ ...defaultState, grid: state.grid, dimensions: state.dimensions }))
-  }, [setMode, updateState])
+  }, [updateState])
 
   // Effects
   useEffect(() => {
@@ -91,8 +84,7 @@ export default function Befunge(props: Props) {
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
-        <Button onClick={() => setMode('animate')}>Animate</Button>
-        <Button onClick={restartExecution}>Restart</Button>
+        <Button onClick={() => { setMode('animate'); restart()} }>Animate</Button>
         <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
           Edit
         </Button>
