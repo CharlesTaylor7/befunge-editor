@@ -10,8 +10,8 @@
     "tsc": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch",
-    "predeploy": "next build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "next build && next export",
+    "deploy": "gh-pages -d out"
   },
   "dependencies": {
     "immutable": "^4.0.0",
