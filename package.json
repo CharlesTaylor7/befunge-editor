@@ -10,7 +10,7 @@
     "tsc": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch",
-    "predeploy": "next build && touch out/.nojekyll",
+    "predeploy": "next build && ./predeploy.sh",
     "deploy": "gh-pages --dotfiles -d out"
   },
   "dependencies": {
