@@ -3,6 +3,7 @@ import Button from '@/components/Button'
 import Toggle from '@/components/Toggle'
 
 import defaultState from '@/utilities/defaultState'
+import type { ExecutionState } from '@/utilities/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/grid'
 import { execute, advance, pushInput } from '@/utilities/execute'
 
@@ -26,7 +27,7 @@ export default function Befunge(props: Props) {
   // State
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('edit')
-  const [editMode, setEditMode] = useState<Mode>('text')
+  const [editMode, setEditMode] = useState<EditMode>('text')
   const stdinInputRef = useRef()
 
   // Callbacks

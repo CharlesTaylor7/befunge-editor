@@ -1,8 +1,29 @@
 import Stack from '@/utilities/stack'
+import type {StackType } from '@/utilities/stack'
 import { emptyGrid } from '@/grid'
+import type {Grid } from '@/grid'
 
-export default {
-  editorFocus: { x: 0, y: 0 },
+
+export type Direction = 'Up' | 'Right' | 'Down' | 'Left'
+
+export type ExecutionState = {
+  executionPointer: { x: 0, y: 0 },
+  heading: Direction,
+  // grid: { [cellId: string]: instruction }
+  // where cell ids are of the form "{i}-{j}"
+  grid: Grid,
+  dimensions: { height: number, width: number },
+  // stack<int>
+  stack: StackType,
+  console: string,
+  activeBridge: boolean,
+  executionComplete: boolean,
+  stringMode: boolean,
+  pendingInput: false | 'Number' | 'Character',
+}
+
+
+const defaultState: ExecutionState = {
   executionPointer: { x: 0, y: 0 },
   // type heading = 'Up' | 'Right' | 'Down' | 'Left'
   heading: 'Right',
@@ -19,3 +40,6 @@ export default {
   // false | 'Number' | 'Character'
   pendingInput: false,
 }
+
+export default defaultState;
+

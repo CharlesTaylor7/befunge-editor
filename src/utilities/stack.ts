@@ -1,6 +1,8 @@
 import * as R from 'ramda'
 import wu from 'wu'
 
+export type StackType = Empty | Stack;
+
 class Empty {
   constructor() {
     Object.defineProperty(this, 'head', { value: 0, writable: false })
