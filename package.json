@@ -2,7 +2,7 @@
   "name": "befunge-editor",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://CharlesTaylor7.github.io/befunge-editor",
+  "homepage": "https://charlestaylor7.github.io/befunge-editor",
   "scripts": {
     "dev": "next dev",
     "lint": "next lint",
@@ -11,7 +11,7 @@
     "format": "prettier --write .",
     "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch",
     "predeploy": "next build && touch out/.nojekyll",
-    "deploy": "gh-pages -d out"
+    "deploy": "gh-pages --dotfiles -d out"
   },
   "dependencies": {
     "immutable": "^4.0.0",
