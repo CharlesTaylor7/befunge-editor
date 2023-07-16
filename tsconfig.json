@@ -17,11 +17,6 @@
     "baseUrl": ".",
     "paths": {
       "@/styles/*": ["styles/*"],
-      "@/cra/store/selectors/*": ["src/utilities/*"],
-      "@/cra/store/reducers/*": ["src/utilities/*"],
-      "@/cra/store/*": ["src/utilities/*"],
-      "@/cra/*": ["src/*"],
-      "@/components/*": ["src/components/*"],
       "@/*": ["src/*"]
     }
   },

@@ -1,10 +1,10 @@
 import * as R from 'ramda'
 import { Map } from 'immutable'
-import { gridInit } from '@/cra/grid'
 import wu from 'wu'
-import Stack from '@/cra/utilities/stack'
-import defaultState from '@/cra/store/defaultState'
-import { execute, advance, pushInput } from '@/cra/store/reducers/execute'
+import { gridInit } from '@/grid'
+import Stack from '@/utilities/stack'
+import defaultState from '@/utilities/defaultState'
+import { execute, advance, pushInput } from '@/utilities/execute'
 
 type Stdin = Iterator<string | number>
 

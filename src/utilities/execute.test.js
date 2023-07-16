@@ -1,5 +1,5 @@
-import { execute } from './execute'
-import defaultState from '@/cra/store/defaultState'
+import { execute } from '@/utilities/execute'
+import defaultState from '@/utilities/defaultState'
 import Stack from '@/utilities/stack'
 
 describe('execute', () => {

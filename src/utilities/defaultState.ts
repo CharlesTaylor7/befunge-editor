@@ -1,5 +1,5 @@
-import Stack from '../utilities/stack'
-import { emptyGrid } from '@/cra/grid'
+import Stack from '@/utilities/stack'
+import { emptyGrid } from '@/grid'
 
 export default {
   editorFocus: { x: 0, y: 0 },

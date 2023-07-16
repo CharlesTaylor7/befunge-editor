@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Befunge from '@/components/Befunge'
-import { gridInit } from '@/cra/grid'
+import { gridInit } from '@/grid'
 
 // factorial
 const Home: NextPage = () => {
