@@ -21,12 +21,12 @@
 - Step by step debugger
 - Undo button
 
-- [x] Console for input
 - UI visual for Stack & stack frames.
   - way to inspect stack elements as numbers & corresponding ascii characters
 
 - Make text editor resizable
 - Make grid editor able to add/remove rows & columns
+- [x] Console for input
 
 # Bugs
 - [x] Naving between text editor & grid editor inserts an extra blank row of cells

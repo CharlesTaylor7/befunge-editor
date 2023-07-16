@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState, useRef } from 'react'
 import Button from '@/components/Button'
+import Toggle from '@/components/Toggle'
 
-import defaultState from '@/cra/store/defaultState'
-import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/cra/grid'
+import defaultState from '@/utilities/defaultState'
+import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/grid'
 import { execute, advance, pushInput } from '@/utilities/execute'
 
 type Props = {
@@ -13,7 +14,9 @@ Befunge.defaultProps = {
   initialState: defaultState,
 }
 
-type Mode = 'text-edit' | 'cell-edit' | 'step' | 'animate'
+type Mode = 'edit' | 'step' | 'animate'
+type EditMode = 'text' | 'cell'
+
 function tap(e) {
   console.log(e)
   return e
@@ -22,7 +25,8 @@ function tap(e) {
 export default function Befunge(props: Props) {
   // State
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
-  const [mode, setMode] = useState<Mode>('text-edit')
+  const [mode, setMode] = useState<Mode>('edit')
+  const [editMode, setEditMode] = useState<Mode>('text')
   const stdinInputRef = useRef()
 
   // Callbacks
@@ -90,6 +94,9 @@ export default function Befunge(props: Props) {
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
+        <Toggle onToggle={(toggled) => setEditMode(toggled ? 'cell' : 'text')}>
+          Edit Text/Grid 
+        </Toggle>
         <Button
           onClick={() => {
             setMode('animate')
@@ -98,19 +105,18 @@ export default function Befunge(props: Props) {
         >
           Animate
         </Button>
-        <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
+        <Button onClick={() => setMode('edit')} disabled={mode === 'edit'}>
           Edit
         </Button>
       </header>
       <main className="flex">
-        {mode === 'text-edit' ? (
+        {editMode === 'text' ? (
           <textarea
             data-testid="befunge-text-editor"
             className="h-full border rounded-[10px] border-blue-300 p-2 font-mono"
             autoFocus
             onChange={loadGrid}
             defaultValue={gridProgram(state.grid, state.dimensions)}
-            onBlur={() => setMode('cell-edit')}
           />
         ) : (
           <>
@@ -154,7 +160,6 @@ export default function Befunge(props: Props) {
               ref={stdinInputRef}
               onBlur={handleStdinInput}
               onKeyDown={(e) => e.key === 'Enter' && handleStdinInput()}
-              //disabled={!state.pendingInput}
             />
           </p>
           <p>Stdout: {state.console}</p>
@@ -189,12 +194,12 @@ export function Cell(props: CellProps) {
         ${executing ? 'border-yellow-200 border-2' : ''}
       `}
     >
-      {mode === 'cell-edit' || focus ? (
+      {mode === 'edit' || focus ? (
         <input
           data-testid={`cell-input-${i}-${j}`}
           tabIndex="1"
           className="block w-full h-full text-center heading-1"
-          autoFocus={focus && mode !== 'cell-edit'}
+          autoFocus={focus && mode !== 'edit'}
           type="text"
           maxLength={1}
           defaultValue={value.trim()}
