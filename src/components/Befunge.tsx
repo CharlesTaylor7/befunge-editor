@@ -39,20 +39,17 @@ export default function Befunge(props: Props) {
     [updateState],
   )
 
-  const handleStdinInput = useCallback(
-    () => {
-      let value = stdinInputRef.current.value
-      if (value.length === 0) {
-        return
-      }
+  const handleStdinInput = useCallback(() => {
+    let value = stdinInputRef.current.value
+    if (value.length === 0) {
+      return
+    }
 
-      stdinInputRef.current.value = ''
-      stdinInputRef.current.blur()
+    stdinInputRef.current.value = ''
+    stdinInputRef.current.blur()
 
-      updateState((state) => advance(pushInput(state, state.pendingInput === 'Number' ? Number(value) : value)))
-    },
-    [updateState],
-  )
+    updateState((state) => advance(pushInput(state, state.pendingInput === 'Number' ? Number(value) : value)))
+  }, [updateState])
 
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) =>
@@ -60,8 +57,14 @@ export default function Befunge(props: Props) {
     [updateState],
   )
   const loadGrid = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-      updateState((state) => ({ ...state, ...gridInit(e.target.value.split('\n')) })),
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const lines = e.target.value.split('\n')
+      const last = lines.pop()
+      if (last !== '') {
+        lines.push(last)
+      }
+      updateState((state) => ({ ...state, ...gridInit(lines) }))
+    },
     [updateState],
   )
 
@@ -87,7 +90,14 @@ export default function Befunge(props: Props) {
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
-        <Button onClick={() => { setMode('animate'); restart()} }>Animate</Button>
+        <Button
+          onClick={() => {
+            setMode('animate')
+            restart()
+          }}
+        >
+          Animate
+        </Button>
         <Button onClick={() => setMode('text-edit')} disabled={mode === 'text-edit'}>
           Edit
         </Button>
@@ -138,15 +148,12 @@ export default function Befunge(props: Props) {
             <input
               className={`
                 pl-3 border rounded
-                ${state.pendingInput 
-                    ? 'border-red-300' 
-                    : 'border-slate-300'
-                }
+                ${state.pendingInput ? 'border-red-300' : 'border-slate-300'}
               `}
               type={state.pendingInput === 'Number' ? 'number' : 'text'}
               ref={stdinInputRef}
               onBlur={handleStdinInput}
-              onKeyDown={(e) => e.key === "Enter" && handleStdinInput()}
+              onKeyDown={(e) => e.key === 'Enter' && handleStdinInput()}
               //disabled={!state.pendingInput}
             />
           </p>
