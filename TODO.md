@@ -8,8 +8,7 @@
 - [ ] Explain Befunge briefly in README, and link to wikipedia
 - [x] Document existing feature set, and come up with a short list of bugfixes and simple usability improvements.
 
-- [ ] Remove wu dep
-- [ ] Remove Ramda dep
+- [x] Remove wu dep
 - [ ] Fix Typescript errors
 - [ ] Fix eslint errors
 
