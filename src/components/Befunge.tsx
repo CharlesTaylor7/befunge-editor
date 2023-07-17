@@ -187,7 +187,7 @@ export function Cell(props: CellProps) {
     <td
       className={`
         border text-center text-ellipsis p-0 w-[40px] h-[40px]
-        ${executing ? 'border-yellow-200 border-2' : ''}
+        ${executing ? 'bg-amber-300 border-2' : ''}
       `}
     >
       {mode === 'edit' || focus ? (
