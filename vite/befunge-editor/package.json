@@ -2,6 +2,7 @@
   "name": "befunge-editor",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://charlestaylor7.github.io/befunge-editor",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +11,10 @@
     "preview": "vite preview",
     "predeploy": "vite build",
     "deploy": "gh-pages -d dist",
-    "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch"
+    "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch",
+    "test": "jest",
+    "tsc": "tsc --pretty --noEmit",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "immutable": "^4.0.0",
