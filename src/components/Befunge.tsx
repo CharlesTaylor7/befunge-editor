@@ -110,6 +110,9 @@ export default function Befunge(props: Props) {
         <Button onClick={() => setMode('edit')} disabled={mode === 'edit'}>
           Edit
         </Button>
+        <Button onClick={() => {setMode('step'); step()}} >
+          Step
+        </Button>
       </header>
       <main className="flex">
         {editMode === 'text' ? (
@@ -133,7 +136,7 @@ export default function Befunge(props: Props) {
                           onChange={(e) => handleGridInput(e.target.value || ' ', i, j)}
                           mode={mode}
                           executing={
-                            !mode.endsWith('edit') && state.executionPointer.x === i && state.executionPointer.y === j
+                            mode !== 'edit' && state.executionPointer.x === i && state.executionPointer.y === j
                           }
                         />
                       ))}

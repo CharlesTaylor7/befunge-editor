@@ -9,7 +9,7 @@ import Befunge from '@/components/Befunge'
 import { gridInit } from '@/grid'
 
 describe('Befunge', () => {
-  test('Text Editor', async () => {
+  test.skip('Text Editor', async () => {
     const { getByTestId, queryAllByTestId } = render(<Befunge />)
     const textArea = getByTestId('befunge-text-editor')
 

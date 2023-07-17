@@ -6,6 +6,7 @@ import getCurrentInstruction from '@/utilities/getCurrentInstruction'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 
+
 export function execute(state, args = {}) {
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
   const strict = args.strict !== undefined ? args.strict : true
@@ -59,18 +60,18 @@ export function execute(state, args = {}) {
       return R.set(R.lensProp('heading'), Random.among('Right', 'Left', 'Up', 'Down'), state)
     case '_':
       return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.tail),
-        R.set(R.lensProp('heading'), state.stack.head ? 'Left' : 'Right'),
+        R.over(R.lensProp('stack'), (stack) => stack.pop()),
+        R.set(R.lensProp('heading'), Stack.peek(state.stack) !== 0 ? 'Left' : 'Right'),
       )(state)
     case '|':
       return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.tail),
-        R.set(R.lensProp('heading'), state.stack.head ? 'Up' : 'Down'),
+        R.over(R.lensProp('stack'), (stack) => stack.pop()),
+        R.set(R.lensProp('heading'), Stack.peek(state.stack) !== 0 ? 'Up' : 'Down'),
       )(state)
     case '"':
       return R.over(R.lensProp('stringMode'), (mode) => !mode, state)
     case ':':
-      return R.over(R.lensProp('stack'), (stack) => Stack.push(stack.head, stack), state)
+      return R.over(R.lensProp('stack'), (stack) => Stack.push(Stack.peek(stack), stack), state)
     case '\\':
       return R.over(
         R.lensProp('stack'),
@@ -81,16 +82,16 @@ export function execute(state, args = {}) {
         state,
       )
     case '$':
-      return R.over(R.lensProp('stack'), (stack) => stack.tail, state)
+      return R.over(R.lensProp('stack'), (stack) => stack.pop(), state)
     case '.':
       return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.tail),
-        R.over(R.lensProp('console'), (console) => console + state.stack.head + ' '),
+        R.over(R.lensProp('stack'), (stack) => stack.pop()),
+        R.over(R.lensProp('console'), (console) => console + Stack.peek(state.stack) + ' '),
       )(state)
     case ',':
       return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.tail),
-        R.over(R.lensProp('console'), (console) => console + String.fromCharCode(state.stack.head)),
+        R.over(R.lensProp('stack'), (stack) => stack.pop()),
+        R.over(R.lensProp('console'), (console) => console + String.fromCharCode(Stack.peek(state.stack))),
       )(state)
     case '#':
       return R.set(R.lensProp('activeBridge'), true, state)
@@ -132,7 +133,7 @@ const runBinaryOpOnStack = (op) =>
   R.over(R.lensProp('stack'), (stack) => {
     const [a, b, rest] = Stack.pop(2, stack)
     const head = op(a, b)
-    return Stack.push(head, rest)
+    return rest.push(head)
   })
 
 export function advance(state) {

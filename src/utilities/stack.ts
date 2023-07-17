@@ -1,53 +1,26 @@
 import * as R from 'ramda'
-import wu from 'wu'
+import { Stack } from 'immutable'
 
-export type StackType = Empty | Stack
+export type StackType = Stack<number>
 
-class Empty {
-  constructor() {
-    Object.defineProperty(this, 'head', { value: 0, writable: false })
-    Object.defineProperty(this, 'tail', { value: this, writable: false })
-    return Object.freeze(this)
-  }
+const empty = Stack()
 
-  *[Symbol.iterator]() {}
+const isEmpty = (stack) => stack.isEmpty()
 
-  toJSON() {
-    return 'Stack.Empty'
-  }
-}
-
-function isStack(stack) {
-  return [Empty, Stack].some((constructor) => constructor.name === stack.constructor.name)
-}
-
-class Stack {
-  constructor(head, tail) {
-    if (!isStack(tail)) {
-      throw new Error('Tail must be a stack.')
-    }
-    this.head = head
-    this.tail = tail
-    return Object.freeze(this)
-  }
-
-  *[Symbol.iterator]() {
-    yield this.head
-    yield* this.tail
-  }
-}
-
-const empty = new Empty()
-
-const isEmpty = (stack) => stack.constructor.name === Empty.name
-
-const push = R.curry((head, tail) => new Stack(head, tail))
+const push = R.curry((head, tail) => tail.push(head))
+const peek = (stack) => stack.peek() || 0
 
 const pop = R.curry((num, stack) => {
+  if (stack === undefined) throw Error()
   const result = []
   for (let i = 0; i < num; i++) {
-    result.push(stack.head)
-    stack = stack.tail
+    if (stack.isEmpty()) {
+      result.push(0)
+      continue
+    }
+
+    result.push(stack.peek())
+    stack = stack.pop()
   }
   result.push(stack)
   return result
@@ -59,21 +32,16 @@ function* reverse(array) {
   }
 }
 
-const fromArray = R.pipe(
-  reverse,
-  wu.reduce((stack, elem) => push(elem, stack), empty),
-)
+const fromArray = (array) => array.toReversed().reduce((stack, elem) => stack.push(elem), Stack())
 
-const fromString = R.pipe(
-  reverse,
-  wu.reduce((stack, char) => push(char.charCodeAt(0), stack), empty),
-)
+const fromString = (str) => fromArray(Array.from({ length: str.length }, (_, k) => str.charCodeAt(k)))
 
 export default {
   empty,
   isEmpty,
   push,
   pop,
+  peek,
   fromArray,
   fromString,
 }

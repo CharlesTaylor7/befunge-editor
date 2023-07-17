@@ -1,6 +1,5 @@
 import * as R from 'ramda'
-import { Map } from 'immutable'
-import wu from 'wu'
+import { Map, Seq } from 'immutable'
 import { gridInit } from '@/grid'
 import Stack from '@/utilities/stack'
 import defaultState from '@/utilities/defaultState'
@@ -49,9 +48,8 @@ describe('interpreter', () => {
   })
   test('Infinite loop w/ unbounded stack growth', () => {
     const program = ['>1v', '4 2', '^3<']
-    const stackSnapshots = wu(run(program))
-      .map((state) => state.stack)
-      .enumerate()
+    const stackSnapshots = Seq(run(program))
+      .map((state, i) => [state.stack, i])
       .filter(([_, index]) => index % 8 === 0)
       .take(3)
       .map((pair) => pair[0])
