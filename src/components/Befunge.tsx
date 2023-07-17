@@ -113,7 +113,7 @@ export default function Befunge(props: Props) {
       </header>
       <main className="flex">
         {editMode === 'text' ? (
-          <TextEditor maxHeight={400} onChange={loadGrid} defaultValue={gridProgram(state.grid, state.dimensions)} />
+          <TextEditor maxHeight={500} maxWidth={600} onChange={loadGrid} defaultValue={gridProgram(state.grid, state.dimensions)} />
         ) : (
           <>
             <div>
@@ -217,8 +217,9 @@ export function Cell(props: CellProps) {
 export function TextEditor(props) {
   const ref = useRef()
   useEffect(() => {
-    // Automatically grow container to match content up til max
+    // Automatically grow container to match content
     ref.current.style.height = `${Math.min(ref.current.scrollHeight, props.maxHeight)}px`
+    ref.current.style.width = `${Math.min(ref.current.scrollWidth, props.maxWidth)}px`
   })
 
   return (
@@ -226,6 +227,7 @@ export function TextEditor(props) {
       data-testid="befunge-text-editor"
       className="h-fit w-fit resize border rounded-xl border-blue-300 p-2 font-mono"
       autoFocus
+      wrap="off"
       ref={ref}
       onChange={props.onChange}
       defaultValue={props.defaultValue}
