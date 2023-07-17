@@ -28,7 +28,10 @@ export default function Befunge(props: Props) {
   const [state, updateState] = useState({ ...defaultState, ...props.initialState })
   const [mode, setMode] = useState<Mode>('edit')
   const [editMode, setEditMode] = useState<EditMode>('text')
+
+  // Refs
   const stdinInputRef = useRef()
+  const textAreaRef = useRef()
 
   // Callbacks
   const step = useCallback(
@@ -95,9 +98,7 @@ export default function Befunge(props: Props) {
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
-        <Toggle onToggle={(toggled) => setEditMode(toggled ? 'cell' : 'text')}>
-          Edit Text/Grid 
-        </Toggle>
+        <Toggle onToggle={(toggled) => setEditMode(toggled ? 'cell' : 'text')}>Edit Text/Grid</Toggle>
         <Button
           onClick={() => {
             setMode('animate')
@@ -112,13 +113,7 @@ export default function Befunge(props: Props) {
       </header>
       <main className="flex">
         {editMode === 'text' ? (
-          <textarea
-            data-testid="befunge-text-editor"
-            className="h-fit w-fit resize border rounded-xl border-blue-300 p-2 font-mono"
-            autoFocus
-            onChange={loadGrid}
-            defaultValue={gridProgram(state.grid, state.dimensions)}
-          />
+          <TextEditor maxHeight={400} onChange={loadGrid} defaultValue={gridProgram(state.grid, state.dimensions)} />
         ) : (
           <>
             <div>
@@ -216,5 +211,24 @@ export function Cell(props: CellProps) {
         </div>
       )}
     </td>
+  )
+}
+
+export function TextEditor(props) {
+  const ref = useRef()
+  useEffect(() => {
+    // Automatically grow container to match content up til max
+    ref.current.style.height = `${Math.min(ref.current.scrollHeight, props.maxHeight)}px`
+  })
+
+  return (
+    <textarea
+      data-testid="befunge-text-editor"
+      className="h-fit w-fit resize border rounded-xl border-blue-300 p-2 font-mono"
+      autoFocus
+      ref={ref}
+      onChange={props.onChange}
+      defaultValue={props.defaultValue}
+    />
   )
 }

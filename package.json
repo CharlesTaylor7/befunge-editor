@@ -13,7 +13,7 @@
     "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch",
     "test": "jest",
     "tsc": "tsc --pretty --noEmit",
-    "format": "prettier --write ."
+    "format": "prettier --write src/"
   },
   "dependencies": {
     "immutable": "^4.0.0",
