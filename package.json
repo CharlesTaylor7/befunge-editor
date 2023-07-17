@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "homepage": "https://charlestaylor7.github.io/befunge-editor",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
