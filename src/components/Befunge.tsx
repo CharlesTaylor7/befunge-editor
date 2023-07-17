@@ -114,7 +114,7 @@ export default function Befunge(props: Props) {
         {editMode === 'text' ? (
           <textarea
             data-testid="befunge-text-editor"
-            className="h-full resize border rounded-xl border-blue-300 p-2 font-mono"
+            className="h-fit w-fit resize border rounded-xl border-blue-300 p-2 font-mono"
             autoFocus
             onChange={loadGrid}
             defaultValue={gridProgram(state.grid, state.dimensions)}
