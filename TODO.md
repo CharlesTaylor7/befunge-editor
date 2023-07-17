@@ -6,6 +6,7 @@
 - [ ] Automatic deployments:
     - Github Pages can handle CRA or a frontend only Next.js
     - Vercel can handle Next.js or CRA
+    - Convert to Vite?
 - [ ] Explain Befunge briefly in README, and link to wikipedia
 - [x] Document existing feature set, and come up with a short list of bugfixes and simple usability improvements.
 
