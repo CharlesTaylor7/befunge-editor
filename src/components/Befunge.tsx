@@ -1,31 +1,26 @@
 import type { ChangeEvent } from 'react'
 import { useCallback, useEffect, useState, useRef } from 'react'
+import * as R from 'ramda'
 
 import type { ExecutionState, Mode, EditMode } from '@/types'
 import Button from '@/components/Button'
 import Toggle from '@/components/Toggle'
+import { useAppState } from '@/context'
 import defaultState from '@/utilities/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/grid'
 import { execute, advance, pushInput } from '@/utilities/execute'
-
-type Props = {
-  initialState: Partial<ExecutionState>
-}
-
-Befunge.defaultProps = {
-  initialState: defaultState,
-}
 
 function tap<T>(val: T): T {
   console.log(val)
   return val
 }
 
-export default function Befunge(props: Props) {
+export default function Befunge() {
   // State
-  const [state, updateState] = useState({ ...defaultState, ...props.initialState })
-  const [mode, setMode] = useState<Mode>('edit')
-  const [editMode, setEditMode] = useState<EditMode>('text')
+  const [state, updateState] = useAppState<ExecutionState>(R.lensProp('execution'))
+  console.log('Befunge', 'useAppState<ExecutionState>', state)
+  const [mode, setMode] = useAppState<Mode>(R.lensProp('mode'))
+  const [editMode, setEditMode] = useAppState<EditMode>(R.lensProp('editMode'))
 
   // Refs
   const stdinInputRef = useRef<HTMLInputElement>(null)
