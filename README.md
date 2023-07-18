@@ -4,7 +4,7 @@ and instructions are programmed onto a 2d grid. Code itself is easily self-modif
 
 The best way to understand it is to open up the web app and try it for yourself: https://charlestaylor7.github.io/befunge-editor/
 
-To Learn more:
+To learn more:
 - [Wikipedia](https://en.wikipedia.org/wiki/Befunge)
 - [Esolang Wiki](https://esolangs.org/wiki/Befunge)
 - [Documention](http://www.nsl.com/papers/befunge93/befunge93.htm)
