@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "vite build",
     "deploy": "gh-pages -d dist",
     "watch-css": "tailwindcss -i tailwind.source.css -o styles/tailwind.css --watch",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "test": "jest",
-    "tsc": "tsc --pretty --noEmit",
+    "typecheck": "tsc --pretty --noEmit",
     "format": "prettier --write src/"
   },
   "dependencies": {
