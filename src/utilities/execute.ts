@@ -155,7 +155,7 @@ export function advance(state: ExecutionState): ExecutionState {
 }
 export function pushInput(state: ExecutionState, input: number | string): ExecutionState {
   if (!state.pendingInput) {
-    throw new Error()
+    throw new Error('Cannot push input before the program requests it')
   }
   if (state.pendingInput === 'Number' && typeof input !== 'number') {
     throw new Error(`Expected number input: ${input}`)

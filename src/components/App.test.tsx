@@ -13,13 +13,13 @@ describe('App', () => {
     const textArea = getByTestId('befunge-text-editor') as HTMLTextAreaElement
 
     const user = await userEvent.setup()
-    const userInput = 'abcdef\n1234'
+    const program = 'abcdef\n1234'
 
     // User fills out text area
-    await user.click(textArea)
-    await user.keyboard(userInput)
+    await user.clear(textArea)
+    await user.type(textArea, program)
     expect(textArea).toBe(document.activeElement)
-    expect(textArea.value).toEqual(userInput)
+    expect(textArea.value).toEqual(program)
 
     // Click toggle
     await user.click(getByText('Edit Text/Grid'))
@@ -27,25 +27,12 @@ describe('App', () => {
     expect(queryAllByTestId('befunge-text-editor')).toEqual([])
 
     await user.click(getByTestId('cell-input-0-0'))
-    for (const line of userInput.split('\n')) {
+    for (const line of program.split('\n')) {
       for (const input of line) {
         // You can tab through the grid cells
         expect((document.activeElement as HTMLInputElement).value).toEqual(input)
         await user.keyboard('{Tab}')
       }
     }
-  })
-
-  test.skip('Preloaded program', async () => {
-    const program = ['&>:1-:v v *_$.@', ' ^    _$>\\:^']
-    const width = program[0].length
-    const { getByTestId, queryAllByTestId } = render(
-      <App
-      //initialState={{ ...gridInit(program), }}
-      />,
-    )
-
-    const textArea = getByTestId('befunge-text-editor') as HTMLTextAreaElement
-    expect(textArea.value).toEqual(program.map((line) => line.padEnd(width, ' ')).join('\n') + '\n')
   })
 })
