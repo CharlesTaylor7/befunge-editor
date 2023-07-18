@@ -1,4 +1,5 @@
-const handleNegativeZero = (n: number) => (n === -0 ? 0 : n)
+// both 0 & -0 are equal to 0
+const handleNegativeZero = (n: number) => (n === 0 ? 0 : n)
 
 export const quotRem = (dividend: number, divisor: number) => {
   const rem = dividend % divisor
