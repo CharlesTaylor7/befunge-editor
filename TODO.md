@@ -8,8 +8,7 @@
 - [ ] Allow saving programs in local storage
 - [ ] Allow writing a name & description for each program 
 - [ ] Hover overs in the grid editor
-- [ ] way to inspect stack elements as numbers & corresponding ascii characters
-- [ ] Make grid editor able to add/remove rows & columns
+- [ ] Hosted on Github badge in top left corner
 - [x] Console for input
 - [x] Make text editor resizable
 
@@ -20,3 +19,5 @@
 - instruction set legend below editor
 - Undo & redo buttons
 - Make buttons pop
+- way to inspect stack elements as numbers & corresponding ascii characters
+- Make grid editor able to add/remove rows & columns
