@@ -19,7 +19,6 @@ const initialAppState: AppState = {
 
 export default function App() {
   const hook = useState(initialAppState)
-  console.log(hook)
   return (
     <AppContext.Provider value={hook}>
       <Befunge />

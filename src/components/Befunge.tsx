@@ -18,7 +18,7 @@ function tap<T>(val: T): T {
 export default function Befunge() {
   // State
   const [state, updateState] = useAppState<ExecutionState>(R.lensProp('execution'))
-  console.log('Befunge', 'useAppState<ExecutionState>', state)
+  console.log('Render', state)
   const [mode, setMode] = useAppState<Mode>(R.lensProp('mode'))
   const [editMode, setEditMode] = useAppState<EditMode>(R.lensProp('editMode'))
 
