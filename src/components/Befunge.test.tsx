@@ -27,8 +27,8 @@ describe('Befunge', () => {
     expect(queryAllByTestId('befunge-text-editor')).toEqual([])
 
     await user.click(getByTestId('cell-input-0-0'))
-    for (let line of userInput.split('\n')) {
-      for (let input of line) {
+    for (const line of userInput.split('\n')) {
+      for (const input of line) {
         // You can tab through the grid cells
         expect((document.activeElement as HTMLInputElement).value).toEqual(input)
         await user.keyboard('{Tab}')

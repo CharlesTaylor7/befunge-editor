@@ -47,17 +47,18 @@ export default function Befunge(props: Props) {
   )
 
   const handleStdinInput = useCallback(() => {
-    let value = stdinInputRef.current?.value
+    const value = stdinInputRef.current?.value
     if (!stdinInputRef.current || !value || value.length === 0) {
       return
     }
-    const input: number | string = state.pendingInput === 'Number' ? Number(value) : value
 
     stdinInputRef.current.value = ''
     stdinInputRef.current.blur()
 
-
-    updateState((state) => advance(pushInput(state, input)))
+    updateState((state) => {
+      const input: number | string = state.pendingInput === 'Number' ? Number(value) : value
+      return advance(pushInput(state, input))
+    })
   }, [updateState])
 
   const handleGridInput = useCallback(
@@ -94,7 +95,7 @@ export default function Befunge(props: Props) {
     }
     const intervalId = setInterval(step, 250)
     return () => clearInterval(intervalId)
-  }, [mode, state.pendingInput])
+  }, [mode, state.pendingInput, step])
 
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">

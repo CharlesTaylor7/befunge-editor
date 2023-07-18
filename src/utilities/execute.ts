@@ -107,12 +107,13 @@ export function execute(state, args = {}) {
         },
         state,
       )
-    case 'p':
+    case 'p':{
       const [y, x, value, rest] = Stack.pop(3, state.stack)
       return R.pipe(
         R.over(R.lensProp('grid'), (grid) => gridUpdate(grid, { x, y }, value)),
         R.set(R.lensProp('stack'), rest),
       )(state)
+    }
     case '&':
       return R.set(R.lensProp('pendingInput'), 'Number')(state)
     case '~':
@@ -121,13 +122,14 @@ export function execute(state, args = {}) {
       return R.set(R.lensProp('executionComplete'), true, state)
     case ' ':
       return state
-    default:
+    default: {
       const message = `Unrecognized instruction: '${instruction}'.`
       if (strict) {
         throw new Error(message)
       } else {
         console.error(message)
       }
+    }
   }
 }
 
