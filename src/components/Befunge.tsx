@@ -18,8 +18,8 @@ function tap<T>(val: T): T {
 export default function Befunge() {
   // State
   const [state, updateState] = useAppState('execution')
-  console.log('Render', state)
   const [mode, setMode] = useAppState('mode')
+  console.log('mode', mode)
   const [editMode, setEditMode] = useAppState('editMode')
 
   // Refs
@@ -49,6 +49,7 @@ export default function Befunge() {
     stdinInputRef.current.blur()
 
     updateState((state) => {
+      if (!state.pendingInput) return state
       const input: number | string = state.pendingInput === 'Number' ? Number(value) : value
       return advance(pushInput(state, input))
     })
@@ -76,12 +77,6 @@ export default function Befunge() {
   }, [updateState])
 
   // Effects
-  useEffect(() => {
-    if (state.executionComplete) {
-      setMode('edit')
-    }
-  }, [state.executionComplete, setMode])
-
   useEffect(() => {
     if (mode !== 'animate' || state.pendingInput) {
       return
@@ -130,7 +125,7 @@ export default function Befunge() {
         </select>
       </header>
       <main className="flex flex-col items-center w-4/5 gap-5">
-        {editMode === 'text' ? (
+        {editMode === 'text' && mode !== 'edit' ? (
           <TextEditor
             maxHeight={500}
             maxWidth={600}
