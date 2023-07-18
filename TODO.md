@@ -1,6 +1,6 @@
+- [ ] CI for tests + typescript + eslint
 - [x] Fix Typescript errors
 - [x] Fix eslint errors
-- [ ] CI for tests + typescript + eslint
 - [x] Evaluate testsuite. Eliminate low value tests, fix high value ones.
   - [x] Allow Jest to test js or ts files
   - [x] Test the next.js frontend
@@ -13,6 +13,7 @@
 
 
 # Features
+- [ ] Mobile friendly
 - Prepopulate app with dropdown of interesting befunge programs.
   - [x] Factorial
 - Allow saving programs in local storage
