@@ -17,10 +17,10 @@ function tap<T>(val: T): T {
 
 export default function Befunge() {
   // State
-  const [state, updateState] = useAppState<ExecutionState>(R.lensProp('execution'))
+  const [state, updateState] = useAppState('execution')
   console.log('Render', state)
-  const [mode, setMode] = useAppState<Mode>(R.lensProp('mode'))
-  const [editMode, setEditMode] = useAppState<EditMode>(R.lensProp('editMode'))
+  const [mode, setMode] = useAppState('mode')
+  const [editMode, setEditMode] = useAppState('editMode')
 
   // Refs
   const stdinInputRef = useRef<HTMLInputElement>(null)
@@ -90,8 +90,8 @@ export default function Befunge() {
     return () => clearInterval(intervalId)
   }, [mode, state.pendingInput, step])
 
-  const [programIndex, setProgramIndex] = useAppState<number>(R.lensProp('activeProgramIndex'))
-  const [programs] = useAppState<Program[]>(R.lensProp('programs'))
+  const [programIndex, setProgramIndex] = useAppState('activeProgramIndex')
+  const [programs] = useAppState('programs')
   useEffect(() => {
     updateState((state) => ({ ...state, ...gridInit(programs[programIndex].code) }))
   }, [programIndex, updateState])
