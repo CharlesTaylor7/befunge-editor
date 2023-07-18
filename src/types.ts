@@ -16,6 +16,7 @@ export type AppState = {
   execution: ExecutionState
   mode: Mode
   editMode: EditMode
+  activeProgramIndex: number
   programs: Program[]
 }
 

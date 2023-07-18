@@ -2,7 +2,7 @@ import type { ChangeEvent } from 'react'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import * as R from 'ramda'
 
-import type { ExecutionState, Mode, EditMode } from '@/types'
+import type { ExecutionState, Mode, EditMode, Program, Grid } from '@/types'
 import Button from '@/components/Button'
 import Toggle from '@/components/Toggle'
 import { useAppState } from '@/context'
@@ -80,7 +80,7 @@ export default function Befunge() {
     if (state.executionComplete) {
       setMode('edit')
     }
-  }, [state.executionComplete])
+  }, [state.executionComplete, setMode])
 
   useEffect(() => {
     if (mode !== 'animate' || state.pendingInput) {
@@ -89,6 +89,12 @@ export default function Befunge() {
     const intervalId = setInterval(step, 250)
     return () => clearInterval(intervalId)
   }, [mode, state.pendingInput, step])
+
+  const [programIndex, setProgramIndex] = useAppState<number>(R.lensProp('activeProgramIndex'))
+  const [programs] = useAppState<Program[]>(R.lensProp('programs'))
+  useEffect(() => {
+    updateState((state) => ({ ...state, ...gridInit(programs[programIndex].code) }))
+  }, [programIndex, updateState])
 
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
@@ -113,7 +119,7 @@ export default function Befunge() {
         >
           Step
         </Button>
-        <select></select>
+        //<select></select>
       </header>
       <main className="flex flex-wrap w-4/5 gap-5">
         {editMode === 'text' ? (

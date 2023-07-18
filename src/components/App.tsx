@@ -11,6 +11,7 @@ const initialAppState: AppState = {
   execution: defaultExecutionState,
   mode: 'edit',
   editMode: 'text',
+  activeProgramIndex: 0,
   programs: [
     { name: 'Factorial', code: ['&>:1-:v v *_$.@', ' ^    _$>\\:^'] },
     { name: 'Quine', code: ['01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@'] },
