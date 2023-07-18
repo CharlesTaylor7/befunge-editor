@@ -28,7 +28,7 @@ function completesIn<T>(n: number, iterator: Iterator<T>): T {
   let value
   for (let i = 0; i < n + 1; i++) {
     const next = iterator.next()
-    if (next.done) return (next.value || value)
+    if (next.done) return next.value || value
     value = next.value
   }
   throw new Error(`Iterator did not complete in ${n} or less steps.`)

@@ -23,8 +23,7 @@ export function gridUpdate(grid: Grid, position: Position, value: number | strin
   }
   if (typeof value === 'number') {
     return grid.set(toIndex(position), value)
-  }
-  else {
+  } else {
     throw Error()
   }
 }

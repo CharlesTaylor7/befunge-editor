@@ -6,7 +6,7 @@ import type { Grid } from '@/grid'
 export type Direction = 'Up' | 'Right' | 'Down' | 'Left'
 
 export type ExecutionState = {
-  executionPointer: { x: 0; y: 0 }
+  executionPointer: { x: number; y: number }
   heading: Direction
   // grid: { [cellId: string]: instruction }
   // where cell ids are of the form "{i}-{j}"

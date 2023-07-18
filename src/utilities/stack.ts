@@ -26,8 +26,8 @@ const pop = R.curry((num: number, stack: StackType) => {
   return result
 })
 
-
-const fromArray = (array: number[]) => array.reverse().reduce((stack: StackType, elem: number) => stack.push(elem), Stack())
+const fromArray = (array: number[]) =>
+  array.reverse().reduce((stack: StackType, elem: number) => stack.push(elem), Stack())
 
 const fromString = (str: string) => fromArray(Array.from({ length: str.length }, (_, k) => str.charCodeAt(k)))
 

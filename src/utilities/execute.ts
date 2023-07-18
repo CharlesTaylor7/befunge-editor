@@ -8,7 +8,6 @@ import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 import type { ExecutionState } from '@/utilities/defaultState'
 
-
 export function execute(state, args = {}) {
   const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
   const strict = args.strict !== undefined ? args.strict : true
@@ -107,7 +106,7 @@ export function execute(state, args = {}) {
         },
         state,
       )
-    case 'p':{
+    case 'p': {
       const [y, x, value, rest] = Stack.pop(3, state.stack)
       return R.pipe(
         R.over(R.lensProp('grid'), (grid) => gridUpdate(grid, { x, y }, value)),

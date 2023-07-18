@@ -112,13 +112,23 @@ export default function Befunge(props: Props) {
         <Button onClick={() => setMode('edit')} disabled={mode === 'edit'}>
           Edit
         </Button>
-        <Button onClick={() => {setMode('step'); step()}} >
+        <Button
+          onClick={() => {
+            setMode('step')
+            step()
+          }}
+        >
           Step
         </Button>
       </header>
       <main className="flex">
         {editMode === 'text' ? (
-          <TextEditor maxHeight={500} maxWidth={600} onChange={loadGrid} defaultValue={gridProgram(state.grid, state.dimensions)} />
+          <TextEditor
+            maxHeight={500}
+            maxWidth={600}
+            onChange={loadGrid}
+            defaultValue={gridProgram(state.grid, state.dimensions)}
+          />
         ) : (
           <>
             <div>
@@ -220,10 +230,10 @@ export function Cell(props: CellProps) {
 }
 
 type TextEditorProps = {
-  maxHeight: number,
-  maxWidth: number,
-  onChange: (e: any) => void,
-  defaultValue?: string,
+  maxHeight: number
+  maxWidth: number
+  onChange: (e: any) => void
+  defaultValue?: string
 }
 
 export function TextEditor(props: TextEditorProps) {
