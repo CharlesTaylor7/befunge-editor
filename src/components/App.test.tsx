@@ -7,15 +7,18 @@ import '@testing-library/jest-dom/extend-expect'
 import App from '@/components/App'
 import { gridInit } from '@/grid'
 
+jest.useFakeTimers()
+
 describe('App', () => {
   test('Text Editor', async () => {
     const { getByTestId, getByText, queryAllByTestId } = render(<App />)
-    const textArea = getByTestId('befunge-text-editor') as HTMLTextAreaElement
 
     const user = await userEvent.setup()
     const program = 'abcdef\n1234'
 
     // User fills out text area
+    await user.click(getByText('Edit Text/Grid'))
+    const textArea = getByTestId('befunge-text-editor') as HTMLTextAreaElement
     await user.clear(textArea)
     await user.type(textArea, program)
     expect(textArea).toBe(document.activeElement)
