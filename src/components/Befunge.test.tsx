@@ -1,7 +1,6 @@
 /**
  * @jest-environment jsdom
  */
-import React from 'react'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom/extend-expect'
@@ -11,7 +10,7 @@ import { gridInit } from '@/grid'
 describe('Befunge', () => {
   test('Text Editor', async () => {
     const { getByTestId, getByText, queryAllByTestId } = render(<Befunge />)
-    const textArea = getByTestId('befunge-text-editor')
+    const textArea = getByTestId('befunge-text-editor') as HTMLTextAreaElement
 
     const user = await userEvent.setup()
     const userInput = 'abcdef\n1234'
@@ -31,7 +30,7 @@ describe('Befunge', () => {
     for (let line of userInput.split('\n')) {
       for (let input of line) {
         // You can tab through the grid cells
-        expect(document.activeElement.value).toEqual(input)
+        expect((document.activeElement as HTMLInputElement).value).toEqual(input)
         await user.keyboard('{Tab}')
       }
     }
@@ -48,7 +47,7 @@ describe('Befunge', () => {
       />,
     )
 
-    const textArea = getByTestId('befunge-text-editor')
+    const textArea = getByTestId('befunge-text-editor') as HTMLTextAreaElement
     expect(textArea.value).toEqual(program.map((line) => line.padEnd(width, ' ')).join('\n') + '\n')
   })
 })

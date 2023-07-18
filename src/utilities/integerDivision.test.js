@@ -1,4 +1,4 @@
-import { quot, rem } from './integerDivision'
+import { quot, rem } from '@/utilities/integerDivision'
 
 describe('integerDivision', () => {
   it('handles positive numbers', () => {

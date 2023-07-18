@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as R from 'ramda'
 import Stack from '@/utilities/stack'
 import * as Random from '@/utilities/random'
@@ -5,6 +6,7 @@ import { quot, rem } from '@/utilities/integerDivision'
 import getCurrentInstruction from '@/utilities/getCurrentInstruction'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
+import type { ExecutionState } from '@/utilities/defaultState'
 
 
 export function execute(state, args = {}) {
@@ -136,7 +138,7 @@ const runBinaryOpOnStack = (op) =>
     return rest.push(head)
   })
 
-export function advance(state) {
+export function advance(state: ExecutionState): ExecutionState {
   const jumpSize = state.activeBridge ? 2 : 1
   return R.pipe(
     R.set(R.lensProp('activeBridge'), false),
@@ -150,7 +152,7 @@ export function advance(state) {
     ),
   )(state)
 }
-export function pushInput(state, input: number | string) {
+export function pushInput(state: ExecutionState, input: number | string): ExecutionState {
   if (!state.pendingInput) {
     throw new Error()
   }

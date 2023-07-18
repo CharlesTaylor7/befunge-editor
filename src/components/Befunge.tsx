@@ -18,9 +18,9 @@ Befunge.defaultProps = {
 type Mode = 'edit' | 'step' | 'animate'
 type EditMode = 'text' | 'cell'
 
-function tap(e) {
-  console.log(e)
-  return e
+function tap<T>(val: T): T {
+  console.log(val)
+  return val
 }
 
 export default function Befunge(props: Props) {
@@ -30,8 +30,7 @@ export default function Befunge(props: Props) {
   const [editMode, setEditMode] = useState<EditMode>('text')
 
   // Refs
-  const stdinInputRef = useRef()
-  const textAreaRef = useRef()
+  const stdinInputRef = useRef<HTMLInputElement>(null)
 
   // Callbacks
   const step = useCallback(
@@ -39,7 +38,7 @@ export default function Befunge(props: Props) {
       updateState((state) => {
         const executed = execute(state, { strict: false })
         if (executed.pendingInput) {
-          stdinInputRef.current.focus()
+          stdinInputRef.current?.focus()
           return executed
         }
         return advance(executed)
@@ -48,15 +47,17 @@ export default function Befunge(props: Props) {
   )
 
   const handleStdinInput = useCallback(() => {
-    let value = stdinInputRef.current.value
-    if (value.length === 0) {
+    let value = stdinInputRef.current?.value
+    if (!stdinInputRef.current || !value || value.length === 0) {
       return
     }
+    const input: number | string = state.pendingInput === 'Number' ? Number(value) : value
 
     stdinInputRef.current.value = ''
     stdinInputRef.current.blur()
 
-    updateState((state) => advance(pushInput(state, state.pendingInput === 'Number' ? Number(value) : value)))
+
+    updateState((state) => advance(pushInput(state, input)))
   }, [updateState])
 
   const handleGridInput = useCallback(
@@ -68,7 +69,7 @@ export default function Befunge(props: Props) {
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       const lines = e.target.value.split('\n')
       const last = lines.pop()
-      if (last !== '') {
+      if (last !== undefined && last !== '') {
         lines.push(last)
       }
       updateState((state) => ({ ...state, ...gridInit(lines) }))
@@ -83,7 +84,7 @@ export default function Befunge(props: Props) {
   // Effects
   useEffect(() => {
     if (state.executionComplete) {
-      setMode('cell-edit')
+      setMode('edit')
     }
   }, [state.executionComplete])
 
@@ -217,9 +218,17 @@ export function Cell(props: CellProps) {
   )
 }
 
-export function TextEditor(props) {
-  const ref = useRef()
+type TextEditorProps = {
+  maxHeight: number,
+  maxWidth: number,
+  onChange: (e: any) => void,
+  defaultValue?: string,
+}
+
+export function TextEditor(props: TextEditorProps) {
+  const ref = useRef<HTMLTextAreaElement>(null)
   useEffect(() => {
+    if (!ref.current) return
     // Automatically grow container to match content
     ref.current.style.height = `${Math.min(ref.current.scrollHeight, props.maxHeight)}px`
     ref.current.style.width = `${Math.min(ref.current.scrollWidth, props.maxWidth)}px`

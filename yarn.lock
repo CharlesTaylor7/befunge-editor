@@ -1055,11 +1055,6 @@
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-4.0.2.tgz#6286b4c7228d58ab7866d19716f3696e03a09397"
   integrity sha512-Q5vtl1W5ue16D+nIaW8JWebSSraJVlK+EthKn7e7UcD4KWsaSJ8BqGPXNaPghgtcn/fhvrN17Tv8ksUsQpiplw==
 
-"@types/wu@^2.1.42":
-  version "2.1.42"
-  resolved "https://registry.yarnpkg.com/@types/wu/-/wu-2.1.42.tgz#27ae70e38067316f24abcf81b950230449fe8bad"
-  integrity sha512-+GTq3oqVD+DY7iANRfazy8YhLlKwxIG2hTCF72W+yuCbnjZ6PSkxju/3emOZ4+lzMJ7ximpY3XnCQSBjIGbYgw==
-
 "@types/yargs-parser@*":
   version "21.0.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-21.0.0.tgz#0c60e537fa790f5f9472ed2776c2b71ec117351b"
@@ -4323,11 +4318,6 @@ ws@^8.11.0:
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
-
-wu@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/wu/-/wu-2.1.0.tgz#7e72e3fba23e0ff669ddd537e1c857d3d4b1614f"
-  integrity sha512-j+Gdt5IUK4eoLO6mrN/ZurInHacaxr/EPCvQHf1ARq6ROdKRN/aFtc0PGdH9lnRPMg6vhJOOqIYdNhMN6uWtUg==
 
 xml-name-validator@^4.0.0:
   version "4.0.0"

@@ -24,6 +24,9 @@ export function gridUpdate(grid: Grid, position: Position, value: number | strin
   if (typeof value === 'number') {
     return grid.set(toIndex(position), value)
   }
+  else {
+    throw Error()
+  }
 }
 
 function toIndex({ x, y }: Position) {
@@ -35,18 +38,15 @@ export type Dimensions = { height: number; width: number }
 type GridAndDimensions = { grid: Grid; dimensions: Dimensions }
 
 export function gridInit(program: string[]): GridAndDimensions {
-  if (typeof program === 'string') {
-    program = program.split('\n')
-  }
   const height = program.length
   const width = R.reduce(
-    R.maxBy((line) => line.length),
+    R.maxBy((line: string) => line.length),
     '',
     program,
   ).length
   const dimensions = { height, width }
 
-  let grid = Map()
+  let grid = emptyGrid
   for (let j = 0; j < height; j++) {
     const line = program[j]
     for (let i = 0; i < width; i++) {
@@ -57,7 +57,7 @@ export function gridInit(program: string[]): GridAndDimensions {
   return { grid, dimensions }
 }
 
-export const emptyGrid = Map()
+export const emptyGrid: Grid = Map()
 
 export function gridProgram(grid: Grid, dimensions: Dimensions): string {
   const array = []
