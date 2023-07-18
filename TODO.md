@@ -1,16 +1,15 @@
+- [ ] Fix Typescript errors
+- [ ] Fix eslint errors
+- [ ] CI for tests + typescript + eslint
 - [x] Evaluate testsuite. Eliminate low value tests, fix high value ones.
   - [x] Allow Jest to test js or ts files
   - [x] Test the next.js frontend
   - [x] refactor and glue together the working pieces
-- [ ] CI for testsuite
 - [x] Automatic deployments:
     - [x] Convert to Vite
-- [ ] Explain Befunge briefly in README, and link to wikipedia
+- [x] Explain Befunge briefly in README, and link to wikipedia
 - [x] Document existing feature set, and come up with a short list of bugfixes and simple usability improvements.
-
 - [x] Remove wu dep
-- [ ] Fix Typescript errors
-- [ ] Fix eslint errors
 
 
 # Features
