@@ -1,6 +1,5 @@
 import type { ChangeEvent } from 'react'
 import { useCallback, useEffect, useState, useRef } from 'react'
-import * as R from 'ramda'
 
 import type { ExecutionState, Mode, EditMode, Program, Grid } from '@/types'
 import Button from '@/components/Button'
@@ -10,16 +9,10 @@ import defaultState from '@/utilities/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/grid'
 import { execute, advance, pushInput } from '@/utilities/execute'
 
-function tap<T>(val: T): T {
-  console.log(val)
-  return val
-}
-
 export default function Befunge() {
   // State
   const [state, updateState] = useAppState('execution')
   const [mode, setMode] = useAppState('mode')
-  console.log('mode', mode)
   const [editMode, setEditMode] = useAppState('editMode')
 
   // Refs

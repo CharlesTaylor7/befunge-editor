@@ -4,35 +4,7 @@ import { Seq } from 'immutable'
 import type { ExecutionState, StackType } from '@/types'
 import { gridInit } from '@/grid'
 import Stack from '@/utilities/stack'
-import defaultState from '@/utilities/defaultState'
-import { execute, advance, pushInput } from '@/utilities/execute'
-
-type Stdin = Iterator<string | number>
-
-function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
-  let state = R.mergeRight(defaultState, gridInit(program))
-  while (!state.executionComplete) {
-    state = execute(state)
-    if (state.pendingInput) {
-      if (!stdin) {
-        throw new Error('Stdin required to run this program')
-      }
-      state = pushInput(state, stdin.next().value)
-    }
-    state = advance(state)
-    yield state
-  }
-}
-
-function completesIn<T>(n: number, iterator: Iterator<T>): T {
-  let value
-  for (let i = 0; i < n + 1; i++) {
-    const next = iterator.next()
-    if (next.done) return next.value || value
-    value = next.value
-  }
-  throw new Error(`Iterator did not complete in ${n} or less steps.`)
-}
+import { run, completesIn } from '@/utilities/evaluate'
 
 describe('interpreter', () => {
   test('Hello, World!', () => {

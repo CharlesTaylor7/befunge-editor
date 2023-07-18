@@ -8,6 +8,9 @@ import { quot, rem } from '@/utilities/integerDivision'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 
+/**
+ * Execute the current instruction of the program
+ */
 export function execute(state, args = {}) {
   const instruction = args.instruction !== undefined ? args.instruction : gridLookup(state.grid, state.executionPointer)
   const strict = args.strict !== undefined ? args.strict : true
@@ -139,6 +142,9 @@ const runBinaryOpOnStack = (op) =>
     return rest.push(head)
   })
 
+/**
+ * Advance to the next instruction in the program
+ */
 export function advance(state: ExecutionState): ExecutionState {
   const jumpSize = state.activeBridge ? 2 : 1
   return R.pipe(
@@ -153,6 +159,10 @@ export function advance(state: ExecutionState): ExecutionState {
     ),
   )(state)
 }
+
+/**
+ * Provide user input so the program can resume execution
+ */
 export function pushInput(state: ExecutionState, input: number | string): ExecutionState {
   if (!state.pendingInput) {
     throw new Error('Cannot push input before the program requests it')
