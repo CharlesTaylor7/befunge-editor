@@ -20,7 +20,7 @@ yarn
 
 Start tailwind in watch mode:
 ```bash
-yarn watch-css
+yarn tailwind --watch
 ```
 
 In a separate terminal window, run the development server:
