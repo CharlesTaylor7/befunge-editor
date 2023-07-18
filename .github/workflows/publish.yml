@@ -4,8 +4,8 @@ on:
     branches:
       - main
     paths:
-      - .github/
-      - src/
+      - .github/**
+      - src/**
       - index.html
 
 jobs:
