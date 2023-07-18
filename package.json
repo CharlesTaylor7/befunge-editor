@@ -2,9 +2,10 @@
   "name": "befunge-editor",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
   "homepage": "https://charlestaylor7.github.io/befunge-editor",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tailwind": "tailwindcss -i tailwind.source.css -o styles/tailwind.css",
