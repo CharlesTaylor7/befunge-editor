@@ -5,11 +5,16 @@ procs:
   Tailwind:
     shell: yarn tailwind --watch
 
+  Typescript:
+    shell: yarn typecheck --watch
+
+  Jest:
+    shell: yarn test --watchAll
+
   ESLint:
     shell: find src/ | entr -s 'yarn lint'
 
-  Jest:
-    shell: yarn jest --watchAll
-
-  Typescript:
-    shell: yarn typecheck --watch
+  Test Coverage:
+    # Mac only; sorry
+    shell: yarn test --coverage && open -a 'Google Chrome' coverage/lcov-report/index.html
+    autostart: false
