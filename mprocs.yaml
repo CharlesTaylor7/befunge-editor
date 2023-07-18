@@ -6,7 +6,7 @@ procs:
     shell: yarn typecheck --watch
 
   ESLint:
-    shell: find src/ | entr -s 'yarn lint --fix'
+    shell: find src/ | entr -s 'yarn lint'
 
   Dev Server :
     shell: yarn dev

@@ -125,7 +125,7 @@ export default function Befunge() {
         </select>
       </header>
       <main className="flex flex-col items-center w-4/5 gap-5">
-        {editMode === 'text' && mode !== 'edit' ? (
+        {editMode === 'text' && mode === 'edit' ? (
           <TextEditor
             maxHeight={500}
             maxWidth={600}
