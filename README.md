@@ -9,6 +9,16 @@ To learn more about befunge:
 - [Esolang Wiki](https://esolangs.org/wiki/Befunge)
 - [Documention](http://www.nsl.com/papers/befunge93/befunge93.htm)
 
+# Github Actions
+
+On every push to main, that alters source code, the code is validated against each of these  tools:
+- Jest
+- Typescript
+- ESLint
+- Prettier
+
+Then if all are succesful the a production build is created and deployed to github pages at https://charlestaylor7.github.io/befunge-editor/
+
 # Development
 This is a [React](https://www.react.dev/) project bundled and developed with [Vite](https://vitejs.dev/).
 Styling is done inline via [Tailwind](https://www.tailwindcss.com/).

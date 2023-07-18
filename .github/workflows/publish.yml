@@ -21,7 +21,6 @@ jobs:
           yarn
           yarn check-format
 
-
   lint:
     name: ESLint
     runs-on: ubuntu-latest
