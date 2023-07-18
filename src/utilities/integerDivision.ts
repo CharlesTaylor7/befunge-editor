@@ -3,8 +3,8 @@ const handleNegativeZero = (n: number) => (n === 0 ? 0 : n)
 
 export const quotRem = (dividend: number, divisor: number) => {
   const rem = dividend % divisor
-  const subtracted = dividend - rem
-  const quot = handleNegativeZero(subtracted / divisor)
+  // Subtracting the remainder gurantees the division is a whole number
+  const quot = handleNegativeZero((dividend - rem) / divisor)
   return { quot, rem }
 }
 
