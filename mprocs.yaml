@@ -1,18 +1,18 @@
 procs:
-  Dev Server :
-    shell: yarn dev
-      
-  Tailwind:
-    shell: yarn tailwind --watch
+  Jest:
+    shell: yarn test --watchAll
 
   Typescript:
     shell: yarn typecheck --watch
 
-  Jest:
-    shell: yarn test --watchAll
-
   ESLint:
     shell: find src/ | entr -s 'yarn lint'
+
+  Dev Server :
+    shell: yarn dev
+
+  Tailwind:
+    shell: yarn tailwind --watch
 
   Test Coverage:
     # Mac only; sorry
