@@ -148,7 +148,7 @@ export default function Befunge() {
                           i={i}
                           j={j}
                           value={gridLookup(state.grid, { x: i, y: j })}
-                          onChange={(e) => handleGridInput(e.target.value || ' ', i, j)}
+                          onChange={handleGridInput}
                           mode={mode}
                           executing={
                             mode !== 'edit' && state.executionPointer.x === i && state.executionPointer.y === j
@@ -193,7 +193,7 @@ type CellProps = {
   i: number
   j: number
   value: string
-  onChange: React.ChangeEventHandler<HTMLInputElement>
+  onChange: (value: string, i: number, j: number) => void
   executing: boolean
   mode: Mode
 }
@@ -217,7 +217,7 @@ export function Cell(props: CellProps) {
           type="text"
           maxLength={1}
           defaultValue={value.trim()}
-          onChange={onChange}
+          onChange={(e) => onChange(e.target.value || ' ', i, j)}
           onBlur={() => setFocus(false)}
         />
       ) : (
