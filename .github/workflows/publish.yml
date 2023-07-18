@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - .github/
+      - src/
+      - index.html
 
 jobs:
   check-format:
