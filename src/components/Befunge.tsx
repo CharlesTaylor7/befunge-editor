@@ -1,3 +1,4 @@
+import type { ChangeEvent } from 'react'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import Button from '@/components/Button'
 import Toggle from '@/components/Toggle'
@@ -232,7 +233,7 @@ export function Cell(props: CellProps) {
 type TextEditorProps = {
   maxHeight: number
   maxWidth: number
-  onChange: (e: any) => void
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
   defaultValue?: string
 }
 
