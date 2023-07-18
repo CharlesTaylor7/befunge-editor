@@ -1,8 +1,6 @@
-import type { ExecutionState } from '@/utilities/defaultState'
-import type { Grid } from '@/grid'
+import type { Location, Grid } from '@/types'
 import { gridLookup } from '@/grid'
 
-type Location = { x: number; y: number }
 type PartialState = {
   grid: Grid
   executionPointer: Location

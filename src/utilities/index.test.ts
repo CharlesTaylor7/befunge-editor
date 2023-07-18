@@ -1,10 +1,10 @@
 import * as R from 'ramda'
 import { Seq } from 'immutable'
+
+import type { ExecutionState, StackType } from '@/types'
 import { gridInit } from '@/grid'
 import Stack from '@/utilities/stack'
 import defaultState from '@/utilities/defaultState'
-import type { ExecutionState } from '@/utilities/defaultState'
-import type { StackType } from '@/utilities/stack'
 import { execute, advance, pushInput } from '@/utilities/execute'
 
 type Stdin = Iterator<string | number>

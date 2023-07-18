@@ -1,5 +1,5 @@
 # Prioritized
-- [ ] Variable speed of execution
+- [ ] Use context api so I can breakup my monolithic Befunge component
 - [ ] Prepopulate app with dropdown of interesting befunge programs.
   - [x] Factorial
   - [x] Quine
@@ -8,6 +8,7 @@
 - [ ] Allow writing a name & description for each program 
 - [ ] Hover overs in the grid editor
 - [ ] Hosted on Github badge in top left corner
+- [ ] Variable speed of execution
 - [x] Layout grid above info pane
 - [x] Console for input
 - [x] Make text editor resizable

@@ -1,10 +1,10 @@
 import type { ChangeEvent } from 'react'
 import { useCallback, useEffect, useState, useRef } from 'react'
+
+import type { ExecutionState, Mode, EditMode } from '@/types'
 import Button from '@/components/Button'
 import Toggle from '@/components/Toggle'
-
 import defaultState from '@/utilities/defaultState'
-import type { ExecutionState } from '@/utilities/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/grid'
 import { execute, advance, pushInput } from '@/utilities/execute'
 
@@ -15,9 +15,6 @@ type Props = {
 Befunge.defaultProps = {
   initialState: defaultState,
 }
-
-type Mode = 'edit' | 'step' | 'animate'
-type EditMode = 'text' | 'cell'
 
 function tap<T>(val: T): T {
   console.log(val)
@@ -121,6 +118,7 @@ export default function Befunge(props: Props) {
         >
           Step
         </Button>
+        <select></select>
       </header>
       <main className="flex flex-wrap w-4/5 gap-5">
         {editMode === 'text' ? (
