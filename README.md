@@ -37,3 +37,10 @@ In a separate terminal window, run the development server:
 ```bash
 yarn dev
 ```
+
+Optionally, there is an mprocs.yaml config file in the repo that will allow your to run all dev commands, including linting, typechecking, and testing.
+
+Steps:
+- Install [mprocs](https://github.com/pvolok/mprocs)
+- Install [entr](https://github.com/eradman/entr)
+- Run `mprocs` in the root of this project

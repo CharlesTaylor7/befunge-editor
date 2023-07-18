@@ -1,0 +1,15 @@
+procs:
+  Dev Server :
+    shell: yarn dev
+      
+  Tailwind:
+    shell: yarn tailwind --watch
+
+  ESLint:
+    shell: find src/ | entr -s 'yarn lint'
+
+  Jest:
+    shell: yarn jest --watchAll
+
+  Typescript:
+    shell: yarn typecheck --watch
