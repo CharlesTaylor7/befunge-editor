@@ -107,7 +107,7 @@ export default function Befunge() {
           Edit
         </Button>
         <Button
-          disabled={state.pendingInput}
+          disabled={Boolean(state.pendingInput)}
           onClick={() => {
             setMode('step')
             step()
