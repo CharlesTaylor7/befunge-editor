@@ -121,7 +121,7 @@ export default function Befunge(props: Props) {
           Step
         </Button>
       </header>
-      <main className="flex">
+      <main className="flex flex-wrap w-4/5 gap-5">
         {editMode === 'text' ? (
           <TextEditor
             maxHeight={500}

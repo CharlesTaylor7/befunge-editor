@@ -1,5 +1,4 @@
 # Prioritized
-- [ ] Mobile friendly
 - [ ] Variable speed of execution
 - [ ] Prepopulate app with dropdown of interesting befunge programs.
   - [x] Factorial
@@ -9,6 +8,7 @@
 - [ ] Allow writing a name & description for each program 
 - [ ] Hover overs in the grid editor
 - [ ] Hosted on Github badge in top left corner
+- [x] Layout grid above info pane
 - [x] Console for input
 - [x] Make text editor resizable
 - [x] Prevent github actions from running on Readme edits
