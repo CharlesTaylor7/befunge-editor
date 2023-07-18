@@ -1,15 +1,15 @@
 // @ts-nocheck
 import * as R from 'ramda'
+
+import type { ExecutionState } from '@/types'
 import Stack from '@/utilities/stack'
 import * as Random from '@/utilities/random'
 import { quot, rem } from '@/utilities/integerDivision'
-import getCurrentInstruction from '@/utilities/getCurrentInstruction'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
-import type { ExecutionState } from '@/utilities/defaultState'
 
 export function execute(state, args = {}) {
-  const instruction = args.instruction !== undefined ? args.instruction : getCurrentInstruction(state)
+  const instruction = args.instruction !== undefined ? args.instruction : gridLookup(state.grid, state.executionPointer)
   const strict = args.strict !== undefined ? args.strict : true
 
   if (state.pendingInput) {
