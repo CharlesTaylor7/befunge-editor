@@ -14,8 +14,9 @@
 
 
 # Features
-- Prepopulate app with interesting befunge programs.
+- Prepopulate app with dropdown of interesting befunge programs.
   - [x] Factorial
+- Allow saving programs in local storage
 - Explain befunge in-app.
   - Hover overs in the program editor
   - legend below editor
@@ -27,9 +28,9 @@
 - UI visual for Stack & stack frames.
   - way to inspect stack elements as numbers & corresponding ascii characters
 
-- Make text editor resizable
 - Make grid editor able to add/remove rows & columns
 - [x] Console for input
+- [x] Make text editor resizable
 
 # Bugs
 - [x] Naving between text editor & grid editor inserts an extra blank row of cells

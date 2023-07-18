@@ -196,7 +196,7 @@ export function Cell(props: CellProps) {
       {mode === 'edit' || focus ? (
         <input
           data-testid={`cell-input-${i}-${j}`}
-          tabIndex="1"
+          tabIndex={1}
           className="block w-full h-full text-center heading-1"
           autoFocus={focus && mode !== 'edit'}
           type="text"
