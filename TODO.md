@@ -1,5 +1,5 @@
-- [ ] Fix Typescript errors
-- [ ] Fix eslint errors
+- [x] Fix Typescript errors
+- [x] Fix eslint errors
 - [ ] CI for tests + typescript + eslint
 - [x] Evaluate testsuite. Eliminate low value tests, fix high value ones.
   - [x] Allow Jest to test js or ts files
