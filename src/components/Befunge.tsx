@@ -119,7 +119,14 @@ export default function Befunge() {
         >
           Step
         </Button>
-        //<select></select>
+        <select onChange={(e) => setProgramIndex(Number(e.target.value))}>
+          {programs.map((p, i) => (
+            <option key={i} value={i}>
+              {' '}
+              {p.name}
+            </option>
+          ))}
+        </select>
       </header>
       <main className="flex flex-wrap w-4/5 gap-5">
         {editMode === 'text' ? (

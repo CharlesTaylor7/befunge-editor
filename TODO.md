@@ -1,9 +1,5 @@
 # Prioritized
 - [ ] Use context api so I can breakup my monolithic Befunge component
-- [ ] Prepopulate app with dropdown of interesting befunge programs.
-  - [x] Factorial
-  - [x] Quine
-  - [ ] Prime Number Generator
 - [ ] Allow saving programs in local storage
 - [ ] Allow writing a name & description for each program 
 - [ ] Hover overs in the grid editor
@@ -13,6 +9,10 @@
 - [x] Console for input
 - [x] Make text editor resizable
 - [x] Prevent github actions from running on Readme edits
+- [x] Prepopulate app with dropdown of interesting befunge programs.
+  - [x] Factorial
+  - [x] Quine
+  - [ ] Prime Number Generator
 
 # Bugs
 
