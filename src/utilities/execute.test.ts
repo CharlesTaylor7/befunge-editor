@@ -7,7 +7,7 @@ describe('execute', () => {
     expect(() => execute(defaultState, { instruction: 'b' })).toThrow("Unrecognized instruction: 'b'")
   }),
     it('throws if instruction is not a string', () => {
-      expect(() => execute(defaultState, { instruction: 2 })).toThrow('Instruction is not a string')
+      expect(() => execute(defaultState, { instruction: 2 as any })).toThrow('Instruction is not a string')
     })
   it('throws if instruction is more than a single character', () => {
     expect(() => execute(defaultState, { instruction: 'too long' })).toThrow('Instruction should be a single character')

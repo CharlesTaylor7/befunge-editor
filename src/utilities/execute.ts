@@ -1,4 +1,4 @@
-// @ts-nocheck
+import type { Lens } from 'ramda'
 import * as R from 'ramda'
 
 import type { ExecutionState } from '@/types'
@@ -8,10 +8,14 @@ import { quot, rem } from '@/utilities/integerDivision'
 import move from '@/utilities/move'
 import { gridLookup, gridUpdate } from '@/grid'
 
+type Args = {
+  strict?: boolean
+  instruction?: string
+}
 /**
  * Execute the current instruction of the program
  */
-export function execute(state, args = {}) {
+export function execute(state: ExecutionState, args: Args = {}): ExecutionState {
   const instruction = args.instruction !== undefined ? args.instruction : gridLookup(state.grid, state.executionPointer)
   const strict = args.strict !== undefined ? args.strict : true
 
@@ -27,14 +31,14 @@ export function execute(state, args = {}) {
   }
 
   if (state.stringMode && instruction !== '"') {
-    return R.over(R.lensProp('stack'), Stack.push(instruction.charCodeAt(0)), state)
+    return R.over(lens('stack'), Stack.push(instruction.charCodeAt(0)), state)
   }
 
   const charCode = instruction.charCodeAt(0)
   const number = charCode - '0'.charCodeAt(0)
 
   if (number >= 0 && number < 10) {
-    return R.over(R.lensProp('stack'), Stack.push(number), state)
+    return R.over(lens('stack'), Stack.push(number), state)
   }
 
   switch (instruction) {
@@ -49,79 +53,79 @@ export function execute(state, args = {}) {
     case '%':
       return runBinaryOpOnStack((a, b) => rem(b, a))(state)
     case '!':
-      return R.over(R.lensPath(['stack', 'head']), (x) => (x === 0 ? 1 : 0), state)
+      return R.over(lens('stack'), (stack) => stack.pop().push(stack.peek() === 0 ? 1 : 0), state)
     case '`':
       return runBinaryOpOnStack((a, b) => (b > a ? 1 : 0))(state)
     case '>':
-      return R.set(R.lensProp('heading'), 'Right', state)
+      return R.set(lens('heading'), 'Right', state)
     case '<':
-      return R.set(R.lensProp('heading'), 'Left', state)
+      return R.set(lens('heading'), 'Left', state)
     case '^':
-      return R.set(R.lensProp('heading'), 'Up', state)
+      return R.set(lens('heading'), 'Up', state)
     case 'v':
-      return R.set(R.lensProp('heading'), 'Down', state)
+      return R.set(lens('heading'), 'Down', state)
     case '?':
-      return R.set(R.lensProp('heading'), Random.among('Right', 'Left', 'Up', 'Down'), state)
+      return R.set(lens('heading'), Random.among('Right', 'Left', 'Up', 'Down'), state)
     case '_':
       return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.pop()),
-        R.set(R.lensProp('heading'), Stack.peek(state.stack) !== 0 ? 'Left' : 'Right'),
+        R.over(lens('stack'), (stack) => stack.pop()),
+        R.set(lens('heading'), Stack.peek(state.stack) !== 0 ? 'Left' : 'Right'),
       )(state)
     case '|':
       return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.pop()),
-        R.set(R.lensProp('heading'), Stack.peek(state.stack) !== 0 ? 'Up' : 'Down'),
+        R.over(lens('stack'), (stack) => stack.pop()),
+        R.set(lens('heading'), Stack.peek(state.stack) !== 0 ? 'Up' : 'Down'),
       )(state)
     case '"':
-      return R.over(R.lensProp('stringMode'), (mode) => !mode, state)
+      return R.over(lens('stringMode'), (mode) => !mode, state)
     case ':':
-      return R.over(R.lensProp('stack'), (stack) => Stack.push(Stack.peek(stack), stack), state)
+      return R.over(lens('stack'), (stack) => Stack.push(Stack.peek(stack), stack), state)
     case '\\':
       return R.over(
-        R.lensProp('stack'),
+        lens('stack'),
         (stack) => {
-          const [a, b, rest] = Stack.pop(2, stack)
+          const [[a, b], rest] = Stack.pop(2, stack)
           return Stack.push(b, Stack.push(a, rest))
         },
         state,
       )
     case '$':
-      return R.over(R.lensProp('stack'), (stack) => stack.pop(), state)
+      return R.over(lens('stack'), (stack) => stack.pop(), state)
     case '.':
       return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.pop()),
-        R.over(R.lensProp('console'), (console) => console + Stack.peek(state.stack) + ' '),
+        R.over(lens('stack'), (stack) => stack.pop()),
+        R.over(lens('console'), (console) => console + Stack.peek(state.stack) + ' '),
       )(state)
     case ',':
       return R.pipe(
-        R.over(R.lensProp('stack'), (stack) => stack.pop()),
-        R.over(R.lensProp('console'), (console) => console + String.fromCharCode(Stack.peek(state.stack))),
+        R.over(lens('stack'), (stack) => stack.pop()),
+        R.over(lens('console'), (console) => console + String.fromCharCode(Stack.peek(state.stack))),
       )(state)
     case '#':
-      return R.set(R.lensProp('activeBridge'), true, state)
+      return R.set(lens('activeBridge'), true, state)
     case 'g':
       return R.over(
-        R.lensProp('stack'),
+        lens('stack'),
         (stack) => {
-          const [y, x, rest] = Stack.pop(2, stack)
+          const [[y, x], rest] = Stack.pop(2, stack)
           const value = gridLookup(state.grid, { x, y })
           return Stack.push(value.charCodeAt(0), rest)
         },
         state,
       )
     case 'p': {
-      const [y, x, value, rest] = Stack.pop(3, state.stack)
+      const [[y, x, value], rest] = Stack.pop(3, state.stack)
       return R.pipe(
-        R.over(R.lensProp('grid'), (grid) => gridUpdate(grid, { x, y }, value)),
-        R.set(R.lensProp('stack'), rest),
+        R.over(lens('grid'), (grid) => gridUpdate(grid, { x, y }, value)),
+        R.set(lens('stack'), rest),
       )(state)
     }
     case '&':
-      return R.set(R.lensProp('pendingInput'), 'Number')(state)
+      return R.set(lens('pendingInput'), 'Number')(state)
     case '~':
-      return R.set(R.lensProp('pendingInput'), 'Character')(state)
+      return R.set(lens('pendingInput'), 'Character')(state)
     case '@':
-      return R.set(R.lensProp('executionComplete'), true, state)
+      return R.set(lens('executionComplete'), true, state)
     case ' ':
       return state
     default: {
@@ -130,16 +134,18 @@ export function execute(state, args = {}) {
         throw new Error(message)
       } else {
         console.error(message)
+        return state
       }
     }
   }
 }
 
-const runBinaryOpOnStack = (op) =>
-  R.over(R.lensProp('stack'), (stack) => {
-    const [a, b, rest] = Stack.pop(2, stack)
-    const head = op(a, b)
-    return rest.push(head)
+type Op = (a: number, b: number) => number
+
+const runBinaryOpOnStack = (op: Op) =>
+  R.over(lens('stack'), (stack) => {
+    const [[a, b], rest] = Stack.pop(2, stack)
+    return Stack.push(op(a, b), rest)
   })
 
 /**
@@ -148,9 +154,9 @@ const runBinaryOpOnStack = (op) =>
 export function advance(state: ExecutionState): ExecutionState {
   const jumpSize = state.activeBridge ? 2 : 1
   return R.pipe(
-    R.set(R.lensProp('activeBridge'), false),
+    R.set(lens('activeBridge'), false),
     R.over(
-      R.lensProp('executionPointer'),
+      lens('executionPointer'),
       move({
         jumpSize,
         direction: state.heading,
@@ -181,4 +187,8 @@ export function pushInput(state: ExecutionState, input: number | string): Execut
     stack: Stack.push(input, state.stack),
     pendingInput: false,
   }
+}
+
+function lens<K extends keyof ExecutionState>(key: K): Lens<ExecutionState, ExecutionState[K]> {
+  return R.lensProp(key)
 }

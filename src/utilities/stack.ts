@@ -10,7 +10,9 @@ const isEmpty = (stack: StackType) => stack.isEmpty()
 const push = R.curry((head: number, tail: StackType) => tail.push(head))
 const peek = (stack: StackType) => stack.peek() || 0
 
-const pop = R.curry((num: number, stack: StackType) => {
+export type PopResult = [number[], StackType]
+
+function pop(num: number, stack: StackType): [number[], StackType] {
   if (stack === undefined) throw Error()
   const result = []
   for (let i = 0; i < num; i++) {
@@ -22,9 +24,8 @@ const pop = R.curry((num: number, stack: StackType) => {
     result.push(stack.peek())
     stack = stack.pop()
   }
-  result.push(stack)
-  return result
-})
+  return [result, stack] as PopResult
+}
 
 const fromArray = (array: number[]) =>
   array.reverse().reduce((stack: StackType, elem: number) => stack.push(elem), Stack())
