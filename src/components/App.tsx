@@ -9,6 +9,8 @@ import { gridInit } from '@/grid'
 
 const initialAppState: AppState = {
   execution: defaultExecutionState,
+  animationIntervalMillis: 200,
+  count: 0,
   mode: 'edit',
   editMode: 'text',
   activeProgramIndex: 0,
@@ -18,8 +20,8 @@ const initialAppState: AppState = {
   ],
 }
 
-export default function App() {
-  const hook = useState(initialAppState)
+export default function App(props: Partial<AppState>) {
+  const hook = useState({ ...initialAppState, ...props })
   return (
     <AppContext.Provider value={hook}>
       <Befunge />

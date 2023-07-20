@@ -10,17 +10,17 @@ Button.defaultProps = {
 }
 
 export default function Button(props: Props) {
-  const { onClick, children, disabled } = props
   return (
     <button
+      data-testid={props.testId}
       className={`
         border rounded p-2
-        ${disabled ? 'bg-slate-200' : 'bg-green-300'}
+        ${props.disabled ? 'bg-slate-200' : 'bg-green-300'}
       `}
-      onClick={onClick}
-      disabled={disabled}
+      onClick={props.onClick}
+      disabled={props.disabled}
     >
-      {children}
+      {props.children}
     </button>
   )
 }

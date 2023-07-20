@@ -9,11 +9,15 @@ import defaultState from '@/utilities/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/grid'
 import { execute, advance, pushInput } from '@/utilities/execute'
 
+
 export default function Befunge() {
   // State
+  const [count, setCount] = useState(0)
+  const [appCount, setAppCount] = useAppState('count')
   const [state, updateState] = useAppState('execution')
   const [mode, setMode] = useAppState('mode')
   const [editMode, setEditMode] = useAppState('editMode')
+  const [animationInterval] = useAppState('animationIntervalMillis')
 
   // Refs
   const stdinInputRef = useRef<HTMLInputElement>(null)
@@ -74,9 +78,9 @@ export default function Befunge() {
     if (mode !== 'animate' || state.pendingInput) {
       return
     }
-    const intervalId = setInterval(step, 250)
+    const intervalId = setInterval(step, animationInterval)
     return () => clearInterval(intervalId)
-  }, [mode, state.pendingInput, step])
+  }, [mode, state.pendingInput, animationInterval, step])
 
   const [programIndex, setProgramIndex] = useAppState('activeProgramIndex')
   const [programs] = useAppState('programs')
@@ -87,9 +91,15 @@ export default function Befunge() {
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
-        <Toggle onToggle={(toggled) => setEditMode(toggled ? 'cell' : 'text')}>Edit Text/Grid</Toggle>
+        <Toggle testId="toggle-editor" onToggle={(toggled) => setEditMode(toggled ? 'cell' : 'text')}>Edit Text/Grid</Toggle>
+        <span data-testid="debug" >Hook: {count}, Context: {appCount}</span>
         <Button
+          testId="animate"
+          disabled={mode === 'animate'}
           onClick={() => {
+            console.log("!!!animate clicked!!!")
+            setCount(c => c + 1)
+            setAppCount(c => c + 1)
             setMode('animate')
             restart()
           }}
