@@ -93,9 +93,6 @@ export default function Befunge() {
         <Toggle testId="toggle-editor" onToggle={(toggled) => setEditMode(toggled ? "cell" : "text")}>
           Edit Text/Grid
         </Toggle>
-        <span data-testid="debug">
-          Hook: {count}, Context: {appCount}
-        </span>
         <Button
           testId="animate"
           disabled={mode === "animate"}
