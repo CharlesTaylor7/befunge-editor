@@ -1,96 +1,96 @@
-import type { ChangeEvent } from 'react'
-import { useCallback, useEffect, useState, useRef } from 'react'
+import type { ChangeEvent } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 
-import type { ExecutionState, Mode, EditMode, Program, Grid } from '@/types'
-import Button from '@/components/Button'
-import Toggle from '@/components/Toggle'
-import { useAppState } from '@/context'
-import defaultState from '@/utilities/defaultState'
-import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/grid'
-import { execute, advance, pushInput } from '@/utilities/execute'
+import type { ExecutionState, Mode, EditMode, Program, Grid } from "@/types";
+import Button from "@/components/Button";
+import Toggle from "@/components/Toggle";
+import { useAppState } from "@/context";
+import defaultState from "@/utilities/defaultState";
+import { gridLookup, gridUpdate, gridInit, gridProgram } from "@/grid";
+import { execute, advance, pushInput } from "@/utilities/execute";
 
 export default function Befunge() {
   // State
-  const [count, setCount] = useState(0)
-  const [appCount, setAppCount] = useAppState('count')
-  const [state, updateState] = useAppState('execution')
-  const [mode, setMode] = useAppState('mode')
-  const [editMode, setEditMode] = useAppState('editMode')
-  const [animationInterval] = useAppState('animationIntervalMillis')
+  const [count, setCount] = useState(0);
+  const [appCount, setAppCount] = useAppState("count");
+  const [state, updateState] = useAppState("execution");
+  const [mode, setMode] = useAppState("mode");
+  const [editMode, setEditMode] = useAppState("editMode");
+  const [animationInterval] = useAppState("animationIntervalMillis");
 
   // Refs
-  const stdinInputRef = useRef<HTMLInputElement>(null)
+  const stdinInputRef = useRef<HTMLInputElement>(null);
 
   // Callbacks
   const step = useCallback(
     () =>
       updateState((state) => {
-        const executed = execute(state, { strict: false })
+        const executed = execute(state, { strict: false });
         if (executed.pendingInput) {
-          stdinInputRef.current?.focus()
-          return executed
+          stdinInputRef.current?.focus();
+          return executed;
         }
-        return advance(executed)
+        return advance(executed);
       }),
     [updateState],
-  )
+  );
 
   const handleStdinInput = useCallback(() => {
-    const value = stdinInputRef.current?.value
+    const value = stdinInputRef.current?.value;
     if (!stdinInputRef.current || !value || value.length === 0) {
-      return
+      return;
     }
 
-    stdinInputRef.current.value = ''
-    stdinInputRef.current.blur()
+    stdinInputRef.current.value = "";
+    stdinInputRef.current.blur();
 
     updateState((state) => {
-      if (!state.pendingInput) return state
-      const input: number | string = state.pendingInput === 'Number' ? Number(value) : value
-      return advance(pushInput(state, input))
-    })
-  }, [updateState])
+      if (!state.pendingInput) return state;
+      const input: number | string = state.pendingInput === "Number" ? Number(value) : value;
+      return advance(pushInput(state, input));
+    });
+  }, [updateState]);
 
   const handleGridInput = useCallback(
     (e: string, i: number, j: number) =>
       updateState((state) => ({ ...state, grid: gridUpdate(state.grid, { x: i, y: j }, e) })),
     [updateState],
-  )
+  );
   const loadGrid = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      const lines = e.target.value.split('\n')
-      const last = lines.pop()
-      if (last !== undefined && last !== '') {
-        lines.push(last)
+      const lines = e.target.value.split("\n");
+      const last = lines.pop();
+      if (last !== undefined && last !== "") {
+        lines.push(last);
       }
-      updateState((state) => ({ ...state, ...gridInit(lines) }))
+      updateState((state) => ({ ...state, ...gridInit(lines) }));
     },
     [updateState],
-  )
+  );
 
   const restart = useCallback(() => {
-    updateState((state) => ({ ...defaultState, grid: state.grid, dimensions: state.dimensions }))
-  }, [updateState])
+    updateState((state) => ({ ...defaultState, grid: state.grid, dimensions: state.dimensions }));
+  }, [updateState]);
 
   // Effects
   useEffect(() => {
-    if (mode !== 'animate' || state.pendingInput) {
-      return
+    if (mode !== "animate" || state.pendingInput) {
+      return;
     }
-    const intervalId = setInterval(step, animationInterval)
-    return () => clearInterval(intervalId)
-  }, [mode, state.pendingInput, animationInterval, step])
+    const intervalId = setInterval(step, animationInterval);
+    return () => clearInterval(intervalId);
+  }, [mode, state.pendingInput, animationInterval, step]);
 
-  const [programIndex, setProgramIndex] = useAppState('activeProgramIndex')
-  const [programs] = useAppState('programs')
+  const [programIndex, setProgramIndex] = useAppState("activeProgramIndex");
+  const [programs] = useAppState("programs");
   useEffect(() => {
-    updateState((state) => ({ ...state, ...gridInit(programs[programIndex].code) }))
-  }, [programIndex, updateState])
+    updateState((state) => ({ ...state, ...gridInit(programs[programIndex].code) }));
+  }, [programIndex, updateState]);
 
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
-        <Toggle testId="toggle-editor" onToggle={(toggled) => setEditMode(toggled ? 'cell' : 'text')}>
+        <Toggle testId="toggle-editor" onToggle={(toggled) => setEditMode(toggled ? "cell" : "text")}>
           Edit Text/Grid
         </Toggle>
         <span data-testid="debug">
@@ -98,25 +98,25 @@ export default function Befunge() {
         </span>
         <Button
           testId="animate"
-          disabled={mode === 'animate'}
+          disabled={mode === "animate"}
           onClick={() => {
-            console.log('!!!animate clicked!!!')
-            setCount((c) => c + 1)
-            setAppCount((c) => c + 1)
-            setMode('animate')
-            restart()
+            console.log("!!!animate clicked!!!");
+            setCount((c) => c + 1);
+            setAppCount((c) => c + 1);
+            setMode("animate");
+            restart();
           }}
         >
           Animate
         </Button>
-        <Button onClick={() => setMode('edit')} disabled={mode === 'edit'}>
+        <Button onClick={() => setMode("edit")} disabled={mode === "edit"}>
           Edit
         </Button>
         <Button
           disabled={Boolean(state.pendingInput)}
           onClick={() => {
-            setMode('step')
-            step()
+            setMode("step");
+            step();
           }}
         >
           Step
@@ -124,14 +124,14 @@ export default function Befunge() {
         <select onChange={(e) => setProgramIndex(Number(e.target.value))}>
           {programs.map((p, i) => (
             <option key={i} value={i}>
-              {' '}
+              {" "}
               {p.name}
             </option>
           ))}
         </select>
       </header>
       <main className="flex flex-col items-center w-4/5 gap-5">
-        {editMode === 'text' && mode === 'edit' ? (
+        {editMode === "text" && mode === "edit" ? (
           <TextEditor
             maxHeight={500}
             maxWidth={600}
@@ -157,7 +157,7 @@ export default function Befunge() {
                           onChange={handleGridInput}
                           mode={mode}
                           executing={
-                            mode !== 'edit' && state.executionPointer.x === i && state.executionPointer.y === j
+                            mode !== "edit" && state.executionPointer.x === i && state.executionPointer.y === j
                           }
                         />
                       ))}
@@ -174,12 +174,12 @@ export default function Befunge() {
             <input
               className={`
                 pl-3 border rounded
-                ${state.pendingInput ? 'border-red-300' : 'border-slate-300'}
+                ${state.pendingInput ? "border-red-300" : "border-slate-300"}
               `}
-              type={state.pendingInput === 'Number' ? 'number' : 'text'}
+              type={state.pendingInput === "Number" ? "number" : "text"}
               ref={stdinInputRef}
               onBlur={handleStdinInput}
-              onKeyDown={(e) => e.key === 'Enter' && handleStdinInput()}
+              onKeyDown={(e) => e.key === "Enter" && handleStdinInput()}
             />
           </p>
           <p>Stdout: {state.console}</p>
@@ -193,37 +193,37 @@ export default function Befunge() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 type CellProps = {
-  i: number
-  j: number
-  value: string
-  onChange: (value: string, i: number, j: number) => void
-  executing: boolean
-  mode: Mode
-}
+  i: number;
+  j: number;
+  value: string;
+  onChange: (value: string, i: number, j: number) => void;
+  executing: boolean;
+  mode: Mode;
+};
 
 export function Cell(props: CellProps) {
-  const { value, onChange, mode, executing, i, j } = props
-  const [focus, setFocus] = useState<boolean>(false)
+  const { value, onChange, mode, executing, i, j } = props;
+  const [focus, setFocus] = useState<boolean>(false);
   return (
     <td
       className={`
         border text-center text-ellipsis p-0 w-[40px] h-[40px]
-        ${executing ? 'bg-amber-300 border-2' : ''}
+        ${executing ? "bg-amber-300 border-2" : ""}
       `}
     >
-      {mode === 'edit' || focus ? (
+      {mode === "edit" || focus ? (
         <input
           data-testid={`cell-input-${i}-${j}`}
           tabIndex={1}
           className="block w-full h-full text-center heading-1"
-          autoFocus={focus && mode !== 'edit'}
+          autoFocus={focus && mode !== "edit"}
           type="text"
           maxLength={1}
           defaultValue={value.trim()}
-          onChange={(e) => onChange(e.target.value || ' ', i, j)}
+          onChange={(e) => onChange(e.target.value || " ", i, j)}
           onBlur={() => setFocus(false)}
         />
       ) : (
@@ -235,24 +235,24 @@ export function Cell(props: CellProps) {
         </div>
       )}
     </td>
-  )
+  );
 }
 
 type TextEditorProps = {
-  maxHeight: number
-  maxWidth: number
-  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void
-  defaultValue?: string
-}
+  maxHeight: number;
+  maxWidth: number;
+  onChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  defaultValue?: string;
+};
 
 export function TextEditor(props: TextEditorProps) {
-  const ref = useRef<HTMLTextAreaElement>(null)
+  const ref = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
-    if (!ref.current) return
+    if (!ref.current) return;
     // Automatically grow container to match content
-    ref.current.style.height = `${Math.min(ref.current.scrollHeight, props.maxHeight)}px`
-    ref.current.style.width = `${Math.min(ref.current.scrollWidth, props.maxWidth)}px`
-  })
+    ref.current.style.height = `${Math.min(ref.current.scrollHeight, props.maxHeight)}px`;
+    ref.current.style.width = `${Math.min(ref.current.scrollWidth, props.maxWidth)}px`;
+  });
 
   return (
     <textarea
@@ -264,5 +264,5 @@ export function TextEditor(props: TextEditorProps) {
       onChange={props.onChange}
       defaultValue={props.defaultValue}
     />
-  )
+  );
 }

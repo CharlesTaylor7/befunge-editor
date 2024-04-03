@@ -1,10 +1,8 @@
 export function tap<T>(x: T, tag?: string): T {
   if (tag) {
-    console.log(tag, x)
+    console.log(tag, x);
   } else {
-    console.log(x)
+    console.log(x);
   }
-  return x
+  return x;
 }
-
-
