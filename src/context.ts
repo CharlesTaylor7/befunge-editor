@@ -16,19 +16,18 @@ const setters: Map<string, Setter<any>> = new Map()
 function makeSetter<T>(setState: any, lens: Lens<AppState, T>, field: string): Setter<T> {
   return (inner: T | Endo<T>) => {
     if (field == 'count') {
-      console.log("inner", typeof inner, inner)
+      console.log('inner', typeof inner, inner)
     }
     if (typeof inner == 'function') {
-      setState(state => {
+      setState((state) => {
         if (field == 'count') {
-          return tap(R.over(lens, inner as Endo<T>, tap(state, "before set")), "after set")
-        }
-        else {
+          return tap(R.over(lens, inner as Endo<T>, tap(state, 'before set')), 'after set')
+        } else {
           return R.over(lens, inner as Endo<T>, state)
         }
       })
     } else {
-      setState(state => R.set(lens, inner, state))
+      setState((state) => R.set(lens, inner, state))
     }
   }
 }

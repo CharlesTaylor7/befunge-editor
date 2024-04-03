@@ -9,7 +9,6 @@ import defaultState from '@/utilities/defaultState'
 import { gridLookup, gridUpdate, gridInit, gridProgram } from '@/grid'
 import { execute, advance, pushInput } from '@/utilities/execute'
 
-
 export default function Befunge() {
   // State
   const [count, setCount] = useState(0)
@@ -91,15 +90,19 @@ export default function Befunge() {
   return (
     <div className="w-screen h-screen flex flex-col gap-10 items-center">
       <header className="flex gap-5 mt-10">
-        <Toggle testId="toggle-editor" onToggle={(toggled) => setEditMode(toggled ? 'cell' : 'text')}>Edit Text/Grid</Toggle>
-        <span data-testid="debug" >Hook: {count}, Context: {appCount}</span>
+        <Toggle testId="toggle-editor" onToggle={(toggled) => setEditMode(toggled ? 'cell' : 'text')}>
+          Edit Text/Grid
+        </Toggle>
+        <span data-testid="debug">
+          Hook: {count}, Context: {appCount}
+        </span>
         <Button
           testId="animate"
           disabled={mode === 'animate'}
           onClick={() => {
-            console.log("!!!animate clicked!!!")
-            setCount(c => c + 1)
-            setAppCount(c => c + 1)
+            console.log('!!!animate clicked!!!')
+            setCount((c) => c + 1)
+            setAppCount((c) => c + 1)
             setMode('animate')
             restart()
           }}
