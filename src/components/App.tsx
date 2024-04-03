@@ -21,7 +21,7 @@ const initialAppState: AppState = {
 export default function App(props: Partial<AppState>) {
   const hook = useState({ ...initialAppState, ...props });
   useEffect(() => {
-    Alpine.store('legacy', hook[0]); 
+    const { execution, activeProgramIndex } = hook[0];
   }, []);
   return (
     <AppContext.Provider value={hook}>
