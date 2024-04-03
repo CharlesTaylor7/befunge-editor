@@ -24,3 +24,4 @@
 - Make buttons pop
 - way to inspect stack elements as numbers & corresponding ascii characters
 - Make grid editor able to add/remove rows & columns
+- Port to something easier to use. Leaning towards Alpine
