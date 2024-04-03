@@ -6,16 +6,13 @@ procs:
     shell: yarn typecheck --watch
 
   ESLint:
-    shell: find src/ | entr -s 'yarn lint'
+    shell: watchexec -c -e js,ts,tsx,jsx -- yarn lint
 
   Dev Server :
     shell: yarn dev
 
   Tailwind:
     shell: yarn tailwind --watch
-
-  Prettier:
-    shell: find src/ | entr -s 'yarn format'
 
   Test Coverage:
     # Mac only; sorry
