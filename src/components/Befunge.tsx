@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState, useRef } from "react";
 
-import type { ExecutionState, Mode, EditMode, Program, Grid } from "@/types";
+import type { Mode } from "@/types";
 import Button from "@/components/Button";
 import Toggle from "@/components/Toggle";
 import { useAppState } from "@/context";
@@ -11,8 +11,6 @@ import { execute, advance, pushInput } from "@/utilities/execute";
 
 export default function Befunge() {
   // State
-  const [count, setCount] = useState(0);
-  const [appCount, setAppCount] = useAppState("count");
   const [state, updateState] = useAppState("execution");
   const [mode, setMode] = useAppState("mode");
   const [editMode, setEditMode] = useAppState("editMode");
@@ -88,18 +86,14 @@ export default function Befunge() {
   }, [programIndex, updateState]);
 
   return (
-    <div className="w-screen h-screen flex flex-col gap-10 items-center">
+    <div className="">
       <header className="flex gap-5 mt-10">
-        <Toggle testId="toggle-editor" onToggle={(toggled) => setEditMode(toggled ? "cell" : "text")}>
+        <Toggle onToggle={(toggled) => setEditMode(toggled ? "cell" : "text")}>
           Edit Text/Grid
         </Toggle>
         <Button
-          testId="animate"
           disabled={mode === "animate"}
           onClick={() => {
-            console.log("!!!animate clicked!!!");
-            setCount((c) => c + 1);
-            setAppCount((c) => c + 1);
             setMode("animate");
             restart();
           }}

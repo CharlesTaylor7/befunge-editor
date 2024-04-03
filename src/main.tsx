@@ -8,8 +8,6 @@ import "@/styles/tailwind.css";
 // make Alpine on window available for better DX
 window.Alpine = Alpine;
 
-Alpine.start();
-
 ReactDOM.createRoot(document.getElementById("legacy-root")!).render(
   <React.StrictMode>
     <App />

@@ -1,3 +1,7 @@
+## Porting to Alpine
+- Duplicate existing ui elements, and sync the state bidirectionally
+
+### Old
 # Prioritized
 - [ ] Allow saving programs in local storage
 - [ ] Allow writing a name & description for each program 
@@ -24,4 +28,3 @@
 - Make buttons pop
 - way to inspect stack elements as numbers & corresponding ascii characters
 - Make grid editor able to add/remove rows & columns
-- Port to something easier to use. Leaning towards Alpine

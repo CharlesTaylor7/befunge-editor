@@ -13,9 +13,12 @@ export type Program = {
 };
 
 export type AppState = {
+  animationIntervalMillis: number;
   execution: ExecutionState;
   mode: Mode;
   editMode: EditMode;
+  // just a boolean reflection of editMode
+  gridEnabled: boolean;
   activeProgramIndex: number;
   programs: Program[];
 };

@@ -1,18 +1,16 @@
-import type { Context } from "react";
-import { createContext, useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { AppState } from "@/types";
 import { AppContext } from "@/context";
 import defaultExecutionState from "@/utilities/defaultState";
 import Befunge from "@/components/Befunge";
-import { gridInit } from "@/grid";
 
 const initialAppState: AppState = {
   execution: defaultExecutionState,
   animationIntervalMillis: 200,
-  count: 0,
   mode: "edit",
   editMode: "text",
+  gridEnabled: false,
   activeProgramIndex: 0,
   programs: [
     { name: "Factorial", code: ["&>:1-:v v *_$.@", " ^    _$>\\:^"] },
@@ -22,6 +20,9 @@ const initialAppState: AppState = {
 
 export default function App(props: Partial<AppState>) {
   const hook = useState({ ...initialAppState, ...props });
+  useEffect(() => {
+    Alpine.store('legacy', hook[0]); 
+  }, []);
   return (
     <AppContext.Provider value={hook}>
       <Befunge />
