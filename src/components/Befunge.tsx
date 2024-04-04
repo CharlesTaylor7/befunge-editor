@@ -2,20 +2,11 @@ import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState, useRef } from "react";
 
 import type { Mode } from "@/types";
-import Button from "@/components/Button";
-import Toggle from "@/components/Toggle";
-import { useAppState } from "@/context";
-import defaultState from "@/utilities/defaultState";
+import {initialExecutionState as defaultState } from "@/utilities/defaultState";
 import { gridLookup, gridUpdate, gridInit, gridProgram } from "@/grid";
 import { execute, advance, pushInput } from "@/utilities/execute";
 
 export default function Befunge() {
-  // State
-  const [state, updateState] = useAppState("execution");
-  const [mode, setMode] = useAppState("mode");
-  const [editMode, setEditMode] = useAppState("editMode");
-  const [animationInterval] = useAppState("animationIntervalMillis");
-
   // Refs
   const stdinInputRef = useRef<HTMLInputElement>(null);
 

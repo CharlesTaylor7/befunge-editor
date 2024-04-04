@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import type { AppState } from "@/types";
 import { AppContext } from "@/context";
@@ -12,17 +12,10 @@ const initialAppState: AppState = {
   editMode: "text",
   gridEnabled: false,
   activeProgramIndex: 0,
-  programs: [
-    { name: "Factorial", code: ["&>:1-:v v *_$.@", " ^    _$>\\:^"] },
-    { name: "Quine", code: ["01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@"] },
-  ],
-};
+  };
 
 export default function App(props: Partial<AppState>) {
   const hook = useState({ ...initialAppState, ...props });
-  useEffect(() => {
-    const { execution, activeProgramIndex } = hook[0];
-  }, []);
   return (
     <AppContext.Provider value={hook}>
       <Befunge />

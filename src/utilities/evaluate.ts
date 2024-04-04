@@ -1,14 +1,14 @@
 import type { ExecutionState, StackType } from "@/types";
 import { gridInit } from "@/grid";
 import Stack from "@/utilities/stack";
-import defaultState from "@/utilities/defaultState";
+import {initialExecutionState} from "@/utilities/defaultState";
 import { execute, advance, pushInput } from "@/utilities/execute";
 
 export type Stdin = Iterator<string | number>;
 
 export function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
   let state = {
-    ...defaultState,
+    ...initialExecutionState,
     ...gridInit(program),
   };
   while (!state.executionComplete) {

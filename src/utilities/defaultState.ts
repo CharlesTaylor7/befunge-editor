@@ -1,8 +1,14 @@
-import type { ExecutionState } from "@/types";
+import type { ExecutionState, Program } from "@/types";
 import Stack from "@/utilities/stack";
 import { emptyGrid } from "@/grid";
 
-const defaultState: ExecutionState = {
+export const initialPrograms: Array<Program> = [
+    { name: "Factorial", code: ["&>:1-:v v *_$.@", " ^    _$>\\:^"] },
+    { name: "Quine", code: ["01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@"] },
+  ];
+
+
+export const initialExecutionState: ExecutionState = {
   executionPointer: { x: 0, y: 0 },
   // type heading = 'Up' | 'Right' | 'Down' | 'Left'
   heading: "Right",
@@ -19,5 +25,3 @@ const defaultState: ExecutionState = {
   // false | 'Number' | 'Character'
   pendingInput: false,
 };
-
-export default defaultState;

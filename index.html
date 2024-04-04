@@ -5,18 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/tailwind.css" />
   </head>
-  <body 
-    class="w-screen h-screen flex flex-col gap-10 items-center"
-    x-data
-  >
+  <body class="w-screen h-screen flex flex-col gap-10 items-center" x-data="{ programText: '&>:1-:v v *_$.@\n^_$>\:^'}">
     <header class="flex gap-5 mt-10">
       <label data-testid="toggle-editor" class="relative inline-flex items-center cursor-pointer">
         <input type="checkbox" class="peer sr-only" value="" x-model="$store.gridEnabled" />
         <div
           class="w-12 h-5 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-7 peer-checked:after:border-white after:content-[''] after:absolute after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all border-gray-600 peer-checked:bg-blue-600"
-        >
-        </div>
+        ></div>
         <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Edit Text/Grid</span>
       </label>
       <button class="border rounded p-2 bg-green-300">Animate</button>
@@ -27,7 +24,22 @@
         <option value="1">Quine</option>
       </select>
     </header>
-    <div id="legacy-root"></div>
+    <main class="flex flex-col items-center w-4/5 gap-5">
+      <textarea
+        class="h-fit w-fit resize border rounded-xl border-blue-300 p-2 font-mono"
+        wrap="off"
+        style="height: 88px; width: 221px"
+        x-model="programText"
+      >
+      </textarea>
+      <div class="flex flex-col mx-4">
+        <p><label>Stdin: </label><input class="pl-3 border rounded border-slate-300" type="text" /></p>
+        <p>Stdout:</p>
+        <p>Heading: Right</p>
+        Stack:
+        <div class="flex flex-col"></div>
+      </div>
+    </main>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
