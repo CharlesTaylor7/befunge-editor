@@ -36,11 +36,10 @@
                 <template x-for="x in $store.befunge.execution.dimensions.width">
                   <td class="text-ellipsis p-0 w-[40px] h-[40px]">
                     <input 
-                      class="block w-full h-full text-center heading-1 border"
+                      class="w-full h-full text-center heading-1 border"
                       type="text" 
                       maxlength="1" 
                       x-bind:class="$store.befunge.executing({ x: x-1, y: y-1}) && 'border-primary'"
-                      x-bind:disabled="false"
                       x-bind:value="$store.befunge.lookup({ x: x-1, y: y-1})"
                     >
                   </td>
