@@ -1,6 +1,5 @@
 import type { ExecutionState, Program } from "@/types";
 import Stack from "@/utilities/stack";
-import { emptyGrid } from "@/grid";
 
 export const initialPrograms: Array<Program> = [
     { name: "Factorial", code: ["&>:1-:v v *_$.@", " ^    _$>\\:^"] },
@@ -14,7 +13,7 @@ export const initialExecutionState: ExecutionState = {
   heading: "Right",
   // grid: { [cellId: string]: instruction }
   // where cell ids are of the form "{i}-{j}"
-  grid: emptyGrid,
+  grid: [],
   dimensions: { height: 0, width: 0 },
   // stack<int>
   stack: Stack.empty,

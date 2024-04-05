@@ -1,10 +1,8 @@
-import * as R from "ramda";
 import { Seq } from "immutable";
-
-import type { ExecutionState, StackType } from "@/types";
-import { gridInit } from "@/grid";
+import type { StackType } from "@/types";
 import Stack from "@/utilities/stack";
 import { run, completesIn } from "@/utilities/evaluate";
+import { gridLookup } from "@/grid";
 
 describe("interpreter", () => {
   test("Hello, World!", () => {
@@ -42,7 +40,7 @@ describe("interpreter", () => {
       stack: Stack.fromString("\t@,"),
     });
 
-    expect(completionState.grid.get("3-0")).toEqual("\t".charCodeAt(0));
+    expect(gridLookup(completionState.grid, {x:3,y:0})).toEqual("\t");
   });
   test("A quine", () => {
     const program = ["01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@"];

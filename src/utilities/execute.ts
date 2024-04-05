@@ -116,8 +116,8 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
       );
     case "p": {
       const [[y, x, value], rest] = Stack.pop(3, state.stack);
+      gridUpdate(state.grid, { x, y }, value);
       return R.pipe(
-        R.over(lens("grid"), (grid) => gridUpdate(grid, { x, y }, value)),
         R.set(lens("stack"), rest),
       )(state);
     }

@@ -1,6 +1,5 @@
-import type { ExecutionState, StackType } from "@/types";
+import type { ExecutionState } from "@/types";
 import { gridInit } from "@/grid";
-import Stack from "@/utilities/stack";
 import {initialExecutionState} from "@/utilities/defaultState";
 import { execute, advance, pushInput } from "@/utilities/execute";
 
