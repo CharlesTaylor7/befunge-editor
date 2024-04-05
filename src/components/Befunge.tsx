@@ -2,7 +2,7 @@ import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState, useRef } from "react";
 
 import type { Mode } from "@/types";
-import {initialExecutionState as defaultState } from "@/utilities/defaultState";
+import { initialExecutionState as defaultState } from "@/utilities/defaultState";
 import { gridLookup, gridUpdate, gridInit, gridProgram } from "@/grid";
 import { execute, advance, pushInput } from "@/utilities/execute";
 

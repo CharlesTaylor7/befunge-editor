@@ -3,7 +3,7 @@ import type { Grid } from "@/grid";
 
 export { Grid, StackType };
 
-export type Mode = { tag: "edit" } | { tag: "run", running: boolean };
+export type Mode = 'edit' | 'execute';
 export type AppState = {
   mode: Mode;
   execution: ExecutionState;

@@ -18,35 +18,44 @@
       <button class="btn btn-primary" x-on:click="$store.befunge.step()">Step</button>
       <button class="btn btn-primary" x-on:click="$store.befunge.animate()">Animate</button>
     </header>
-    <main class="flex flex-col items-center w-4/5 gap-5">
-      <textarea
-        class="resize border rounded-xl border-blue-300 p-2 font-mono h-[500px] w-[500px]"
-        wrap="off"
-        x-model="$store.befunge.programText"
-      >
-      </textarea>
-      <div x-cloak x-show="true || $store.befunge.mode.tag == 'run'">
+    <main class="swap w-4/5">
+      <input class="hidden" type="checkbox" x-model="$store.befunge.gridMode"/>
+      <div class="swap-off">
+        <textarea
+          class="resize border rounded-xl border-blue-300 p-2 font-mono h-[500px] w-full"
+          wrap="off"
+          x-model="$store.befunge.programText"
+        >
+        </textarea>
+      </div>
+      <div class="swap-on flex flex-col items-center">
         <table class="self-center table-fixed border-separate border-2 border-blue-200">
           <tbody>
-            <template x-for="line in $store.befunge.programText.split('\n')">
+            <template x-for="y in $store.befunge.execution.dimensions.height">
               <tr>
-                <template x-for="i in $store.befunge.execution.dimensions.width">
-                  <td class="border text-center text-ellipsis p-0 w-[40px] h-[40px]">
-                    <div class="block w-full h-full text-center heading-1" x-text="i">
-                    </div>
+                <template x-for="x in $store.befunge.execution.dimensions.width">
+                  <td class="text-ellipsis p-0 w-[40px] h-[40px]">
+                    <input 
+                      class="block w-full h-full text-center heading-1 border"
+                      type="text" 
+                      maxlength="1" 
+                      x-bind:class="$store.befunge.executing({ x: x-1, y: y-1}) && 'border-primary'"
+                      x-bind:disabled="false"
+                      x-bind:value="$store.befunge.lookup({ x: x-1, y: y-1})"
+                    >
                   </td>
                 </template>
               </tr>
             </template>
           </tbody>
         </table>
-      </div>
-      <div class="flex flex-col mx-4">
-        <p><label>Stdin: </label><input class="pl-3 border rounded border-slate-300" type="text" /></p>
-        <p>Stdout:</p>
-        <p>Heading: Right</p>
-        Stack:
-        <div class="flex flex-col"></div>
+        <div class="flex flex-col mx-4">
+          <p><label>Stdin: </label><input class="pl-3 border rounded border-slate-300" type="text" /></p>
+          <p>Stdout:</p>
+          <p>Heading: Right</p>
+          Stack:
+          <div class="flex flex-col"></div>
+        </div>
       </div>
     </main>
     <script type="module" src="/src/main.tsx"></script>
