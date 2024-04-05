@@ -1,5 +1,11 @@
-## Porting to Alpine
+## Porting to Alpine + Redesign
+- pause, step, and play for execution
+- able to buffer inputs
+
+- Text area for input, grid for execution
+
 - Duplicate existing ui elements, and sync the state bidirectionally
+- 
 
 ### Old
 # Prioritized

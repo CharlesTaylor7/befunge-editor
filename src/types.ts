@@ -3,24 +3,20 @@ import type { Grid } from "@/grid";
 
 export { Grid, StackType };
 
+export type Mode = { tag: "edit" } | { tag: "run", running: boolean };
+export type AppState = {
+  mode: Mode;
+  execution: ExecutionState;
+  programs: Program[];
+  programText: string;
+};
+
+
 export type Location = { x: number; y: number };
-export type Mode = "edit" | "step" | "animate";
-export type EditMode = "text" | "cell";
 export type Program = {
   code: string[];
   name: string;
   description?: string;
-};
-
-export type AppState = {
-  animationIntervalMillis: number;
-  execution: ExecutionState;
-  mode: Mode;
-  editMode: EditMode;
-  // just a boolean reflection of editMode
-  gridEnabled: boolean;
-  activeProgramIndex: number;
-  programs: Program[];
 };
 
 export type Direction = "Up" | "Right" | "Down" | "Left";

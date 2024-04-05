@@ -1,7 +1,5 @@
 module.exports = {
-  content: ['src/components/**/*.tsx'],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
+  content: ['index.html'],
+  themes: ['dark'],
+  plugins: [require('daisyui')],
 }

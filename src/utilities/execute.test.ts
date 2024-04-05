@@ -1,5 +1,5 @@
 import { execute } from "@/utilities/execute";
-import defaultState from "@/utilities/defaultState";
+import { initialExecutionState as defaultState } from "@/utilities/defaultState";
 import Stack from "@/utilities/stack";
 
 describe("execute", () => {

@@ -1,9 +1,25 @@
-import Alpine from "alpinejs";
 import { initialPrograms, initialExecutionState } from "@/utilities/defaultState";
+import Alpine from "alpinejs";
+import type { AppState } from '@/types';
 
-window.Alpine = Alpine;
+Alpine.store('befunge', {
+  execution: initialExecutionState,
+  mode: { tag: 'edit' },
+  programs: initialPrograms,
+  programText: initialPrograms[0].code.join('\n'),
 
-Alpine.store('execution', initialExecutionState);
-Alpine.store('activeProgramIndex', 0);
+  changeProgram(index: number) {
+    this.programText = this.programs[index].code.join('\n');
+  },
+  edit() {
+    this.mode = { tag: 'edit'};
+  },
+  step() {
+  },
+  animate() {
+  },
+} as AppState);
 
 Alpine.start();
+
+window.Alpine = Alpine;
