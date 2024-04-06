@@ -11,7 +11,8 @@ Alpine.store('befunge', {
   
   programs: initialPrograms,
   programText: initialPrograms[0].code.join('\n'),
-  paused: false,
+   
+  paused: true,
 
   changeProgram(index: number) {
     this.programText = this.programs[index].code.join('\n');
@@ -41,6 +42,9 @@ Alpine.store('befunge', {
   },
 
   step() {
+    if (this.execution.pendingInput) {
+      return;
+    }
     if (this.mode !== 'execute') {
       this.initExecuteMode();
     }
