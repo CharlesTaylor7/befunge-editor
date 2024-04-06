@@ -21,7 +21,12 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
   const strict = args.strict !== undefined ? args.strict : true;
 
   if (state.pendingInput) {
-    throw new Error("cannot execute while input pending");
+    if (strict) {
+      throw new Error("cannot execute while input pending");
+    }
+    else {
+      return state;
+    }
   }
 
   if (typeof instruction !== "string") {
@@ -122,9 +127,9 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
       )(state);
     }
     case "&":
-      return R.set(lens("pendingInput"), "Number")(state);
+      return R.set(lens("pendingInput"), "number")(state);
     case "~":
-      return R.set(lens("pendingInput"), "Character")(state);
+      return R.set(lens("pendingInput"), "text")(state);
     case "@":
       return R.set(lens("executionComplete"), true, state);
     case " ":
@@ -170,22 +175,29 @@ export function advance(state: ExecutionState): ExecutionState {
 /**
  * Provide user input so the program can resume execution
  */
-export function pushInput(state: ExecutionState, input: number | string): ExecutionState {
+export function pushInput(state: ExecutionState, input: string): ExecutionState {
   if (!state.pendingInput) {
     throw new Error("Cannot push input before the program requests it");
   }
-  if (state.pendingInput === "Number" && typeof input !== "number") {
-    throw new Error(`Expected number input: ${input}`);
+  let value: number;
+  if (state.pendingInput === "number") {
+    value = parseInt(input);
   }
-  if (state.pendingInput === "Character" && (typeof input !== "string" || input.length !== 1)) {
-    throw new Error(`Expected char input: ${input}`);
+  else if (state.pendingInput === "text") {
+    if (input.length === 1) {
+      value = input.charCodeAt(0);
+    }
+    else {
+      throw new Error(`Expected single character input: ${input}`);
+    }
   }
-  if (typeof input === "string") {
-    input = input.charCodeAt(0);
+  else {
+    throw new Error(`Invalid input type: ${state.pendingInput}`);
   }
+
   return {
     ...state,
-    stack: Stack.push(input, state.stack),
+    stack: Stack.push(value, state.stack),
     pendingInput: false,
   };
 }

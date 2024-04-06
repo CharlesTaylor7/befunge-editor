@@ -1,7 +1,6 @@
 import { initialPrograms, initialExecutionState } from "@/utilities/defaultState";
 import Alpine from "alpinejs";
 import type { AppState } from '@/types';
-import { initialExecutionState as defaultState } from "@/utilities/defaultState";
 import { gridLookup, gridUpdate, gridInit, gridProgram, Position } from "@/grid";
 import { execute, advance, pushInput } from "@/utilities/execute";
 
@@ -46,7 +45,10 @@ Alpine.store('befunge', {
       this.initExecuteMode();
     }
     this.paused = true;
-    this.execution = execute(this.execution);
+    this.execution = execute(this.execution, { strict: false });
+    if (this.execution.pendingInput) {
+      return;
+    }
     this.execution = advance(this.execution);
   },
 
@@ -60,6 +62,12 @@ Alpine.store('befunge', {
   executing(position: Position) {
     return this.mode === 'execute' && this.execution.executionPointer.x == position.x && this.execution.executionPointer.y == position.y;
   },
+
+  pushInput(event: InputEvent) {
+    console.log(typeof event.target.value);
+    this.execution = pushInput(this.execution, event.target.value);
+    this.execution = advance(this.execution);
+  }
 } as AppState);
 
 Alpine.start();

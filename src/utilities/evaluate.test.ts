@@ -49,24 +49,28 @@ describe("interpreter", () => {
     });
   });
   test("A factorial program", () => {
-    const program = ["&>:1-:v v *_$.@", " ^    _$>\\:^"];
-    // 0 factorial does not work
-    /*
-    expect(completesIn(1000, run(program, [0].values()))).toMatchObject({ console: '1 ', })
-    */
-    expect(completesIn(1000, run(program, [1].values()))).toMatchObject({
+    const program = [
+      "&v    >:1-:v v *_$.@",
+      " :    ^    _$>\\:^",
+      "v_1.@",
+      ">     ^",
+    ];
+    expect(completesIn(1000, run(program, ["0"].values()))).toMatchObject({ 
+      console: '1 ', 
+    })
+    expect(completesIn(1000, run(program, ["1"].values()))).toMatchObject({
       console: "1 ",
     });
-    expect(completesIn(1000, run(program, [2].values()))).toMatchObject({
+    expect(completesIn(1000, run(program, ["2"].values()))).toMatchObject({
       console: "2 ",
     });
-    expect(completesIn(1000, run(program, [3].values()))).toMatchObject({
+    expect(completesIn(1000, run(program, ["3"].values()))).toMatchObject({
       console: "6 ",
     });
-    expect(completesIn(1000, run(program, [4].values()))).toMatchObject({
+    expect(completesIn(1000, run(program, ["4"].values()))).toMatchObject({
       console: "24 ",
     });
-    expect(completesIn(1000, run(program, [5].values()))).toMatchObject({
+    expect(completesIn(1000, run(program, ["5"].values()))).toMatchObject({
       console: "120 ",
     });
   });

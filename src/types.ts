@@ -34,5 +34,5 @@ export type ExecutionState = {
   activeBridge: boolean;
   executionComplete: boolean;
   stringMode: boolean;
-  pendingInput: false | "Number" | "Character";
+  pendingInput: false | "text" | "number";
 };

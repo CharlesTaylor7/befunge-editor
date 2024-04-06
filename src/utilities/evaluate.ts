@@ -3,7 +3,7 @@ import { gridInit } from "@/grid";
 import {initialExecutionState} from "@/utilities/defaultState";
 import { execute, advance, pushInput } from "@/utilities/execute";
 
-export type Stdin = Iterator<string | number>;
+export type Stdin = Iterator<string>;
 
 export function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
   let state = {

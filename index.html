@@ -18,18 +18,20 @@
       <button class="btn btn-primary" x-on:click="$store.befunge.step()">Step</button>
       <button class="btn btn-primary" x-on:click="$store.befunge.animate()">Animate</button>
     </header>
-    <main class="swap w-4/5">
-      <input class="hidden" type="checkbox" x-model="$store.befunge.gridMode"/>
-      <div class="swap-off">
-        <textarea
-          class="resize border rounded-xl border-blue-300 p-2 font-mono h-[500px] w-full"
-          wrap="off"
-          x-model="$store.befunge.programText"
-        >
-        </textarea>
-      </div>
-      <div class="swap-on flex flex-col items-center">
-        <table class="self-center table-fixed border-separate border-2 border-blue-200">
+    <main class="w-4/5">
+      <textarea
+        class="resize border rounded-xl border-blue-300 p-2 font-mono h-[500px] w-full"
+        wrap="off"
+        x-model="$store.befunge.programText"
+        x-transition
+        x-show="! $store.befunge.gridMode"
+      >
+      </textarea>
+      <div 
+        x-show="$store.befunge.gridMode"
+        x-transition
+        class="flex flex-col items-center">
+        <table class="table-fixed border-separate border-2 border-blue-200">
           <tbody>
             <template x-for="y in $store.befunge.execution.dimensions.height">
               <tr>
@@ -39,9 +41,8 @@
                       class="w-full h-full text-center heading-1 border"
                       type="text" 
                       maxlength="1" 
-                      x-bind:class="$store.befunge.executing({ x: x-1, y: y-1}) && 'border-primary'"
+                      x-bind:class="$store.befunge.executing({ x: x-1, y: y-1}) && 'bg-primary'"
                       x-model="$store.befunge.execution.grid[y-1][x-1]"
-
                     >
                   </td>
                 </template>
@@ -49,13 +50,21 @@
             </template>
           </tbody>
         </table>
-        <div class="flex flex-col mx-4">
-          <p><label>Stdin: </label><input class="pl-3 border rounded border-slate-300" type="text" /></p>
-          <p>Stdout:</p>
-          <p>Heading: Right</p>
-          Stack:
-          <div class="flex flex-col"></div>
-        </div>
+      </div>
+      <div class="flex flex-col mx-4">
+        <p>
+          <label>Stdin: </label>
+          <input 
+            class="pl-3 border rounded border-slate-300" 
+            x-bind:type="$store.befunge.execution.pendingInput"
+            x-on:blur="$store.befunge.pushInput($event)"
+            x-effect="$store.befunge.execution.pendingInput && $el.focus({focusVisible: true})"
+          >
+        </p>
+        <p>Stdout:</p>
+        <p>Heading: Right</p>
+        Stack:
+        <div class="flex flex-col"></div>
       </div>
     </main>
     <script type="module" src="/src/main.tsx"></script>
