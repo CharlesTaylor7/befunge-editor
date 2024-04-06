@@ -64,7 +64,6 @@ Alpine.store('befunge', {
   },
 
   pushInput(event: InputEvent) {
-    console.log(typeof event.target.value);
     this.execution = pushInput(this.execution, event.target.value);
     this.execution = advance(this.execution);
   }

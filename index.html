@@ -57,7 +57,7 @@
           <input 
             class="pl-3 border rounded border-slate-300" 
             x-bind:type="$store.befunge.execution.pendingInput"
-            x-on:blur="$store.befunge.pushInput($event)"
+            x-on:blur="$store.befunge.pushInput($event), $el.value = ''"
             x-effect="$store.befunge.execution.pendingInput && $el.focus({focusVisible: true})"
           >
         </p>
