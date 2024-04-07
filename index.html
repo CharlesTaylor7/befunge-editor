@@ -14,7 +14,9 @@
           <option x-bind:value="index" x-text="program.name"></option>
         </template>
       </select>
-      <button class="btn btn-primary" x-on:click="$store.befunge.edit()">Edit</button>
+      <button class="btn btn-primary" x-on:click="$store.befunge.edit()">
+        Edit
+      </button>
       <button 
         class="btn btn-primary" 
         x-on:click="$store.befunge.step()"
@@ -26,7 +28,7 @@
         class="btn btn-primary" 
         x-on:click="$store.befunge.animate()"
         x-data="{ intervalId: 0 }"
-        x-effect="$store.befunge.paused ? undefined : (clearInterval(intervalId), intervalId = setInterval(() => $store.befunge.step(), 200))"
+        x-effect="clearInterval(intervalId), $store.befunge.paused || (intervalId = setInterval(() => $store.befunge.step(), 300))"
         >
         Animate
       </button>

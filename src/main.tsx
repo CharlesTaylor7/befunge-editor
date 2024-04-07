@@ -12,7 +12,12 @@ Alpine.store('befunge', {
   programs: initialPrograms,
   programText: initialPrograms[0].code.join('\n'),
    
-  paused: true,
+  animationInterval: undefined,
+
+  get paused() {
+    console.log(this, this.animationInterval);
+    return !this.animationInterval || this.execution.pendingInput || this.execution.executionComplete
+  },
 
   changeProgram(index: number) {
     this.programText = this.programs[index].code.join('\n');
@@ -23,6 +28,7 @@ Alpine.store('befunge', {
   },
 
   edit() {
+    this.animationInterval = undefined;
     this.mode = 'edit';
     this.gridMode = false;
   },
@@ -47,8 +53,8 @@ Alpine.store('befunge', {
     }
     if (this.mode !== 'execute') {
       this.initExecuteMode();
+      this.animationInterval = undefined;
     }
-    this.paused = true;
     this.execution = execute(this.execution, { strict: false });
     if (this.execution.pendingInput) {
       return;
@@ -60,7 +66,7 @@ Alpine.store('befunge', {
     if (this.mode !== 'execute') {
       this.initExecuteMode();
     }
-    this.paused = false;
+    this.animationInterval = 200;
   },
 
   executing(position: Position) {
