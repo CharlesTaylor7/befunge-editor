@@ -79,7 +79,12 @@
         <p>Stdout:</p>
         <p>Heading: Right</p>
         Stack:
-        <div class="flex flex-col"></div>
+        <div class="flex flex-col">
+          <template x-for="value in $store.befunge.execution.stack.toArray()">
+            <span x-text="value">
+            </span>
+          </template>
+        </div>
       </div>
     </main>
     <script type="module" src="/src/main.tsx"></script>

@@ -15,7 +15,6 @@ Alpine.store('befunge', {
   animationInterval: undefined,
 
   get paused() {
-    console.log(this, this.animationInterval);
     return !this.animationInterval || this.execution.pendingInput || this.execution.executionComplete
   },
 
