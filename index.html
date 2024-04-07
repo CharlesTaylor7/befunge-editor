@@ -76,13 +76,13 @@
             x-effect="$store.befunge.execution.pendingInput && $el.focus({focusVisible: true})"
           >
         </p>
-        <p>Stdout:</p>
-        <p>Heading: Right</p>
-        Stack:
-        <div class="flex flex-col">
+        <p>Stdout: <span x-text="$store.befunge.execution.console"></span></p>
+        <p>Heading: <span x-text="$store.befunge.execution.heading"></span></p>
+        <p>Stack:</p>
+        <div>
           <template x-for="value in $store.befunge.execution.stack.toArray()">
-            <span x-text="value">
-            </span>
+            <div x-text="value">
+            </div>
           </template>
         </div>
       </div>
