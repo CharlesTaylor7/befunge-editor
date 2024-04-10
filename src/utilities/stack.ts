@@ -30,8 +30,8 @@ function popAscii(stack: StackType): string {
   return String.fromCharCode(pop(stack));
 }
 
-const fromArray = (array: number[]) => array;
-const fromString = (str: string) => Array.from({ length: str.length }, (_, k) => str.charCodeAt(k));
+const fromArray = (array: number[]) => array.reverse();
+const fromString = (str: string) => Array.from({ length: str.length }, (_, k) => str.charCodeAt(k)).reverse();
 
 export default {
   empty,

@@ -81,10 +81,8 @@
         <p>Heading: <span x-text="$store.befunge.execution.heading"></span></p>
         <p>Stack:</p>
         <div>
-          <template x-for="value in $store.befunge.execution.stack.toArray()">
-            <pre>
-              <span x-text="value"> </span>: <span x-text="String.fromCharCode(value)"> </span>
-            </pre>
+          <template x-for="value in $store.befunge.execution.stack">
+            <pre><span x-text="value"> </span>: <span x-text="String.fromCharCode(value)"> </span></pre>
           </template>
         </div>
       </div>

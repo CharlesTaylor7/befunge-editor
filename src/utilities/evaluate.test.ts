@@ -21,7 +21,7 @@ describe("interpreter", () => {
   test("Infinite loop w/ unbounded stack growth", () => {
     const program = [">1v", "4 2", "^3<"];
     const stackSnapshots = Seq(run(program))
-      .map((state, i) => [state.stack, i] as [StackType, number])
+      .map((state, i) => [state.stack.slice(), i] as [StackType, number])
       .filter(([_, index]) => index % 8 === 0)
       .take(3)
       .map((pair) => pair[0])
@@ -61,7 +61,7 @@ describe("interpreter", () => {
     expect(completesIn(1000, run(program, ["1"].values()))).toMatchObject({
       console: "1 ",
     });
-    expect(completesIn(10, run(program, ["2"].values()))).toMatchObject({
+    expect(completesIn(1000, run(program, ["2"].values()))).toMatchObject({
       console: "2 ",
     });
     expect(completesIn(1000, run(program, ["3"].values()))).toMatchObject({

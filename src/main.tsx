@@ -16,7 +16,7 @@ class Befunge {
   animationInterval: number | undefined = undefined
    
   constructor() {
-    setInterval(() => localStorage.setItem('befunge', JSON.stringify(this)), 400);
+    // setInterval(() => localStorage.setItem('befunge', JSON.stringify(this)), 400);
 
     let item = localStorage.getItem('befunge');
     if (typeof item === "string") {
