@@ -1,36 +1,37 @@
-import { initialPrograms, initialExecutionState } from "@/utilities/defaultState";
 import Alpine from "alpinejs";
-import type { AppState } from '@/types';
-import { gridLookup, gridUpdate, gridInit, gridProgram, Position } from "@/grid";
+import type { ExecutionState, Mode, Program } from '@/types';
+import { gridLookup, gridInit, Position } from "@/grid";
 import { execute, advance, pushInput } from "@/utilities/execute";
+import { initialPrograms, initialExecutionState } from "@/utilities/defaultState";
 
-Alpine.store('befunge', {
-  execution: initialExecutionState,
-  mode: 'edit',
-  gridMode: false,
+
+class Befunge {
+  execution: ExecutionState = initialExecutionState;
+  mode: Mode = 'edit';
+  gridMode: boolean = false;
   
-  programs: initialPrograms,
-  programText: initialPrograms[0].code.join('\n'),
+  programs: Array<Program> = initialPrograms;
+  programText: string = initialPrograms[0].code.join('\n');
    
-  animationInterval: undefined,
+  animationInterval: number | undefined = undefined
 
   get paused() {
     return !this.animationInterval || this.execution.pendingInput || this.execution.executionComplete
-  },
+  }
 
   changeProgram(index: number) {
     this.programText = this.programs[index].code.join('\n');
-  },
+  }
 
   lookup(position: Position): string {
     return gridLookup(this.execution.grid, position);
-  },
+  }
 
   edit() {
     this.animationInterval = undefined;
     this.mode = 'edit';
     this.gridMode = false;
-  },
+  }
 
   initExecuteMode() {
     this.mode =  'execute';
@@ -44,7 +45,7 @@ Alpine.store('befunge', {
     this.execution = initialExecutionState;
     this.execution.dimensions = dimensions;
     this.execution.grid = grid;
-  },
+  }
 
   step() {
     if (this.execution.pendingInput) {
@@ -59,25 +60,26 @@ Alpine.store('befunge', {
       return;
     }
     this.execution = advance(this.execution);
-  },
+  }
 
   animate() {
     if (this.mode !== 'execute') {
       this.initExecuteMode();
     }
     this.animationInterval = 200;
-  },
+  }
 
   executing(position: Position) {
     return this.mode === 'execute' && this.execution.executionPointer.x == position.x && this.execution.executionPointer.y == position.y;
-  },
+  }
 
   pushInput(event: InputEvent) {
     this.execution = pushInput(this.execution, event.target.value);
     this.execution = advance(this.execution);
   }
-} as AppState);
+}
 
+Alpine.store('befunge', new Befunge());
 Alpine.start();
 
 window.Alpine = Alpine;
