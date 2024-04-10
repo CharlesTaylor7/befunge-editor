@@ -82,7 +82,13 @@
         <p>Stack:</p>
         <div>
           <template x-for="value in $store.befunge.execution.stack.toArray()">
-            <div x-text="value">
+            <div>
+              <span x-text="value">
+              </span>
+              (
+              <code x-text="String.fromCharCode(value)">
+              </code>
+              )
             </div>
           </template>
         </div>
