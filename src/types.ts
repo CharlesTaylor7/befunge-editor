@@ -3,14 +3,6 @@ import type { Grid } from "@/grid";
 
 export { Grid, StackType };
 
-export type Mode = 'edit' | 'execute';
-export type AppState = {
-  mode: Mode;
-  execution: ExecutionState;
-  programs: Program[];
-  programText: string;
-};
-
 
 export type Location = { x: number; y: number };
 export type Program = {

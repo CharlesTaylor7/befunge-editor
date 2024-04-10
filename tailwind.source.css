@@ -2,8 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  textarea::-webkit-resizer {
+    /*
+    border-width: 20px;
+    border-style: solid;
+    border-color: transparent orangered orangered transparent;
+    */
+  }
+}
+
 @layer components {
   .select {
     @apply outline-none !important;
   }
 }
+

@@ -1,22 +1,23 @@
 import Alpine from "alpinejs";
-import type { ExecutionState, Mode, Program } from '@/types';
+import type { ExecutionState, Program } from '@/types';
 import { gridLookup, gridInit, Position } from "@/grid";
 import { execute, advance, pushInput } from "@/utilities/execute";
 import { initialPrograms, initialExecutionState } from "@/utilities/defaultState";
 
+export type Mode = 'animate' | 'paused';
+export type View = 'text-editor' | 'grid-editor';
 
 class Befunge {
   execution: ExecutionState = initialExecutionState();
-  mode: Mode = 'edit';
-  gridMode: boolean = false;
+  mode: Mode = 'paused';
+  view: View = 'grid-editor';
   
   programs: Array<Program> = initialPrograms;
   programText: string = initialPrograms[0].code.join('\n');
-   
-  animationInterval: number | undefined = undefined
+  animationInterval: number | undefined = undefined;
    
   constructor() {
-    // setInterval(() => localStorage.setItem('befunge', JSON.stringify(this)), 400);
+    setInterval(() => localStorage.setItem('befunge', JSON.stringify(this)), 1000);
 
     let item = localStorage.getItem('befunge');
     if (typeof item === "string") {
