@@ -58,8 +58,11 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
       return runBinaryOpOnStack((a, b) => quot(b, a))(state);
     case "%":
       return runBinaryOpOnStack((a, b) => rem(b, a))(state);
-    case "!":
-      return R.over(lens("stack"), (stack) => stack.pop().push(stack.peek() === 0 ? 1 : 0), state);
+    case "!": {
+      let value = state.stack.pop();
+      state.stack.push(value ? 0 : 1);
+      return state;
+    }
     case "`":
       return runBinaryOpOnStack((a, b) => (b > a ? 1 : 0))(state);
     case ">":
@@ -72,59 +75,57 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
       return R.set(lens("heading"), "Down", state);
     case "?":
       return R.set(lens("heading"), Random.among("Right", "Left", "Up", "Down"), state);
-    case "_":
-      return R.pipe(
-        R.over(lens("stack"), (stack) => stack.pop()),
-        R.set(lens("heading"), Stack.peek(state.stack) !== 0 ? "Left" : "Right"),
-      )(state);
+    case "_": {
+      let value = state.stack.pop();
+      state.heading = value ? 'Left' : 'Right';
+      return state;
+    }
     case "|":
-      return R.pipe(
-        R.over(lens("stack"), (stack) => stack.pop()),
-        R.set(lens("heading"), Stack.peek(state.stack) !== 0 ? "Up" : "Down"),
-      )(state);
+      let value = state.stack.pop();
+      state.heading = value ? 'Up' : 'Down';
+      return state;
     case '"':
       return R.over(lens("stringMode"), (mode) => !mode, state);
     case ":":
       return R.over(lens("stack"), (stack) => Stack.push(Stack.peek(stack), stack), state);
-    case "\\":
-      return R.over(
-        lens("stack"),
-        (stack) => {
-          const [[a, b], rest] = Stack.pop(2, stack);
-          return Stack.push(b, Stack.push(a, rest));
-        },
-        state,
-      );
+    case "\\": {
+      const stack = state.stack;
+      const a = Stack.pop(stack);
+      const b = Stack.pop(stack);
+      stack.push(a, b);
+      return state;
+    }
     case "$":
-      return R.over(lens("stack"), (stack) => stack.pop(), state);
-    case ".":
-      return R.pipe(
-        R.over(lens("stack"), (stack) => stack.pop()),
-        R.over(lens("console"), (console) => console + Stack.peek(state.stack) + " "),
-      )(state);
-    case ",":
-      return R.pipe(
-        R.over(lens("stack"), (stack) => stack.pop()),
-        R.over(lens("console"), (console) => console + String.fromCharCode(Stack.peek(state.stack))),
-      )(state);
+      state.stack.pop();
+      return state;
+    case ".": {
+      const value = Stack.pop(state.stack); 
+      state.console += `${value} `;
+      return state;
+    }
+    case ",": {
+      const value = Stack.popAscii(state.stack); 
+      state.console += `${value}`;
+      return state;
+    }
     case "#":
       return R.set(lens("activeBridge"), true, state);
-    case "g":
-      return R.over(
-        lens("stack"),
-        (stack) => {
-          const [[y, x], rest] = Stack.pop(2, stack);
-          const value = gridLookup(state.grid, { x, y });
-          return Stack.push(value.charCodeAt(0), rest);
-        },
-        state,
-      );
+    case "g": {
+      const stack = state.stack;
+      const y = Stack.pop(stack);
+      const x = Stack.pop(stack);
+
+      const value = gridLookup(state.grid, { x, y });
+      stack.push(value.charCodeAt(0));
+      return state;
+    }
     case "p": {
-      const [[y, x, value], rest] = Stack.pop(3, state.stack);
+      const stack = state.stack;
+      const y = Stack.pop(stack);
+      const x = Stack.pop(stack);
+      const value = Stack.pop(stack);
       gridUpdate(state.grid, { x, y }, value);
-      return R.pipe(
-        R.set(lens("stack"), rest),
-      )(state);
+      return state;
     }
     case "&":
       return R.set(lens("pendingInput"), "number")(state);
@@ -150,8 +151,9 @@ type Op = (a: number, b: number) => number;
 
 const runBinaryOpOnStack = (op: Op) =>
   R.over(lens("stack"), (stack) => {
-    const [[a, b], rest] = Stack.pop(2, stack);
-    return Stack.push(op(a, b), rest);
+    const a = Stack.pop(stack);
+    const b = Stack.pop(stack);
+    return Stack.push(op(a, b), stack);
   });
 
 /**

@@ -6,7 +6,7 @@ import { initialPrograms, initialExecutionState } from "@/utilities/defaultState
 
 
 class Befunge {
-  execution: ExecutionState = initialExecutionState;
+  execution: ExecutionState = initialExecutionState();
   mode: Mode = 'edit';
   gridMode: boolean = false;
   
@@ -14,6 +14,15 @@ class Befunge {
   programText: string = initialPrograms[0].code.join('\n');
    
   animationInterval: number | undefined = undefined
+   
+  constructor() {
+    setInterval(() => localStorage.setItem('befunge', JSON.stringify(this)), 400);
+
+    let item = localStorage.getItem('befunge');
+    if (typeof item === "string") {
+      Object.assign(this, JSON.parse(item));
+    }
+  }
 
   get paused() {
     return !this.animationInterval || this.execution.pendingInput || this.execution.executionComplete
@@ -42,7 +51,7 @@ class Befunge {
     }
     let { dimensions, grid } = gridInit(program);
     this.gridMode = true;
-    this.execution = initialExecutionState;
+    this.execution = initialExecutionState();
     this.execution.dimensions = dimensions;
     this.execution.grid = grid;
   }

@@ -11,7 +11,7 @@ describe("interpreter", () => {
       console: "Hello, World!",
       executionComplete: true,
       stringMode: false,
-      stack: Stack.empty,
+      stack: Stack.empty(),
     });
   });
   test("Infinite loop", () => {
@@ -27,7 +27,7 @@ describe("interpreter", () => {
       .map((pair) => pair[0])
       .toArray();
     expect(stackSnapshots).toEqual([
-      Stack.empty,
+      Stack.empty(),
       Stack.fromArray([4, 3, 2, 1]),
       Stack.fromArray([4, 3, 2, 1, 4, 3, 2, 1]),
     ]);
@@ -61,7 +61,7 @@ describe("interpreter", () => {
     expect(completesIn(1000, run(program, ["1"].values()))).toMatchObject({
       console: "1 ",
     });
-    expect(completesIn(1000, run(program, ["2"].values()))).toMatchObject({
+    expect(completesIn(10, run(program, ["2"].values()))).toMatchObject({
       console: "2 ",
     });
     expect(completesIn(1000, run(program, ["3"].values()))).toMatchObject({

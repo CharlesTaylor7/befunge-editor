@@ -1,42 +1,44 @@
 import * as R from "ramda";
-import { Stack } from "immutable";
 
-export type StackType = Stack<number>;
+export type StackType = Array<number>;
 
-const empty: StackType = Stack();
+function empty(): StackType {
+  return []
+}
 
-const isEmpty = (stack: StackType) => stack.isEmpty();
+function isEmpty(stack: StackType): boolean {
+  return stack.length === 0;
+}
 
-const push = R.curry((head: number, tail: StackType) => tail.push(head));
-const peek = (stack: StackType) => stack.peek() || 0;
+function push(head: number, tail: StackType): StackType {
+  tail.push(head);
+  return tail;
+}
 
 export type PopResult = [number[], StackType];
 
-function pop(num: number, stack: StackType): [number[], StackType] {
-  if (stack === undefined) throw Error();
-  const result = [];
-  for (let i = 0; i < num; i++) {
-    if (stack.isEmpty()) {
-      result.push(0);
-      continue;
-    }
-
-    result.push(stack.peek());
-    stack = stack.pop();
-  }
-  return [result, stack] as PopResult;
+function peek(stack: StackType): number {
+  return stack.length ? stack[stack.length - 1] : 0;
 }
 
-const fromArray = (array: number[]) =>
-  array.reverse().reduce((stack: StackType, elem: number) => stack.push(elem), Stack());
+function pop(stack: StackType): number {
+  const value = stack.pop();
+  return typeof value === 'number' ? value : 0;
+}
 
-const fromString = (str: string) => fromArray(Array.from({ length: str.length }, (_, k) => str.charCodeAt(k)));
+function popAscii(stack: StackType): string {
+  return String.fromCharCode(pop(stack));
+}
+
+const fromArray = (array: number[]) => array;
+const fromString = (str: string) => Array.from({ length: str.length }, (_, k) => str.charCodeAt(k));
 
 export default {
   empty,
   isEmpty,
-  push,
+  push: R.curry(push),
   pop,
+  popAscii,
   peek,
   fromArray,
   fromString,

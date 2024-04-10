@@ -7,15 +7,17 @@ export const initialPrograms: Array<Program> = [
   ];
 
 
-export const initialExecutionState: ExecutionState = {
-  executionPointer: { x: 0, y: 0 },
-  heading: "Right",
-  grid: [],
-  dimensions: { height: 0, width: 0 },
-  stack: Stack.empty,
-  console: "",
-  activeBridge: false,
-  executionComplete: false,
-  stringMode: false,
-  pendingInput: false,
-};
+export function initialExecutionState(): ExecutionState { 
+  return ({
+    executionPointer: { x: 0, y: 0 },
+    heading: "Right",
+    grid: [],
+    dimensions: { height: 0, width: 0 },
+    stack: Stack.empty(),
+    console: "",
+    activeBridge: false,
+    executionComplete: false,
+    stringMode: false,
+    pendingInput: false,
+  });
+}
