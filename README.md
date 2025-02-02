@@ -20,7 +20,7 @@ On every push to main, that alters source code, the code is validated against ea
 Then if all are succesful the a production build is created and deployed to github pages at https://charlestaylor7.github.io/befunge-editor/
 
 # Development
-This is a [React](https://www.react.dev/) project bundled and developed with [Vite](https://vitejs.dev/).
+This is an [Alpine](https://alpinejs.dev) project bundled and developed with [Vite](https://vitejs.dev/).
 Styling is done inline via [Tailwind](https://www.tailwindcss.com/).
 
 Install Deps
