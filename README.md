@@ -42,5 +42,4 @@ Optionally, there is an mprocs.yaml config file in the repo that will allow your
 
 Steps:
 - Install [mprocs](https://github.com/pvolok/mprocs)
-- Install [entr](https://github.com/eradman/entr)
 - Run `mprocs` in the root of this project
