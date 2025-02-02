@@ -15,9 +15,14 @@ type Args = {
 /**
  * Execute the current instruction of the program
  */
-export function execute(state: ExecutionState, args: Args = {}): ExecutionState {
+export function execute(
+  state: ExecutionState,
+  args: Args = {},
+): ExecutionState {
   const instruction =
-    args.instruction !== undefined ? args.instruction : gridLookup(state.grid, state.executionPointer);
+    args.instruction !== undefined
+      ? args.instruction
+      : gridLookup(state.grid, state.executionPointer);
   const strict = args.strict !== undefined ? args.strict : true;
 
   if (state.pendingInput) {
@@ -73,7 +78,11 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
     case "v":
       return R.set(lens("heading"), "Down", state);
     case "?":
-      return R.set(lens("heading"), Random.among("Right", "Left", "Up", "Down"), state);
+      return R.set(
+        lens("heading"),
+        Random.among("Right", "Left", "Up", "Down"),
+        state,
+      );
     case "_": {
       const value = state.stack.pop();
       state.heading = value ? "Left" : "Right";
@@ -87,7 +96,11 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
     case '"':
       return R.over(lens("stringMode"), (mode) => !mode, state);
     case ":":
-      return R.over(lens("stack"), (stack) => Stack.push(Stack.peek(stack), stack), state);
+      return R.over(
+        lens("stack"),
+        (stack) => Stack.push(Stack.peek(stack), stack),
+        state,
+      );
     case "\\": {
       const stack = state.stack;
       const a = Stack.pop(stack);
@@ -177,7 +190,10 @@ export function advance(state: ExecutionState): ExecutionState {
 /**
  * Provide user input so the program can resume execution
  */
-export function pushInput(state: ExecutionState, input: string): ExecutionState {
+export function pushInput(
+  state: ExecutionState,
+  input: string,
+): ExecutionState {
   if (!state.pendingInput) {
     throw new Error("Cannot push input before the program requests it");
   }
@@ -201,6 +217,8 @@ export function pushInput(state: ExecutionState, input: string): ExecutionState 
   };
 }
 
-function lens<K extends keyof ExecutionState>(key: K): Lens<ExecutionState, ExecutionState[K]> {
+function lens<K extends keyof ExecutionState>(
+  key: K,
+): Lens<ExecutionState, ExecutionState[K]> {
   return R.lensProp(key);
 }

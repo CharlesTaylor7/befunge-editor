@@ -1,11 +1,14 @@
 import type { ExecutionState } from "@/types";
 import { gridInit } from "@/grid";
-import {initialExecutionState} from "@/utilities/defaultState";
+import { initialExecutionState } from "@/utilities/defaultState";
 import { execute, advance, pushInput } from "@/utilities/execute";
 
 export type Stdin = Iterator<string>;
 
-export function* run(program: Array<string>, stdin?: Stdin): Generator<ExecutionState> {
+export function* run(
+  program: Array<string>,
+  stdin?: Stdin,
+): Generator<ExecutionState> {
   let state: ExecutionState = {
     ...initialExecutionState(),
     ...gridInit(program),

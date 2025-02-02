@@ -16,7 +16,9 @@ describe("interpreter", () => {
   });
   test("Infinite loop", () => {
     const program = [">v", "^<"];
-    expect(() => completesIn(1000, run(program))).toThrow("Iterator did not complete in 1000 or less steps.");
+    expect(() => completesIn(1000, run(program))).toThrow(
+      "Iterator did not complete in 1000 or less steps.",
+    );
   });
   test("Infinite loop w/ unbounded stack growth", () => {
     const program = [">1v", "4 2", "^3<"];
@@ -40,7 +42,7 @@ describe("interpreter", () => {
       stack: Stack.fromString("\t@,"),
     });
 
-    expect(gridLookup(completionState.grid, {x:3,y:0})).toEqual("\t");
+    expect(gridLookup(completionState.grid, { x: 3, y: 0 })).toEqual("\t");
   });
   test("A quine", () => {
     const program = ["01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@"];
@@ -55,9 +57,9 @@ describe("interpreter", () => {
       "v_1.@",
       ">     ^",
     ];
-    expect(completesIn(1000, run(program, ["0"].values()))).toMatchObject({ 
-      console: '1 ', 
-    })
+    expect(completesIn(1000, run(program, ["0"].values()))).toMatchObject({
+      console: "1 ",
+    });
     expect(completesIn(1000, run(program, ["1"].values()))).toMatchObject({
       console: "1 ",
     });

@@ -2,7 +2,10 @@ import Alpine from "alpinejs";
 import type { ExecutionState, Program } from "@/types";
 import { gridLookup, gridInit, Position } from "@/grid";
 import { execute, advance, pushInput } from "@/utilities/execute";
-import { initialPrograms, initialExecutionState } from "@/utilities/defaultState";
+import {
+  initialPrograms,
+  initialExecutionState,
+} from "@/utilities/defaultState";
 
 export type Mode = "animate" | "paused";
 export type View = "text-editor" | "grid-editor";
@@ -17,7 +20,10 @@ class Befunge {
   animationInterval: number | undefined = undefined;
 
   constructor() {
-    setInterval(() => localStorage.setItem("befunge", JSON.stringify(this)), 1000);
+    setInterval(
+      () => localStorage.setItem("befunge", JSON.stringify(this)),
+      1000,
+    );
 
     const item = localStorage.getItem("befunge");
     if (typeof item === "string") {
@@ -26,7 +32,11 @@ class Befunge {
   }
 
   get paused() {
-    return !this.animationInterval || this.execution.pendingInput || this.execution.executionComplete;
+    return (
+      !this.animationInterval ||
+      this.execution.pendingInput ||
+      this.execution.executionComplete
+    );
   }
 
   changeProgram(index: number) {

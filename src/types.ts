@@ -3,7 +3,6 @@ import type { Grid } from "@/grid";
 
 export { Grid, StackType };
 
-
 export type Location = { x: number; y: number };
 export type Program = {
   code: string[];

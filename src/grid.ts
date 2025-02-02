@@ -13,7 +13,11 @@ export function gridLookup(grid: Grid, position: Position): string {
   return value;
 }
 
-export function gridUpdate(grid: Grid, position: Position, value: number | string) {
+export function gridUpdate(
+  grid: Grid,
+  position: Position,
+  value: number | string,
+) {
   if (value === undefined || value === null) {
     grid[position.y][position.x] = "";
     return;
@@ -44,7 +48,9 @@ export function gridInit(program: string[]): GridAndDimensions {
   ).length;
   const dimensions = { height, width };
 
-  const grid = Array.from({ length: height }, (_, j) => Array.from({ length: width }, (_, i) => program[j][i]));
+  const grid = Array.from({ length: height }, (_, j) =>
+    Array.from({ length: width }, (_, i) => program[j][i]),
+  );
   return { grid, dimensions };
 }
 

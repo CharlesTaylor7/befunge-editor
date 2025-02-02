@@ -5,16 +5,8 @@ procs:
   Typescript:
     shell: yarn typecheck --watch
 
-  ESLint:
-    shell: watchexec -c -e js,ts,tsx,jsx -- yarn lint
-
   Dev Server :
     shell: yarn dev
 
   Tailwind:
     shell: yarn tailwind --watch
-
-  Test Coverage:
-    # Mac only; sorry
-    shell: yarn test --coverage && open -a 'Google Chrome' coverage/lcov-report/index.html
-    autostart: false

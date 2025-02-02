@@ -3,7 +3,7 @@ import * as R from "ramda";
 export type StackType = Array<number>;
 
 function empty(): StackType {
-  return []
+  return [];
 }
 
 function isEmpty(stack: StackType): boolean {
@@ -23,7 +23,7 @@ function peek(stack: StackType): number {
 
 function pop(stack: StackType): number {
   const value = stack.pop();
-  return typeof value === 'number' ? value : 0;
+  return typeof value === "number" ? value : 0;
 }
 
 function popAscii(stack: StackType): string {
@@ -31,7 +31,8 @@ function popAscii(stack: StackType): string {
 }
 
 const fromArray = (array: number[]) => array.reverse();
-const fromString = (str: string) => Array.from({ length: str.length }, (_, k) => str.charCodeAt(k)).reverse();
+const fromString = (str: string) =>
+  Array.from({ length: str.length }, (_, k) => str.charCodeAt(k)).reverse();
 
 export default {
   empty,

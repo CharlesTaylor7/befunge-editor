@@ -2,13 +2,12 @@ import type { ExecutionState, Program } from "@/types";
 import Stack from "@/utilities/stack";
 
 export const initialPrograms: Array<Program> = [
-    { name: "Factorial", code: ["&>:1-:v v *_$.@", " ^    _$>\\:^"] },
-    { name: "Quine", code: ["01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@"] },
-  ];
+  { name: "Factorial", code: ["&>:1-:v v *_$.@", " ^    _$>\\:^"] },
+  { name: "Quine", code: ["01->1# +# :# 0# g# ,# :# 5# 8# *# 4# +# -# _@"] },
+];
 
-
-export function initialExecutionState(): ExecutionState { 
-  return ({
+export function initialExecutionState(): ExecutionState {
+  return {
     executionPointer: { x: 0, y: 0 },
     heading: "Right",
     grid: [],
@@ -19,5 +18,5 @@ export function initialExecutionState(): ExecutionState {
     executionComplete: false,
     stringMode: false,
     pendingInput: false,
-  });
+  };
 }
