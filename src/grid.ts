@@ -6,16 +6,16 @@ export type Position = { x: number; y: number };
 export function gridLookup(grid: Grid, position: Position): string {
   const row = grid[position.y];
   if (!row) {
-    return ' ';
+    return " ";
   }
-  let value = row[position.x];
+  const value = row[position.x];
   if (value === undefined || value === "") return " ";
   return value;
 }
 
 export function gridUpdate(grid: Grid, position: Position, value: number | string) {
   if (value === undefined || value === null) {
-    grid[position.y][position.x] = '';
+    grid[position.y][position.x] = "";
     return;
   }
   if (typeof value === "string") {
@@ -44,7 +44,7 @@ export function gridInit(program: string[]): GridAndDimensions {
   ).length;
   const dimensions = { height, width };
 
-  let grid = Array.from({ length: height }, (_, j) => Array.from({ length: width}, (_, i) => program[j][i]));
+  const grid = Array.from({ length: height }, (_, j) => Array.from({ length: width }, (_, i) => program[j][i]));
   return { grid, dimensions };
 }
 

@@ -23,8 +23,7 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
   if (state.pendingInput) {
     if (strict) {
       throw new Error("cannot execute while input pending");
-    }
-    else {
+    } else {
       return state;
     }
   }
@@ -59,7 +58,7 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
     case "%":
       return runBinaryOpOnStack((a, b) => rem(b, a))(state);
     case "!": {
-      let value = state.stack.pop();
+      const value = state.stack.pop();
       state.stack.push(value ? 0 : 1);
       return state;
     }
@@ -76,14 +75,15 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
     case "?":
       return R.set(lens("heading"), Random.among("Right", "Left", "Up", "Down"), state);
     case "_": {
-      let value = state.stack.pop();
-      state.heading = value ? 'Left' : 'Right';
+      const value = state.stack.pop();
+      state.heading = value ? "Left" : "Right";
       return state;
     }
-    case "|":
-      let value = state.stack.pop();
-      state.heading = value ? 'Up' : 'Down';
+    case "|": {
+      const value = state.stack.pop();
+      state.heading = value ? "Up" : "Down";
       return state;
+    }
     case '"':
       return R.over(lens("stringMode"), (mode) => !mode, state);
     case ":":
@@ -99,12 +99,12 @@ export function execute(state: ExecutionState, args: Args = {}): ExecutionState 
       state.stack.pop();
       return state;
     case ".": {
-      const value = Stack.pop(state.stack); 
+      const value = Stack.pop(state.stack);
       state.console += `${value} `;
       return state;
     }
     case ",": {
-      const value = Stack.popAscii(state.stack); 
+      const value = Stack.popAscii(state.stack);
       state.console += `${value}`;
       return state;
     }
@@ -184,16 +184,13 @@ export function pushInput(state: ExecutionState, input: string): ExecutionState 
   let value: number;
   if (state.pendingInput === "number") {
     value = parseInt(input);
-  }
-  else if (state.pendingInput === "text") {
+  } else if (state.pendingInput === "text") {
     if (input.length === 1) {
       value = input.charCodeAt(0);
-    }
-    else {
+    } else {
       throw new Error(`Expected single character input: ${input}`);
     }
-  }
-  else {
+  } else {
     throw new Error(`Invalid input type: ${state.pendingInput}`);
   }
 
