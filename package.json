@@ -8,7 +8,7 @@
     "dev": "vite --port 3000",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tailwind": "tailwindcss -i tailwind.source.css -o styles/tailwind.css",
+    "tailwind": "tailwind -i tailwind.source.css -o styles/tailwind.css",
     "test": "jest",
     "typecheck": "tsc --pretty --noEmit",
     "check-format": "prettier --check src/",
