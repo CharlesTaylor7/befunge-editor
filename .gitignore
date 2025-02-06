@@ -11,6 +11,3 @@ yarn-error.log
 
 # Jest code coverage
 /coverage/
-
-# Tailwind
-/styles/tailwind.css

@@ -63,8 +63,7 @@ jobs:
       - name: Build
         run: |
           yarn
-          yarn tailwind
-          yarn build
+          yarn exec build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
