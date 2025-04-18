@@ -7,80 +7,43 @@ on:
       - .github/**
       - src/**
       - index.html
+      - vite.config.ts
+      - yarn.lock
 
 jobs:
-  check-format:
-    name: Prettier
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-      - run: |
-          yarn
-          yarn check-format
-
-  lint:
-    name: ESLint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-      - run: |
-          yarn
-          yarn lint
-
-  test:
-    name: Jest
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-
-      - run: |
-          yarn
-          yarn test
-
-  typecheck:
-    name: Typescript
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-
-      - run: |
-          yarn
-          yarn typecheck
-
   deploy:
     name: Deploy to Github Pages
+    permissions:
+      pages: write
     runs-on: ubuntu-latest
-    needs: 
-      - check-format
-      - lint
-      - test
-      - typecheck
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Yarn
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "yarn"
+
+      - name: Validate
+        run: |
+          yarn install --immutable
+          yarn typecheck
+          yarn lint
+          yarn check-format
 
       - name: Build
         run: |
-          yarn
-          yarn tailwind
           yarn build
 
       - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: dist

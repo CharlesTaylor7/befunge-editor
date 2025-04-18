@@ -1,16 +1,5 @@
-# yarn
 /node_modules/
-yarn-error.log
-
-
-# vite build directory
+.yarn/
 /dist/
-
-# Mac
-.DS_Store
-
-# Jest code coverage
 /coverage/
-
-# Tailwind
 /styles/tailwind.css
