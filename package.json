@@ -18,8 +18,8 @@
   "dependencies": {
     "immutable": "^4.0.0",
     "ramda": "^0.29.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react": "^19",
+    "react-dom": "^19"
   },
   "devDependencies": {
     "@swc/core": "^1.3.68",
@@ -30,8 +30,8 @@
     "@testing-library/user-event": "^14.0.0",
     "@types/jest": "^29.0.0",
     "@types/ramda": "^0.29.0",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.2.6",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
@@ -45,5 +45,6 @@
     "ts-jest": "^29.1.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.0"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
